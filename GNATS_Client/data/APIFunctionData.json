@@ -1,0 +1,2729 @@
+[  
+{  
+"FunctionName":"getEntityInterface()",
+"Description":"Returns a reference to the EntityInterface.",
+"ReturnType":"EntityInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+entityInterface = gnatsClient.getEntityInterface()"
+},
+{  
+"FunctionName":"getEnvironmentInterface()",
+"Description":"Returns a reference to the EnvironmentInterface.",
+"ReturnType":"EnvironmentInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+environmentInterface = gnatsClient.getEnvironmentInterface()"
+},
+{  
+"FunctionName":"getEquipmentInterface()",
+"Description":"Returns a reference to the EquipmentInterface.",
+"ReturnType":"EquipmentInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+equipmentInterface = gnatsClient.getEquipmentInterface()"
+},
+{  
+"FunctionName":"getSafetyMetricsInterface()",
+"Description":"Returns a reference to the SafetyMetricsInterface.",
+"ReturnType":"SafetyMetricsInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()"
+},
+{  
+"FunctionName":"getSafetyMInterface()",
+"Description":"Returns a reference to the SafetyMetricsInterface, an alias for Scilab platform (Due to syntax restrictions).",
+"ReturnType":"SafetyMetricsInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+safetyMInterface = gnatsClient.getSafetyMInterface()"
+},
+{  
+"FunctionName":"getSimulationInterface()",
+"Description":"Returns a reference to the SimulationInterface.",
+"ReturnType":"SimulationInterface",
+"Interface":"GNATSClientInterface",
+"Example":" 
+GNATSClientFactory = JClass('GNATSClientFactory') 
+gnatsClient = GNATSClientFactory.getGNATSClient() 
+simulationInterface = gnatsClient. GetSimulationInterface()"
+},
+{  
+"FunctionName":"clear_trajectory()",
+"Description":"Cleanup the trajectory data.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.clear_trajectory()"
+},
+{  
+"FunctionName":"get_curr_sim_time()",
+"Description":"Get the current simulation timestamp.",
+"ReturnType":"float",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+currentTime = simulationInterface.get_curr_sim_time()"
+},
+{  
+"FunctionName":"get_sim_id()",
+"Description":"Get the simulation id.",
+"ReturnType":"long",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulation_id = simulationInterface.get_sim_id()"
+},
+{  
+"FunctionName":"get_runtime_sim_status()",
+"Description":"Get the runtime status of the trajectory propagation.
+Value definition:
+GNATS_SIMULATION_STATUS_READY = 0
+GNATS_SIMULATION_STATUS_START = 1
+GNATS_SIMULATION_STATUS_PAUSE = 2
+GNATS_SIMULATION_STATUS_RESUME = 3
+GNATS_SIMULATION_STATUS_STOP = 4
+GNATS_SIMULATION_STATUS_ENDED = 5
+When the trajectory propagation finishes, the status will be changed to
+GNATS_SIMULATION_STATUS_ENDED.",
+"ReturnType":"int",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+currentRuntimeStatus = simulationInterface.get_runtime_sim_status()"
+},
+{  
+"FunctionName":"pause()",
+"Description":"Pause the trajectory propagation process. This function is disabled in real-time simulation mode.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.pause()"
+},
+{  
+"FunctionName":"resume()",
+"Description":"Resume the trajectory propagation process.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.resume()"
+},
+{  
+"FunctionName":"resume(long t_duration)",
+"Description":"Resume the trajectory propagation process and process data for a specified duration of time (in seconds).",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.resume(1000)"
+},
+{  
+"FunctionName":"setupSimulation(long t_total_propagation_period, long t_step)",
+"Description":"Setup the trajectory propagation process.
+Description of the arguments:
+t_total_propagation_period: Total period of time of propagation in seconds.
+t_step: Time step in seconds.
+For surface ground traffic, the recommended propagation time step is 1 second.",
+"ReturnType":"int",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.setupSimulation (10000, 5)"
+},
+{  
+"FunctionName":"start()",
+"Description":"Start the trajectory propagation process.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.start()"
+},
+{  
+"FunctionName":"start(long t_duration)",
+"Description":"Start the trajectory propagation process for specified duration, in seconds.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.start(1200)"
+},
+{  
+"FunctionName":"startRealTime()",
+"Description":"Start the real-time trajectory propagation.
+GNATS Server runs trajectory propagation with 30-second time step,
+synchronized with real-time clock.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.startRealTime()"
+},
+{  
+"FunctionName":"startRealTime_singleUser()",
+"Description":"Start the real-time trajectory propagation while in single-user mode.
+GNATS Server runs trajectory propagation with 30-second time step,
+synchronized with real-time clock.
+Aircraft state data can be imported from an external aircraft simulator to the
+GNATS Server. Please refer to the XPlane simulation example for the details.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.startRealTime_singleUser()"
+},
+{  
+"FunctionName":"stop()",
+"Description":"Stop the trajectory propagation process.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.stop()"
+},
+{  
+"FunctionName":"write_trajectories(String output_file)",
+"Description":"Write trajectory data into a file.
+File format supported: *.csv, *.kml, *.xml",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":"  
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.write_trajectories (“SimulationTrajectory.csv”)"
+},
+{  
+"FunctionName":"request_aircraft(String ac_id)",
+"Description":"Request aircrafts from GNATS Server which is the administrator for multi-user simulation. The aircraft pertaining to the callsign given in the argument ac_id will be assigned to the client based on First-Come-First-Serve policy.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.request_aircraft('ABC123')"
+},
+{  
+"FunctionName":"request_groundVehicle(String gv_id)",
+"Description":"Request ground vehicles from GNATS Server which is the administrator for multi-user simulation. The ground vehicle pertaining to the callsign given in the argument gv_id will be assigned to the client based on First-Come-First-Serve policy.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.request_groundVehicle('BUS123')"
+},
+{  
+"FunctionName":"externalAircraft_create_trajectory_profile(String ac_id, String ac_type, String origin_airport, String destination_airport, float cruise_altitude_ft, float cruise_tas_knots, double latitude_deg, double longitude_deg, double altitude_ft, double rocd_fps, double tas_knots, double course_deg, String flight_phase)",
+"Description":"Create the trajectory profile and set the initial state of an external aircraft in GNATS.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.externalAircraft_create_trajectory_profile(  
+“ABC173”,'B733', 'KPHX',“KSFO”, 33000.0, 430.0, 37.2, -122.4, 2500.0, 215.0, 240.0, 318.2, “FLIGHT_PHASE_CRUISE')"
+},
+{  
+"FunctionName":"externalAircraft_inject_trajectory_state_data(String ac_id, double latitude_deg, double longitude_deg, double altitude_ft, double rocd_fps, double tas_knots, double course_deg, String flight_phase, long timestamp_utc_millisec)",
+"Description":"Send external aircraft state data from the client to the server.",
+"ReturnType":"void",
+"Interface":"SimulationInterface",
+"Example":" 
+simulationInterface = gnatsClient.getSimulationInterface() 
+simulationInterface.externalAircraft_inject_trajectory_state_data('ABC123', 32.61, -122.39, 3200,30, 250, 50, “FLIGHT_PHASE_CRUISE”, 1541784961725)"
+},
+{  
+"FunctionName":"getAircraftInterface()",
+"Description":"Returns a reference to the AircraftInterface.",
+"ReturnType":"AircraftInterface",
+"Interface":"EquipmentInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface()"
+},
+{  
+"FunctionName":"getGroundVehicleInterface()",
+"Description":"Returns a reference to the GroundVehicleInterface.",
+"ReturnType":"GroundVehicleInterface",
+"Interface":"EquipmentInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface()"
+},
+{  
+"FunctionName":"getCNSInterface()",
+"Description":"Returns a reference to the CNSInterface.",
+"ReturnType":"CNSInterface",
+"Interface":"EquipmentInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+CNSInterface = equipmentInterface.getCNSInterface()"
+},
+{  
+"FunctionName":"getBADADataInterface()",
+"Description":"Returns a reference to the BADADataInterface.",
+"ReturnType":"BADADataInterface",
+"Interface":"EquipmentInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+BADADataInterface = equipmentInterface.getBADADataInterface()"
+},
+{  
+"FunctionName":"load_aircraft(String trx_file, String mfl_file)",
+"Description":"Load aircraft data.",
+"ReturnType":"int",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraftInterface.load_aircraft('share/tg/trx/TRX_DEMO_SFO_PHX_GateToGate.trx', 'share/tg/trx/TRX_DEMO_SFO_PHX_mfl.trx')"
+},
+{  
+"FunctionName":"validate_flight_plan_record(String string_track, String string_fp_route, int mfl_ft)",
+"Description":"Validator of flight plan record.",
+"ReturnType":"boolean",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+result = aircraftInterface.validate_flight_plan_record('TRACK SWA1897 B733 373628.6 1222248.0 0 0.13 280 ZOA ZOA46', 'FP_ROUTE KSFO./.RW01R.SSTIK4.LOSHN..BOILE..BLH.HYDRR1.I07R.RW07R.<>.KPHX', 37000)"
+},
+{  
+"FunctionName":"release_aircraft()",
+"Description":"Cleanup aircraft data.",
+"ReturnType":"int",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraftInterface.release_aircraft()"
+},
+{  
+"FunctionName":"getAircraftIds(float minLatitude, float maxLatitude, float minLongitude, float maxLongitude, float minAltitude_ft, float maxAltitude_ft)",
+"Description":"Get IDs of all aircraft within the min/max range of latitude, longitude and/or altitude ranges.",
+"ReturnType":"String[]",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraftsIds = aircraftInterface.getAircraftId(28.5, 30.7, 72.8, 74.9, 15000.0, 20000.9)"
+},
+{  
+"FunctionName":"getAllAircraftId()",
+"Description":"Get the complete list of all aircraft IDs in the GNATS simulation.",
+"ReturnType":"String[]",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraftsIds = aircraftInterface.getAllAircraftId()"
+},
+{  
+"FunctionName":"select_aircraft(String aircraft_id)",
+"Description":"Get an aircraft object with aircraft ID.",
+"ReturnType":"Aircraft",
+"Interface":"AircraftInterface",
+"Example":" equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"synchronize_aircraft_to_server(Aircraft aircraft)",
+"Description":"Push aircraft object to the server and synchronize the data. Return value indicates the server operation response: 0 is success. 1 indicates error.",
+"ReturnType":"int",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraftInterface.synchronize_aircraft_to_server(aircraft)"
+},
+{  
+"FunctionName":"delay_departure(int seconds)",
+"Description":"Postpone the departure time of the current aircraft by certain seconds. If the aircraft has already departed, the departure time will not be changed.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.delay_departure(20)"
+},
+{  
+"FunctionName":"getAcid()",
+"Description":"Get aircraft ID. Example: ULI555",
+"ReturnType":"String",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraftId = aircraft.getAcid()"
+},
+{  
+"FunctionName":"getAltitude_ft()",
+"Description":"Get the current altitude in feet.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraftAltitude = aircraft.getAltitude_ft()"
+},
+{  
+"FunctionName":"getCruise_alt_ft()",
+"Description":"Get the cruise altitude in feet.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":"equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraftCruiseAltitude = aircraft.getCruise_alt_ft()"
+},
+{  
+"FunctionName":"getCruise_tas_knots()",
+"Description":"Get cruise speed.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraftCruiseAirspeed = aircraft.getCruise_tas_knots()"
+},
+{  
+"FunctionName":"getDeparture_time_sec()",
+"Description":"Get departure time in seconds.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightDepartureTime = aircraft.getDeparture_time_sec()"
+},
+{  
+"FunctionName":"getDestination_airport_elevation_ft()",
+"Description":"Get the elevation of the destination airport.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+destinationAirportElevation = aircraft.getDestination_airport_elevation_ft()"
+},
+{  
+"FunctionName":"getFlight_phase()",
+"Description":"Get current flight phase. Flight phase is presented as an integer in the range 1-25. Please refer to “Flight Phase Enum Values” for the definition of each phase.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPhase = aircraft.getFlight_phase()"
+},
+{  
+"FunctionName":"getFlight_plan_latitude_array()",
+"Description":"Get the latitude array of the flight plan.",
+"ReturnType":"float[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightLatitudeArray = aircraft.getFlight_plan_latitude_array()"
+},
+{  
+"FunctionName":"getFlight_plan_length()",
+"Description":"Get the number of records in the flight plan.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPlanLength = aircraft.getFlight_plan_length()"
+},
+{  
+"FunctionName":"getFlight_plan_longitude_array()",
+"Description":"Get the longitude array of the flight plan.",
+"ReturnType":"float[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightLongitudeArray = aircraft.getFlight_plan_longitude_array()"
+},
+{  
+"FunctionName":"getFlight_plan_waypoint_name_array()",
+"Description":"Get the array of waypoint names in the flight plan.",
+"ReturnType":"String[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightWaypointNameArray = aircraft.getFlight_plan_waypoint_name_array()"
+},
+{  
+"FunctionName":"getFlight_plan_alt_desc_array()",
+"Description":"Get the array of flight plan altitude constraint description. Refer to ARINC 424-18 Section 5.29 for details.",
+"ReturnType":"String[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightAltitudeDescriptionArray = aircraft.getFlight_plan_alt_desc_array()"
+},
+{  
+"FunctionName":"getFlight_plan_alt_1_array()",
+"Description":"Get the array of flight plan altitude first bound. Refer to ARINC 424-18 Section 5.30 for details.",
+"ReturnType":"double[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPlanAltitude1Array = aircraft.getFlight_plan_alt_1_array()"
+},
+{  
+"FunctionName":"getFlight_plan_alt_2_array()",
+"Description":"Get the array of flight plan altitude second bound. Refer to ARINC 424-18 Section 5.30 for details.",
+"ReturnType":"double[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPlanAltitude2Array = aircraft.getFlight_plan_alt_2_array()"
+},
+{  
+"FunctionName":"getFlight_plan_speed_limit_array()",
+"Description":"Get the array of flight plan speed limits. Refer to ARINC 424-18 Section 5.72 for details.",
+"ReturnType":"double[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPlanSpeedLimitArray = aircraft.getFlight_plan_speed_limit_array()"
+},
+{  
+"FunctionName":"getFlight_plan_speed_limit_desc_array()",
+"Description":"Get the array of flight plan speed limit constraint description. Refer to ARINC 424-18 Section 5.261 for details.",
+"ReturnType":"String[]",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightSpeedLimitDescriptionArray = aircraft.getFlight_plan_speed_limit_desc_array()"
+},
+{  
+"FunctionName":"getFpa_rad()",
+"Description":"Get the current flight path angle.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightPathAngle = aircraft.getFpa_rad()"
+},
+{  
+"FunctionName":"getCourse_rad()",
+"Description":"Get the current course.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+courseAngle = aircraft.getCourse_rad()"
+},
+{  
+"FunctionName":"getLanded_flag()",
+"Description":"Get the flag value indicating if the aircraft has landed.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightLandedFlag = aircraft.getLanded_flag()"
+},
+{  
+"FunctionName":"getLatitude_deg()",
+"Description":"Get the current latitude.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightCurrentLatitude = aircraft.getLatitude_deg()"
+},
+{  
+"FunctionName":"getLongitude_deg()",
+"Description":"Get the current longitude.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+flightCurrentLongitude= aircraft.getLongitude_deg()"
+},
+{  
+"FunctionName":"getOrigin_airport_elevation_ft()",
+"Description":"Get the elevation of the origin airport.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+originAirportElevation = aircraft.getOrigin_airport_elevation_ft()"
+},
+{  
+"FunctionName":"getRocd_fps()",
+"Description":"Get the rate of climb or descent.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+rateOfClimbOrDescent = aircraft.getRocd_fps()"
+},
+{  
+"FunctionName":"getSector_index()",
+"Description":"Get the current sector index.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+sectorIndex = aircraft.getSector_index()"
+},
+{  
+"FunctionName":"getTarget_waypoint_index()",
+"Description":"Get the array index of the target waypoint in the flight plan.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+targetWaypointIndex = aircraft.getTarget_waypoint_index()"
+},
+{  
+"FunctionName":"getTarget_waypoint_name()",
+"Description":"Get the target waypoint name.",
+"ReturnType":"String",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+targetWaypointName = aircraft.getTarget_waypoint_name()"
+},
+{  
+"FunctionName":"getTas_knots()",
+"Description":"Get the current speed.",
+"ReturnType":"float",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+currentAirspeed = aircraft.getTas_knots()"
+},
+{  
+"FunctionName":"getToc_index()",
+"Description":"Get the flight plan array index of the top-of-climb waypoint.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+topOfClimbIndex = aircraft.getToc_index()"
+},
+{  
+"FunctionName":"getTod_index()",
+"Description":"Get the flight plan array index of the top-of-descent waypoint.",
+"ReturnType":"int",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+topOfDescentIndex = aircraft.getTod_index()"
+},
+{  
+"FunctionName":"setAltitude_ft(float altitude)",
+"Description":"Set a new value of altitude.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setAltitude_ft(27500.8)"
+},
+{  
+"FunctionName":"setCruise_alt_ft(float cruise_alt)",
+"Description":"Set a new value of cruise altitude.",
+"ReturnType":"void",
+"Interface":"AircraftInterface",
+"Example":"  
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setCruise_alt_ft(35000.7)"
+},
+{  
+"FunctionName":"setCruise_tas_knots(float cruise_tas)",
+"Description":"Set a new value of cruise speed.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setCruise_tas_knots(455.5)"
+},
+{  
+"FunctionName":"setFlight_plan_latitude_deg(int index, float latitude_deg)",
+"Description":"Set the latitude of the n-th waypoint.",
+"ReturnType":"void",
+"Interface":"AircraftInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’)
+aircraft.setFlight_plan_latitude_deg(5, 34.50)"
+},
+{  
+"FunctionName":"setFlight_plan_longitude_deg(int index, float longitude_deg)",
+"Description":"Set the longitude of the n-th waypoint.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setFlight_plan_longitude_deg(5, -122.63)"
+},
+{  
+"FunctionName":"setCourse_rad(float course)",
+"Description":"Set a new value of course.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setCourse_rad(1.53)"
+},
+{  
+"FunctionName":"setLatitude_deg(float latitude)",
+"Description":"Set a new value of latitude.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setLatitude_deg(26.58)"
+},
+{  
+"FunctionName":"setLongitude_deg(float longitude)",
+"Description":"Set a new value of longitude.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setLongitude_deg(-122.36)"
+},
+{  
+"FunctionName":"setRocd_fps(float rocd)",
+"Description":"Set a new value of course.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setRocd_fps(-50.1)"
+},
+{  
+"FunctionName":"setTarget_waypoint_latitude_deg(float latitude)",
+"Description":"Set a new value for the target (Next) waypoint latitude.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setTarget_waypoint_latitude_deg(35.63)"
+},
+{  
+"FunctionName":"setTarget_waypoint_longitude_deg(float longitude)",
+"Description":"Set a new value for the target (next) waypoint longitude.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setTarget_waypoint_longitude_deg(-118.25)"
+},
+{  
+"FunctionName":"setTas_knots(float tas)",
+"Description":"Set a new value for speed.",
+"ReturnType":"void",
+"Interface":"AircraftInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+aircraftInterface = equipmentInterface.getAircraftInterface() 
+aircraft = aircraftInterface.select_aircraft(‘ULI-SFD235’) 
+aircraft.setTas_knots(400)"
+},
+{  
+"FunctionName":"setAircraftBookValue(String aircraftId, float aircraftBookValue)",
+"Description":"Set the book value of the aircraft in million US$. This is specific to the aircraft instance, and not for an aircraft type.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.setAircraftBookValue(5.6)"
+},
+{  
+"FunctionName":"getAircraftBookValue(String aircraftId)",
+"Description":"Get the book value of the aircraft in million US$. This is specific to the aircraft instance for a flight in simulation, and not for an aircraft type. To get aircraft cost based on manufacturer model, refer to getAircraftCost() function within SafetyMetricsInterface.",
+"ReturnType":"float",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.getAircraftBookValue('ULI555')"
+},
+{  
+"FunctionName":"setCargoWorth(String aircraftId, float cargoWorth)",
+"Description":"Set the value of the cargo in the aircraft, in million US$.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.setCargoWorth('ULI555', 7.2)"
+},
+{  
+"FunctionName":"getCargoWorth(String aircraftId)",
+"Description":"Get the value of the cargo in the aircraft, in million US$.",
+"ReturnType":"float",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.getCargoWorth('ULI555')"
+},
+{  
+"FunctionName":"setPassengerLoadFactor(String aircraftId, float paxLoadFactor)",
+"Description":"Set load factor for (passenger occupancy relative to the total number of seats) in an aircraft instance. paxLoadFactor ranges from 0 to 1, 0 being an empty aircraft and 1 being fully occupied.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.setPassengerLoadFactor('ULI555', 0.72)"
+},
+{  
+"FunctionName":"getPassengerLoadFactor(String aircraftId)",
+"Description":"Get load factor for passenger occupancy in an aircraft instance.",
+"ReturnType":"float",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.getPassengerLoadFactor('ULI555')"
+},
+{  
+"FunctionName":"setTouchdownPointOnRunway(String aircraftId, double latitude, double longitude)",
+"Description":"Set aircraft touch down point on runway for landing. This would override the touchdown point calculated by the simulation.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.setTouchdownPointOnRunway('SWA1897', 32.423, -123.123)"
+},
+{  
+"FunctionName":"getTouchdownPointOnRunway(String aircraftId)",
+"Description":"Get aircraft touch down point on runway for landing.",
+"ReturnType":"float",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.getTouchdownPointOnRunway('SWA1897')"
+},
+{  
+"FunctionName":"setTakeOffPointOnRunway(String aircraftId, double latitude, double longitude)",
+"Description":"Set aircraft take off point on runway for liftoff. This would override the take off point calculated by the simulation.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.setTakeOffPointOnRunway('SWA1897', 32.423, -123.123)"
+},
+{  
+"FunctionName":"getTakeOffPointOnRunway(String aircraftId)",
+"Description":"Get aircraft take off point on runway for liftoff.",
+"ReturnType":"float",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+safetyMetricsInterface.getTakeOffPointOnRunway('SWA1897')"
+},
+{  
+"FunctionName":"load_rap(String wind_dir)",
+"Description":"Load wind RAP file. RAP: NOAA Rapid Refresh wind data",
+"ReturnType":"void",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+environmentInterface.load_rap('share/tg/rap')"
+},
+{  
+"FunctionName":"release_rap()",
+"Description":"Clean up the RAP data.",
+"ReturnType":"int",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+environmentInterface.release_rap()"
+},
+{  
+"FunctionName":"getAirportInterface()",
+"Description":"Returns a reference to the AirportInterface.",
+"ReturnType":"AirportInterface",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface()"
+},
+{  
+"FunctionName":"getTerrainInterface()",
+"Description":"Returns a reference to the TerrainInterface.",
+"ReturnType":"TerrainInterface",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terrainInterface = environmentInterface.getTerrainInterface()"
+},
+{  
+"FunctionName":"getTerminalAreaInterface()",
+"Description":"Returns a reference to the TerminalAreaInterface.",
+"ReturnType":"TerminalAreaInterface",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface()"
+},
+{  
+"FunctionName":"getWeatherInterface()",
+"Description":"Returns a reference to the WeatherInterface.",
+"ReturnType":"WeatherInterface",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+weatherInterface = environmentInterface.getWeatherInterface()"
+},
+{  
+"FunctionName":"select_airport(String airport_code)",
+"Description":"Get an Airport object instance by a given airport code.",
+"ReturnType":"Airport",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KPHX”)"
+},
+{  
+"FunctionName":"getArrivalAirport(String acid)",
+"Description":"Get the arrival airport of the requested aircraft.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+arrivalAirport = airportInterface.getArrivalAirport(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getDepartureAirport(String acid)",
+"Description":"Get the departure airport for the requested aircraft.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+departureAirport = airportInterface.getDepartureAirport(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getLocation(String airport_code)",
+"Description":"Get the latitude and longitude of the requested airport. Return an array containing the latitude and longitude.",
+"ReturnType":"double[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportLocation = airportInterface.getLocation(‘KLAX’)"
+},
+{  
+"FunctionName":"getClosestAirport(double latitude, double longitude)",
+"Description":"Get the code of the airport closest to the given position.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+closestAirport = airportInterface.getClosestAirport(35.2, -118.6)"
+},
+{  
+"FunctionName":"getAirportsWithinMiles(double lat_deg, double lon_deg, double miles)",
+"Description":"Get all the airports within range of the given latitude-longitude location.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airports = airportInterface.getAirportsWithinMiles(35.2, -118.6, 22.5)"
+},
+{  
+"FunctionName":"getFullName(String airportid)",
+"Description":"Get the full name corresponding to the given airport code.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportFullName = airportInterface.getFullName(‘KJFK’)"
+},
+{  
+"FunctionName":"getAllRunways(String airport_code)",
+"Description":"Get all the runways at a given airport.
+The returned data is an array. Each element of the array consists of:
+- Runway name
+- Waypoint ID",
+"ReturnType":"Object[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportRunways = airportInterface.getAllRunways(‘PANC’)"
+},
+{  
+"FunctionName":"getAllGates(String airport_code)",
+"Description":"Get all the gates at a given airport.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportGates = airportInterface.getAllGates(‘PANC’)"
+},
+{  
+"FunctionName":"getRunwayExits(String airport_code, String runway_id)",
+"Description":"Get all the exits at a given runway ID, at a given airport code",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+runwayExits = airportInterface.getRunwayExits(‘KSFO’, ‘RW28R’)"
+},
+{  
+"FunctionName":"getLayout_node_map(String airport_code)",
+"Description":"Get the mapping of nodes and the sequence numbers of the surface traffic
+network at a given airport.
+The returned data is an array. Each array element consists of:
+- Waypoint node ID
+- Node sequence number",
+"ReturnType":"Object[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportLayoutNodeMap = airportInterface.getLayout_node_map(‘PHNL’)"
+},
+{  
+"FunctionName":"getLayout_node_data(String airport_code)",
+"Description":"Get the waypoint node data at a given airport.
+The returned data is an array. Each array element consists of:
+- Node sequence number
+- Latitude
+- Longitude",
+"ReturnType":"Object[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportLayoutNodeData = airportInterface .getLayout_node_data(‘PHNL’)"
+},
+{  
+"FunctionName":"getLayout_links(String airport_code)",
+"Description":"Get links joining the waypoint nodes representing ground layout (runways,
+taxiways, ramps, and gates) of a given airport which represents the connection
+of routes between them.
+The returned data is an array. Each array element consists of:
+- Node 1 sequence number
+- Node 2 sequence number",
+"ReturnType":"Object[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportLayoutLinks = airportInterface.getLayout_links(‘PHNL’)"
+},
+{  
+"FunctionName":"getSurface_taxi_plan(String acid, String airport_code)",
+"Description":"Get the surface taxi plan of a given aircraft ID at an airport code. Returns an array of all the waypoint IDs in sequential order.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+surfaceTaxiPlan = airportInterface.getSurface_taxi_plan(‘ULI-SFD235’, ‘KSFO’)"
+},
+{  
+"FunctionName":"generate_surface_taxi_plan(String acid, String airport_code, String startNode_waypoint_id, String endNode_waypoint_id, String runway_name)",
+"Description":"Generate taxi plan and load it in GNATS.
+The function arguments are:
+acid: Aircraft ID
+airport_code: Airport code
+startNode_waypoint_id: Starting waypoint ID
+endNode_waypoint_id: Ending waypoint ID
+runway_name: Name of runway
+
+Important Note:
+This function does need the users to specify the V2 for departing aircraft or the
+touchdown point for arriving aircraft.",
+"ReturnType":"int",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+generatedTaxiPlan = airportInterface.generate_surface_taxi_plan(‘ULI-SFD235’, ‘KSFO’,‘Gate_01_001’, ‘Rwy_02_001’, ‘RW06L’)"
+},
+{  
+"FunctionName":"setUser_defined_surface_taxi_plan(String acid, String airport_code, String[] user_defined_waypoint_ids)",
+"Description":"Set user-defined surface taxi plan and load it into GNATS.",
+"ReturnType":"int",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+generatedTaxiPlan = airportInterface.setUser_defined_surface_taxi_plan(‘ULI-SFD235’, ‘KSFO’,[‘Gate_01_001’, ‘Ramp_01_001’, ‘Txy_01_001’, ‘Txy_01_002’, ‘Rwy_02_001’])"
+},
+{  
+"FunctionName":"get_taxi_route_from_A_To_B(String acid, String airport_code, String startNode_waypoint_id, String endNode_waypoint_id)",
+"Description":"Generate a taxi route from waypoint A to the waypoint B. Note that this function only returns an array of waypoint IDs.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+taxiPlanAtoB = airportInterface.get_taxi_route_from_A_To_B(‘ULI-SFD235’, ‘KSFO’, ‘Gate_01_001’, ‘Rwy_02_001’)"
+},
+{  
+"FunctionName":"getDepartureRunway(String acid)",
+"Description":"Get the departure runway of the given aircraft. If a departure taxi plan does not exist for the aircraft, no result will be returned.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+departureRunway = airportInterface.getDepartureRunway(‘ULI-SFD235’)."
+},
+{  
+"FunctionName":"getArrivalRunway(String acid)",
+"Description":"Get the arrival runway of the given aircraft. If an arrival taxi plan does not exist, no result will be returned.",
+"ReturnType":"String",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+arrivalRunway = airportInterface.getArrivalRunway(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getTaxi_tas_knots(String acid)",
+"Description":"Get the surface taxi speed of the given aircraft.",
+"ReturnType":"double",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+taxiSpeed = airportInterface.getTaxi_tas_knots(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"setTaxi_tas_knots(String acid, double tas_knots)",
+"Description":"Set the surface taxi speed of the given aircraft.",
+"ReturnType":"void",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportInterface.setTaxi_tas_knots(‘ULI-SFD235’, 25.0)"
+},
+{  
+"FunctionName":"getAllAirportCodesInGNATS()",
+"Description":"Get ICAO codes for all 57 airports modeled in GNATS.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportList = airportInterface.getAllAirportCodesInGNATS()"
+},
+{  
+"FunctionName":"getRunwayEnds(String airportId, String runwayId)",
+"Description":"Get runway end node waypoints for given airport.",
+"ReturnType":"String[]",
+"Interface":"AirportInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airportList = airportInterface.getrunwayEnds(“KSFO”, “RW28R”)"
+},
+{  
+"FunctionName":"getCode()",
+"Description":"Get the airport code.",
+"ReturnType":"String",
+"Interface":"AirportInstance",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KORD”) 
+airportCode = airport.getCode()"
+},
+{  
+"FunctionName":"getElevation()",
+"Description":"Get the elevation of the airport in feet.",
+"ReturnType":"float",
+"Interface":"AirportInstance",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KORD”) 
+airportElevation = airport.getElevation()"
+},
+{  
+"FunctionName":"getLatitude()",
+"Description":"Get the latitude of the airport.",
+"ReturnType":"float",
+"Interface":"AirportInstance",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KORD”) 
+airportLatitude = airport.getLatitude()"
+},
+{  
+"FunctionName":"getLongitude()",
+"Description":"Get the longitude of the airport.",
+"ReturnType":"float",
+"Interface":"AirportInstance",
+"Example":" 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KORD”) 
+airportLongitude = airport.getLongitude()"
+},
+{  
+"FunctionName":"getName()",
+"Description":"Get the full name of the airport.",
+"ReturnType":"String",
+"Interface":"AirportInstance",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+airportInterface = environmentInterface.getAirportInterface() 
+airport = airportInterface.select_airport(“KORD”) 
+airportName = airport.getName()"
+},
+{  
+"FunctionName":"getAllApproaches(String airport_code)",
+"Description":"Get all the Approach Procedures available at the given airport.",
+"ReturnType":"String[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+approaches = terminalAreaInterface.getAllApproaches(‘KORD’)"
+},
+{  
+"FunctionName":"getAllSids(String airport_code)",
+"Description":"Get all the Standard Instrument Departure (SID) Procedures at the given airport.",
+"ReturnType":"String[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+sids = terminalAreaInterface.getAllSids(‘KORD’)"
+},
+{  
+"FunctionName":"getAllStars(String airport_code)",
+"Description":"Get all the Standard Terminal Arrival (STAR) Procedures at the given airport.",
+"ReturnType":"String[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+stars = terminalAreaInterface.getAllStars(‘KORD’)"
+},
+{  
+"FunctionName":"getCurrentApproach(String acid)",
+"Description":"Get the current Approach Procedure at the given airport for the given flight.",
+"ReturnType":"String",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+currentApproach = terminalAreaInterface.getCurrentApproach(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getCurrentSid(String acid)",
+"Description":"Get the current SID Procedure at the given airport for the given flight.",
+"ReturnType":"String",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+currentSid = terminalAreaInterface.getCurrentSid(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getCurrentStar(String acid)",
+"Description":"Get the current STAR procedure at the given airport for the given aircraft flight.",
+"ReturnType":"String",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+currentStar = terminalAreaInterface.getCurrentStar(‘ULI-SFD235’)"
+},
+{  
+"FunctionName":"getProcedure_leg_names(String proc_type, String proc_name, String airport_code)",
+"Description":"Get the leg names at the given airport code, procedure type and procedure name.",
+"ReturnType":"String[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+sidLegNames = terminalAreaInterface.getProcedure_leg_names('SID', 'SSTIK3', 'KSFO')"
+},
+{  
+"FunctionName":"getWaypoints_in_procedure_leg(String proc_type, String proc_name, String airport_code, String proc_leg_name)",
+"Description":"Get the waypoints at the given airport code, procedure type, procedure name and leg name.",
+"ReturnType":"String[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+waypointNames = terminalAreaInterface.getWaypoints_in_procedure_leg(“SID”, “SSTIK3”, “KSFO”,“PORTE”)"
+},
+{  
+"FunctionName":"getClosestWaypoint(float[][] waypointOptions, float[] targetWaypoint)",
+"Description":"Get closest waypoint index to given reference.",
+"ReturnType":"int",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+closestWaypointIndex = terminalAreaInterface.getClosestWaypoint([[37.61,-122.3],[42.9,-75.61]], [43.9,-77.6])"
+},
+{  
+"FunctionName":"calculateWaypointDistance(float latx, float lonx, float laty, float lony)",
+"Description":"Get distance between two waypoints in feet.",
+"ReturnType":"float",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+waypointDistance = terminalAreaInterface.calculateWaypointDistance(37.61,-122.3,42.9,-75.61)"
+},
+{  
+"FunctionName":"getWaypoint_Latitude_Longitude(String waypoint_name)",
+"Description":"Get the latitude and longitude (in degrees) of a given waypoint.",
+"ReturnType":"double[]",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+waypointLocation = terminalAreaInterface.getWaypoint_Latitude_Longitude(‘BOILE’)"
+},
+{  
+"FunctionName":"getProcedure_alt_1(String proc_type, String proc_name, String airport_code, String proc_leg_name, String proc_wp_name)",
+"Description":"Get the alt 1 value at the given airport code, procedure type, procedure name, leg name and waypoint name. Refer to ARINC 424-18 Section 5.30 for details.",
+"ReturnType":"double",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+procedureAlt1 = terminalAreaInterface.getProcedure_alt_1(“SID”, “SSTIK3”, “KSFO”, “PORTE”,“KAYEX”)"
+},
+{  
+"FunctionName":"getProcedure_alt_2(String proc_type, String proc_name, String airport_code, String proc_leg_name, String proc_wp_name)",
+"Description":"Get the alt 2 value at the given airport code, procedure type, procedure name, leg name and waypoint name. Refer to ARINC 424-18 Section 5.30 for details.",
+"ReturnType":"double",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+procedureAlt2 = terminalAreaInterface.getProcedure_alt_2(“SID”, “SSTIK3”, “KSFO”, “PORTE”, “KAYEX”)"
+},
+{  
+"FunctionName":"getProcedure_speed_limit(String proc_type, String proc_name, String airport_code, String proc_leg_name, String proc_wp_name)",
+"Description":"Get the speed limit at the given airport code, procedure type, procedure name,
+leg name and waypoint name. Refer to ARINC 424-18 Section 5.72 for details.",
+"ReturnType":"double",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+procedureSpeedLimit = terminalAreaInterface.getProcedure_speed_limit(“SID”, “SSTIK3”, “KSFO”, “PORTE”, “KAYEX”)"
+},
+{  
+"FunctionName":"getProcedure_alt_desc(String proc_type, String proc_name, String airport_code, String proc_leg_name, String proc_wp_name)",
+"Description":"Get the altitude description at the given airport code, procedure type, procedure name, leg name and waypoint name. Refer to ARINC 424-18 Section 5.29 for details.",
+"ReturnType":"String",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+procedureAltitudeDesc = terminalAreaInterface.getProcedure_alt_desc(“SID”, “SSTIK3”, “KSFO”,“PORTE”, “KAYEX”)"
+},
+{  
+"FunctionName":"getProcedure_speed_limit_desc(String proc_type, String proc_name, String airport_code, String proc_leg_name, String proc_wp_name)",
+"Description":"Get the speed limit description at the given airport code, procedure type, procedure name, leg name and waypoint name. Refer to ARINC 424-18 Section 5.261 for details.",
+"ReturnType":"String",
+"Interface":"TerminalAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terminalAreaInterface = environmentInterface.getTerminalAreaInterface() 
+procedureSpeedLimitDesc = terminalAreaInterface.getProcedure_speed_limit_desc (“SID”, “SSTIK3”,“KSFO”, “PORTE”, “KAYEX”)"
+},
+{  
+"FunctionName":"getElevation(double latitude, double longitude)",
+"Description":"Returns the terrain elevation (in feet above sea level) at the specified latitude and longitude",
+"ReturnType":"double",
+"Interface":"TerrainAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terrainAreaInterface = environmentInterface.getTerrainInterface() 
+elevation = terrainAreaInterface.getElevation(34.5, -122.23)"
+},
+{  
+"FunctionName":"getElevationAreaStats(double minLat, double maxLat, double minLon, double maxLon)",
+"Description":"
+Returns an array of statistical information calculated from using terrain elevation data for the specified region.
+{ min, max, mean, variance, stddev } (in feet)
+minLatDeg:   The lower latitude of the rectangular bounding region (degrees)
+maxLatDeg:   The upper latitude of the rectangular bounding region (degrees)
+minLonDeg:   The lower longitude of the rectangular bounding region (degrees)
+maxLonDeg:   The upper longitude of the rectangular bounding region (degrees)
+Returns { min, max, mean, variance, stddev } (in feet)
+",
+"ReturnType":"double[]",
+"Interface":"TerrainAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terrainAreaInterface = environmentInterface.getTerrainInterface() 
+elevationAreaStats = terrainAreaInterface.getElevationAreaStats(34.5, -122.23, 36.8, -121.9)"
+},
+{  
+"FunctionName":"getElevationMapBounds()",
+"Description":"Returns the minimum and maximum latitude and longitude bounds (Radians) of the data used to interpolate elevation data.",
+"ReturnType":"double[]",
+"Interface":"TerrainAreaInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+terrainAreaInterface = environmentInterface.getTerrainInterface() 
+elevationMapBoundsRad = terrainAreaInterface.getElevationMapBounds()"
+},
+{  
+"FunctionName":"getControllerInterface()",
+"Description":"Returns a reference to the ControllerInterface.",
+"ReturnType":"ControllerInterface",
+"Interface":"EntityInterface",
+"Example":" 
+entityInterface = gnatsClient.getEntityInterface() 
+controllerInterface = entityInterface.getControllerInterface()"
+},
+{  
+"FunctionName":"getPilotInterface()",
+"Description":"Returns a reference to the PilotInterface.",
+"ReturnType":"PilotInterface",
+"Interface":"EntityInterface",
+"Example":" 
+entityInterface = gnatsClient.getEntityInterface() 
+pilotInterface = entityInterface.getPilotInterface()"
+},
+{  
+"FunctionName":"getGroundOperatorInterface()",
+"Description":"Returns a reference to the GroundOperatorInterface.",
+"ReturnType":"GroundOperatorInterface",
+"Interface":"EntityInterface",
+"Example":" 
+entityInterface = gnatsClient.getEntityInterface() 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface()"
+},
+{  
+"FunctionName":"DownloadWeatherFiles()",
+"Description":"Download aviation weather files. Metar, Sigmet, Pirep files will be downloaded to GNATS_Server/share/tg/weather directory from NOAA.",
+"ReturnType":"int",
+"Interface":"WeatherInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+weatherInterface = environmentInterface.getWeatherInterface() 
+weatherInterface.DownloadWeatherFiles()"
+},
+{  
+"FunctionName":"getWind(float timestamp_sec, float latitude_deg, float longitude_deg, float altitude_ft)",
+"Description":"Get wind data.
+Returned data is an array of float value.  The first element is wind_north vector value.  The second element is wind_east vector value.",
+"ReturnType":"float[]",
+"Interface":"WeatherInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+weatherInterface = environmentInterface.getWeatherInterface() 
+weatherInterface.getWind(50,
+		37.21,
+		-122.2,
+		33000)"
+},
+{  
+"FunctionName":"getWeatherPolygons()",
+"Description":"Get weather polygons.
+Returned data is an array of weather polygons.
+
+Notice. This function can only be executed during pause status of simulation.",
+"ReturnType":"WeatherPolygon[]",
+"Interface":"WeatherInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+weatherInterface = environmentInterface.getWeatherInterface() 
+polygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)"
+},
+{  
+"FunctionName":"getFlightsInRange(String aircraftID)",
+"Description":"This function takes-in the reference aircraft callsign as the input. It then forms a bounding box around the aircraft within which a potential safety hazard may exist. The aircraft callsigns are filtered to find the ones that lie within this box, +/- 2000 ft in altitude of the reference aircraft. These flights are then analyzed for their position and velocity relative to the reference aircraft, which are then returned to the user. The returned object is in the following format:
+[[aircraftCallsign, relativeVelocity, altitudeDifference,
+bearingAngle, distance], [.....], .....]",
+"ReturnType":"Object",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+flightsInRange = safetyMetricsInterface.getFlightsInRange('ULI-SFD235')"
+},
+{  
+"FunctionName":"getDistanceToRunwayThreshold(String aircraftId)",
+"Description":"For an aircraft in its takeoff or landing phases, this function calculates the distance to the threshold of the runway from the present position.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+distance = safetyMetricsInterface.getDistanceToRunwayThreshold ('ULI-SFD235')"
+},
+{  
+"FunctionName":"getDistanceToRunwayEnd(String aircraftId)",
+"Description":"For an aircraft in its takeoff or landing phases, this function calculates the distance to the end of the runway from the present position.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+distance = safetyMetricsInterface. getDistanceToRunwayEnd ('ULI-SFD235')"
+},
+{  
+"FunctionName":"getVelocityAlignmentWithRunway(String aircraftId, String procedure)",
+"Description":"For an aircraft in its takeoff phase, this function calculates the distance to the end of the runway.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+alignmentAngle = safetyMetricsInterface. GetVelocityAlignmentWithRunway ('ULI-SFD235', ‘DEPARTURE’)"
+},
+{  
+"FunctionName":"getPassengerCount(String aircraftType)",
+"Description":"This function returns the number of passengers occupying a particular aircraft, assuming 100% load factor. This data is available for all the aircraft types in the BADA database.",
+"ReturnType":"int",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+passengerCount = safetyMetricsInterface. getPassengerCount ('A306')"
+},
+{  
+"FunctionName":"getAircraftCost(String aircraftType)",
+"Description":"This function returns the cost (in millions of US Dollars) for a new aircraft of the aircraft type. This data is available for all the aircraft types in the BADA database.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+flightsInRange = safetyMetricsInterface.getAircraftCost ('A306')"
+},
+{  
+"FunctionName":"getFlightsInWakeVortexRange(String refAircraftId, float envelopeStartWidth, float envelopeStartThickness, float envelopeEndWidth, float envelopeEndThickness, float envelopeRange, float envelopeAltitudeDrop)",
+"Description":"This function models a wake vortex hazard envelope to determine
+wake encounter hazards for trailing flights. The wake generating
+aircraft is assumed to be located in the center of a rectangular,
+divergent, descending tube with two wingspan initial breadth and
+one wingspan thickness. The function takes in the following
+parameters:
+refAircraftId: The callsign of aircraft which is producing the wake
+vortex.
+envelopeStartWidth: The width (in feet) of the envelope at start of
+wake. (typically twice the aircraft wingspan)
+envelopeStartThickness: The Thickness (in feet) of the envelope at
+start of the wake. (typically one wingspan of the aircraft)
+envelopeEndWidth: The width (in feet) of the envelope at end of
+the wake vortex hazard.
+envelopeEndThickness: The thickness (in feet) of the envelope at
+end of the wake vortex hazard.
+envelopeRange: Influence range(in miles) of the vortex envelope. (4
+to 15 nm, depending on the weight class of the aircraft: Super,
+Heavy, Large)
+envelopeAltitudeDrop: Drop (in feet) of the envelope end relative
+to the wake generating aircraft.
+Return Object type for this function is: [[aircraftCallsign,
+relativeVelocity, altitudeDifference, CourseAngle, distance], [.....],
+.....]
+An illustration on the use of this function is available at
+GNATS_Client/sample/WakeVortexEnvelope.png",
+"ReturnType":"Object",
+"Interface":"SafetyMetricsInterface",
+"Example":" 
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface() 
+flightsInRange = safetyMetricsInterface.safetyMetricsInterface.getFlightsInWakeVortexRange('SWA1897', 200, 150, 400, 350, 2, 50)"
+},
+{  
+"FunctionName":"setDelayPeriod(String acid, AircraftClearance aircraft_clearance, float seconds)",
+"Description":"Set delay period in seconds, for providing clearance to an aircraft.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+setDelayPeriod = controllerInterface.setDelayPeriod(‘ULI-SFD235’,AIRCRAFT_CLEARANCE_TAXI_DEPARTING, 10.6)"
+},
+{  
+"FunctionName":"setActionRepeat(String aircraftID, String repeatParameter)",
+"Description":"The controller makes the pilot repeat an action, based on the repeatParameter value.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setActionRepeat('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"skipFlightPhase(String aircraftID, String flightPhase)",
+"Description":"The controller skips issuing clearance to an aircraft to the next required flight
+phase. The flightPhase can have any of the Flight Phase Enum Values. Eg.
+FLIGHT_PHASE_CLIMB_TO_CRUISE_ALTITUDE",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.skipFlightPhase('ULI-SFD235','FLIGHT_PHASE_CLIMB_TO_CRUISE_ALTITUDE')"
+},
+{  
+"FunctionName":"setWrongAction(String aircraftID, String originalChangeParameter, String wrongChangeParameter)",
+"Description":"Instead of clearing the aircraft to the value of one parameter, the controller
+erroneously clears the aircraft to another value. For example, the controller can
+assign the magnitude of airspeed (170 kts) as course angle (170 degrees) and
+viceversa.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setWrongAction('ULI-SFD235', 'COURSE', 'AIRSPEED')"
+},
+{  
+"FunctionName":"setActionReversal(String aircraftID, String changeParameter)",
+"Description":"Controller issues clearance to perform reverse of the intended action, by reversing the value of the changeParameter.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setActionReversal('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"setPartialAction(String aircraftID, String changeParameter, float originalTarget, float percentage)",
+"Description":"Clears the aircraft to execute only a part of a required action, by providing the original target value of the parameter, and a percentage of its value to be executed.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setPartialAction('ULI-SFD235', 'VERTICAL_SPEED', 200, 25)"
+},
+{  
+"FunctionName":"skipChangeAction(String aircraftID, String skipParameter)",
+"Description":"Omits issuing the clearance by the controller, resulting in the pilot continuing to maintain current value for the skipParameter.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.skipChangeAction('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"setActionLag(String aircraftID, String lagParameter, float lagTimeConstant, float percentageError, float parameterTarget)",
+"Description":"Controller issues lagged clearances lagging the aircraft action. Following are the parameters:
+The lagParameter (Paremeter to be lagged) can have following values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE
+lagTimeConstant: To be specified in seconds. 10 seconds, for instance.
+percentageError: Error percentage for the lag. For example, if 95% of the action
+is to be executed, percentage error would be 0.05.
+parameterTarget: Original parameter value to be reached.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setActionLag('ULI-SFD235', 'COURSE', 10, 0.05, 30)"
+},
+{  
+"FunctionName":"setControllerAbsence(String aircraftID, int timeSteps)",
+"Description":"Controller advisories can be absent for a given time period, requiring the aircraft to execute default plans while waiting for the controller to provide updates. Parameter timeSteps denotes number of steps that aircraft would be flying without controller intervention.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setControllerAbsence ('ULI-SFD235', 5)"
+},
+{  
+"FunctionName":"releaseAircraftHold(String aircraftID, String approachProcedure, String targetWaypoint)",
+"Description":"The Controller releases the aircraft from the holding pattern and inserts it into
+the arrival stream. The controller may clear the aircraft to an approach
+procedure that may be different from the original flight plan, and a waypoint in
+that approach. This is the waypoint that the aircraft would intercept to begin
+approach.
+For releasing hold pattern in phases other than approach, such as en-route or
+departure, the approachProcedure parameter needs to be ‘’ (Empty String). The
+aircraft would get out of the holding pattern and head to the targetWaypoint.",
+"ReturnType":"Int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.releaseAircraftHold('ULI-SFD235', 'I07L', 'FFIXA')"
+},
+{  
+"FunctionName":"enableConflictDetectionAndResolution(boolean flag)",
+"Description":"Enable built-in conflict detection and resolution capability in GNATS if
+boolean_flag = TRUE.
+Disable GNATS built-in conflict detection and resolution capability if
+boolean_flag = FALSE.
+Log file is generated in GNATS_Server/log directory.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.enableConflictDetectionAndResolution(True)"
+},
+{  
+"FunctionName":"setCDR_initiation_distance_surface(float distance)",
+"Description":"Set the initiation distance in feet, for Conflict Detection and Resolution of the surface traffic.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_initiation_distance_surface(50000.0)"
+},
+{  
+"FunctionName":"setCDR_initiation_distance_terminal(float distance)",
+"Description":"Set the initiation distance in feet for Conflict Detection and Resolution for aircraft flying in the terminal area.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_initiation_distance_terminal(50000.0)"
+},
+{  
+"FunctionName":"setCDR_initiation_distance_enroute(float distance)",
+"Description":"Set the initiation distance in feet, for Conflict Detection and Resolution of en-route air traffic.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_initiation_distance_enroute(50000.0)"
+},
+{  
+"FunctionName":"setCDR_separation_distance_surface(float distance)",
+"Description":"Set the required separation distance in feet for Conflict Detection and Resolution on the surface.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_separation_distance_surface(50000.0)"
+},
+{  
+"FunctionName":"setCDR_separation_distance_terminal(float distance)",
+"Description":"Set the required separation distance in feet for Conflict Detection and Resolution in the terminal area.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_separation_distance_terminal(50000.0)"
+},
+{  
+"FunctionName":"setCDR_separation_distance_enroute(float distance)",
+"Description":"Set the required separation distance in feet for Conflict Detection and Resolution in the en-route airspace.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setCDR_separation_distance_enroute(50000.0)"
+},
+{  
+"FunctionName":"enableStrategicWeatherAvoidance()",
+"Description":"Enable/disable the strategic weather avoidance capability during simulation. If
+enabled, the GNATS engine checks if any of the flight plans traverse through the
+adverse weather zone, and creates alternate routes to avoid it. However, if an
+alternative route is not possible, the aircraft will be held at its current location.
+The strategic weather avoidance logic is executed on an hourly basis.
+If enabled, GNATS simulation will experience significant rise in system resource
+usage. The simulation will also require higher amounts of execution time.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.enableStrategicWeatherAvoidance()"
+},
+{  
+"FunctionName":"setWeather_polygonFile(String pathFilename)",
+"Description":"Manually set the severe weather polygon file used in strategic weather
+avoidance. If this function is not used during simulation, GNATS engine will
+choose the latest file. If pathFilename is an empty string “”, GNATS engine will
+choose the latest file.
+If pathFilename is “NONE”, polygon file will be disabled.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setWeather_polygonFile(“share/rg/polygons/xxxx.dat”)"
+},
+{  
+"FunctionName":"setWeather_sigmetFile(String pathFilename)",
+"Description":"Manually set sigmet file for strategic weather avoidance.
+If this function is not used during simulation, GNATS engine will choose the
+latest available file.
+If pathFilename is an empty string “”, GNATS engine will choose the latest file.
+If pathFilename is “NONE”, sigmet file will be disabled.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.setWeather_sigmetFile(“share/tg/weather/xxxx.sigmet”)"
+},
+{  
+"FunctionName":"setTacticalWeatherAvoidance(String waypoint_name, float duration_sec)",
+"Description":"Set waypoint name and duration seconds for weather avoidance. These
+waypoints are considered to be influenced by the weather so they will be
+avoided. For setting multiple weather waypoints to avoid, call this function in
+each waypoint name.",
+"ReturnType":"int",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+flag = controllerInterface.setTacticalWeatherAvoidance(“ABCDE”, 100)"
+},
+{  
+"FunctionName":"enableMergingAndSpacingAtMeterFix(String airportId, String meterFix, String trailAttribute, float timeInTrail/distanceInTrail)",
+"Description":"Enable merging and spacing at a meter fix waypoint on the arrival stream of
+aircraft. This helps to space out flights for safety reasons both in air and on
+ground.
+The function takes in the following parameters:
+1. airportId: The ICAO code for the airport.
+2. meterFix: The meter fix point where the spacing needs to be enabled.
+3. trailAttribute: String, with permitted values being “TIME” or “DISTANCE”.
+This defines whether the float input for the last parameter is distance or time for
+aircraft spacing.
+4. timeInTrail/distanceInTrail: The minimum separation distance or time
+between aircraft. This input should be consistent with the selection for
+trailAttribute parameter. timeInTrails is to be supplied in minutes, and
+distanceInTrail is to be supplied in miles.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.enableMergingAndSpacingAtMeterFix(“KPHX”, “GEELA”, “DISTANCE”, 4.5)"
+},
+{  
+"FunctionName":"disableMergingAndSpacingAtMeterFix(String airportId, String meterFix)",
+"Description":"Disable merging and spacing at a meter fix waypoint.
+The function takes in the following parameters:
+1. airportId: The ICAO code for the airport.
+2. meterFix: The meter fix point where the spacing needs to be enabled.",
+"ReturnType":"void",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+controllerInterface.disableMergingAndSpacingAtMeterFix('KPHX', 'GEELA')"
+},
+{  
+"FunctionName":"getCDR_status()",
+"Description":"
+Get current status of CD&R conflicting events 
+
+Result data: An array of CD&R status.
+Each array element is formated in the form of an array.  The content are:
+aircraft ID of the held aircraft,
+aircraft ID of the conflicting aircraft,
+seconds of holding of the held aircraft
+Format type: [[String, String, float]]
+Example: [['AC1', 'AC_conflicting_with_AC1', heldSeconds_AC1], ['AC2', 'AC_conflicting_with_AC2', heldSeconds_AC2]]
+",
+"ReturnType":"Object[][]",
+"Interface":"ControllerInterface",
+"Example":" 
+controllerInterface = entityInterface.getControllerInterface() 
+cdrStatus = controllerInterface.getCDR_status()"
+},
+{  
+"FunctionName":"setActionRepeat(String aircraftID, String repeatParameter)",
+"Description":"Repeat pilot action, based on the repeatParameter value.",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setActionRepeat('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"skipFlightPhase(String aircraftID, String flightPhase)",
+"Description":"Ignore the required flight phase transition,. The flightPhase parameter can have any of the Flight Phase Enum Values. Eg. FLIGHT_PHASE_CLIMB_TO_CRUISE_ALTITUDE",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.skipFlightPhase('ULI-SFD235','FLIGHT_PHASE_CLIMB_TO_CRUISE_ALTITUDE')"
+},
+{  
+"FunctionName":"setWrongAction(String aircraftID, String originalChangeParameter, String wrongChangeParameter)",
+"Description":"Erroneously set the value of a parameter to another. For example, the pilot can set
+magnitude of the airspeed (170 kts) as course angle (170 degrees). The following
+pairs of parameters can be mutually interchanged:
+1. AIRSPEED – COURSE
+2. FLIGHT_LEVEL – AIRSPEED
+3. COURSE – FLIGHT_LEVEL",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setWrongAction('ULI-SFD235', 'COURSE', 'AIRSPEED');"
+},
+{  
+"FunctionName":"setActionReversal(String aircraftID, String changeParameter)",
+"Description":"Reverse a pilot action, by reversing the value of changeParameter.
+changeParameter can have following values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setActionReversal('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"setPartialAction(String aircraftID, String changeParameter, float originalTarget, float percentage)",
+"Description":"Execute only a part of an action, by providing the original target value of the
+parameter, and percentage of it to be performed by pilot, for the changeParameter.
+The changeParameter can have following values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setPartialAction('PLEASE_ENTER_AIRCRAFT_CALLSIGN_HERE', 'VERTICAL_SPEED', 200, 25);"
+},
+{  
+"FunctionName":"skipChangeAction(String aircraftID, String skipParameter)",
+"Description":"Omit a parameter change by continuing to maintain the current value for the
+skipParameter.
+The skipParameter can have following values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.skipChangeAction('ULI-SFD235', 'COURSE')"
+},
+{  
+"FunctionName":"setActionLag(String aircraftID, String lagParameter, float lagTimeConstant, float percentageError, float parameterTarget)",
+"Description":"Lag in pilot action, by specifying a certain percent of the execution to be completed
+within a given time period. Following are the parameters:
+The lagParameter can have following values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE
+lagTimeConstant: To be specified in seconds. 10 seconds, as an example.
+percentageError: Error percentage for the lag. For example, if 95% of the action is
+to be executed in the lag time constant, percentage error would be 0.05.
+parameterTarget: Original parameter value to be reached.",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setActionLag('ULI-SFD235', 'COURSE', 10, 0.05, 30)"
+},
+{  
+"FunctionName":"setFlightPlanReadError(String aircraftID, String errorParameter, float correctValue)",
+"Description":"If the simulation has not started, the flight plan read from the TRX file can be
+changed using this function. This constitutes an error in entering the flight plan into
+the flight management system.
+Following are the parameters:
+errorParameter: Parameter with erroneous data. It can have any of the following
+values:
+1. AIRSPEED
+2. VERTICAL_SPEED
+3. COURSE
+correctValue: This is the data according to the flight that should have been read.",
+"ReturnType":"int",
+"Interface":"PilotInterface",
+"Example":" 
+pilotInterface = entityInterface.getPilotInterface() 
+pilotInterface.setFlightPlanReadError('ULI-SFD235', 'VERTICAL_SPEED', 398.0)"
+},
+{  
+"FunctionName":"getLineOfSight(double observerLat, double observerLon, double observerAlt, double targetLat, double targetLon, double targetAlt)",
+"Description":"
+Computes the line of sight between source and target, returns range, azimuth, and elevation along with potential masking due to the terrain or earth’s curvature.
+observerLat: Latitude at the observer's location, degrees.
+observerLon: Longitude at the observer's location, degrees.
+observerAlt: Observer's Altitude, feet.
+targetLat: Latitude at the target's location, degrees.
+targetLon: Longitude at the target's position, degrees.
+targetAlt: Altitude of target, feet.
+Array as (Range (ft), Azimuth (degree), Elevation(degree), Masking (boolean)) of the target relative to the observer. 
+The Masking boolean can assume values:    0: No Masking, 1: Terrain Masking, 2: Masking due to the curvature of Earth.
+",
+"ReturnType":"double[]",
+"Interface":"CNSInterface",
+"Example":"
+cnsInterface = equipmentInterface.getCNSInterface()
+cnsInterface.getLineOfSight(33.440903, -111.992862, 1135, 33.274183, -112.147879, 1500)"
+},
+{  
+"FunctionName":"setNavigationLocationError(String aircraftId, String parameter, double bias, double drift, double scaleFactor, double noiseVariance, int scope)",
+"Description":"
+Sets Latitude/Longitude navigation errors for aircraft Navigation System.
+
+parameter: String containing LATITUDE or LONGITUDE.
+bias: Bias to be applied to original value.
+drift: Drift to be applied to original value multiplied by the flight time. 
+scaleFactor: scale factor error that would lead to erroneous instrument values.
+noiseVariance: Variance of noise to be applied, assuming zero mean Gaussian distribution.
+scope: 0 for errors to reflect on flight deck systems only, 1 to include errors in the ADS-B transmission of the aircraft states.",
+"ReturnType":"int",
+"Interface":"CNSInterface",
+"Example":"
+cnsInterface = equipmentInterface.getCNSInterface()
+cnsInterface.setNavigationLocationError('SWA1897', 'LATITUDE', 0.00005, 0.00000001, 0.9, 0.2, 1)
+cnsInterface.setNavigationLocationError('SWA1897', 'LONGITUDE', 0.00005, 0.00000001, 0.9, 0.2, 1)"
+},
+{  
+"FunctionName":"setNavigationAltitudeError(String aircraftId, double bias, double noiseVariance, int scope)",
+"Description":"
+Sets altitude navigation errors for aircraft CNS.
+
+bias: Bias to be applied to original value.
+noiseVariance: Variance of noise to be applied, assuming zero mean Gaussian distribution.
+scope: 0 for errors to reflect on flight deck systems only, 1 to include errors in the ADS-B transmission of the aircraft altitude.",
+"ReturnType":"int",
+"Interface":"CNSInterface",
+"Example":"
+cnsInterface = equipmentInterface.getCNSInterface()
+cnsInterface.setNavigationAltitudeError('SWA1897', .00005, 0.2, 0)"
+},
+{  
+"FunctionName":"setRadarError(String airportId, String parameter, double originalValue, double bias, double noiseVariance, int scope)",
+"Description":"
+Sets range, elevation, or azimuth error to ground radar at an airport.
+
+airportId ICAO code of airport
+parameter String containing RANGE, ELEVATION, or AZIMUTH
+originalValue The initial true value of the parameter
+bias Bias to be applied to original value.
+noiseVariance: Variance of noise to be applied, assuming zero mean Gaussian distribution.
+scope: 0 for errors to reflect on flight deck systems only, 1 to include errors in the ADS-B transmission of the aircraft.",
+"ReturnType":"int",
+"Interface":"CNSInterface",
+"Example":"
+cnsInterface = equipmentInterface.getCNSInterface()
+cnsInterface.setRadarError('KSFO', 'RANGE', 25, 0.0000005, 0.2, 1)
+cnsInterface.setRadarError('KSFO', 'AZIMUTH', 30, 0.0000005, 0.2, 1)
+cnsInterface.setRadarError('KSFO', 'ELEVATION', 2500, 0.0000005, 0.2, 1)"
+},
+{  
+"FunctionName":"getL1Distance(String airportId, String aircraftId1, String aircraftId2)",
+"Description":"Get L1 distance between two aircraft during surface movements if there is a point of potential contact between them in their taxi plans. If there is no possibility of aircraft contact, L1 distance is not defined and the function would return -1.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":"
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+print safetyMetricsInterface.getL1Distance('KSFO', 'SWA1897', 'SWA1897')"
+},
+{  
+"FunctionName":"getDistanceToPavementEnd(String airportId, String aircraftId)",
+"Description":"Get distance between aircraft current position and the edge of the pavement in the present direction of travel. This can be used to check if an aircraft might potentially run off of the pavement during taxi, take-off, or ramp operations.",
+"ReturnType":"double",
+"Interface":"SafetyMetricsInterface",
+"Example":"
+safetyMetricsInterface = gnatsClient.getSafetyMetricsInterface()
+print safetyMetricsInterface.getDistanceToPavementEnd('KSFO', 'SWA1897')"
+},
+{  
+"FunctionName":"getBADA_cruiseTas(String ac_type, double altitude_ft)",
+"Description":"Get cruise speed.",
+"ReturnType":"double",
+"Interface":"BADADataInterface",
+"Example":" 
+badaDataInterface = equipmentInterface.getBADADataInterface()
+cruiseTas = badaDataInterface.getBADA_cruiseTas('B733', 15000)"
+},
+{  
+"FunctionName":"getBADA_climbRate_fpm(String ac_type, double flight_level, String bada_mass)",
+"Description":"Get climb rate in feet per minute.",
+"ReturnType":"double",
+"Interface":"BADADataInterface",
+"Example":" 
+badaDataInterface = equipmentInterface.getBADADataInterface()
+climbRateFpm = badaDataInterface.getBADA_climbRate_fpm('B733', 150, 'NOMINAL')"
+},
+{  
+"FunctionName":"getBADA_climbTas(String ac_type, double altitude_ft)",
+"Description":"Get climb speed.",
+"ReturnType":"double",
+"Interface":"BADADataInterface",
+"Example":" 
+badaDataInterface = equipmentInterface.getBADADataInterface()
+climbTas = badaDataInterface.getBADA_climbTas('B733', 15000)"
+},
+{  
+"FunctionName":"getBADA_descentRate_fpm(String ac_type, double flight_level, String bada_mass)",
+"Description":"Get descent rate in feet per minute.",
+"ReturnType":"double",
+"Interface":"BADADataInterface",
+"Example":" 
+badaDataInterface = equipmentInterface.getBADADataInterface()
+descentRateFpm = badaDataInterface.getBADA_descentRate_fpm('B733', 150, 'NOMINAL')"
+},
+{  
+"FunctionName":"getBADA_descentTas(String ac_type, double altitude_ft)",
+"Description":"Get descent speed.",
+"ReturnType":"double",
+"Interface":"BADADataInterface",
+"Example":" 
+badaDataInterface = equipmentInterface.getBADADataInterface()
+descentTas = badaDataInterface.getBADA_descentTas('B733', 15000)"
+},
+{  
+"FunctionName":"getCenterCodes()",
+"Description":"Returns a String array of all center codes.",
+"ReturnType":"String[]",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+environmentInterface.getCenterCodes()"
+},
+{  
+"FunctionName":"getCurrentCenter(String aircraftId)",
+"Description":"Returns the center where the given aircraft is located.",
+"ReturnType":"String",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+environmentInterface.getCurrentCenter('SWA1897')"
+},
+{  
+"FunctionName":"getFixesInCenter(String centerId)",
+"Description":"Returns a String array of all fixes in a center.",
+"ReturnType":"String[]",
+"Interface":"EnvironmentInterface",
+"Example":" 
+environmentInterface = gnatsClient.getEnvironmentInterface() 
+environmentInterface.getFixesInCenter('KZOA')"
+},
+{  
+"FunctionName":"load_groundVehicle(String trx_file)",
+"Description":"Load all the ground vehicles from the TRX file",
+"ReturnType":"int",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicleInterface.load_groundVehicle('share/tg/trx/TRX_GroundVehicles.trx')"
+},
+{  
+"FunctionName":"release_groundVehicle()",
+"Description":"Clear all ground vehicle drive plan data.",
+"ReturnType":"int",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicleInterface.release_groundVehicle()"
+},
+{  
+"FunctionName":"getAssignedGroundVehicleIds()",
+"Description":"Get IDs of ground vehicles which are assigned to current session user.",
+"ReturnType":"String[]",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+assignedGroundVehicles = groundVehicleInterface.getAssignedGroundVehicleIds()"
+},
+{  
+"FunctionName":"getAssignedGroundVehicleIds(String username)",
+"Description":"Get IDs of ground vehicles which are assigned to the queried user.",
+"ReturnType":"String[]",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+assignedGroundVehicles = groundVehicleInterface.getAssignedGroundVehicleIds(username)"
+},
+{  
+"FunctionName":"getAllGroundVehicleIds()",
+"Description":"Get all ground vehicle Ids.",
+"ReturnType":"String[]",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+listGroundVehicle = groundVehicleInterface.getAllGroundVehicleIds()"
+},
+{  
+"FunctionName":"select_groundVehicle(String groundVehicleId)",
+"Description":"Get GroundVehicle object for a given ground vehicle id.",
+"ReturnType":"GroundVehicle",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle('BUS123')"
+},
+{  
+"FunctionName":"externalGroundVehicle_create_trajectory_profile(String groundVehicleId, String aircraftInService, String airport, float latitude, float longitude, float speed, float course)",
+"Description":"
+Create profile for an external ground vehicle.
+groundVehicleId The callsign of the vehicle.
+aircraftInService The callsign of the aircraft being serviced by ground vehicle.
+airport Airport where the ground vehicle is located.
+latitude Latitude of Ground Vehicle position.
+longitude Longitude of Ground Vehicle position.
+speed Ground vehicle speed.
+course Ground vehicle course.
+",
+"ReturnType":"int",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicleInterface.groundVehicleInterface.externalGroundVehicle_create_trajectory_profile('NEW123', 'DWA1897', 'KSFO', 37, -122, 15, 28)"
+},
+{  
+"FunctionName":"externalGroundVehicle_inject_trajectory_state_data(String groundVehicleId, String aircraftInService, float latitude, float longitude, float speed, float course)",
+"Description":"
+Update profile for an existing external ground vehicle.
+groundVehicleId The callsign of the vehicle.
+aircraftInService The callsign of the aircraft being serviced by ground vehicle.
+latitude Latitude of Ground Vehicle position.
+longitude Longitude of Ground Vehicle position.
+speed Ground vehicle speed.
+course Ground vehicle course.
+",
+"ReturnType":"int",
+"Interface":"GroundVehicleInterface",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicleInterface.externalGroundVehicle_inject_trajectory_state_data('NEW123', 'DWA1897', 37, -122, 15, 28)"
+},
+{  
+"FunctionName":"setGroundOperatorAbsence(String groundVehicleId, int timeSteps)",
+"Description":"
+Ground operators can be absent for a given time period, requiring the vehicle to stop while waiting for the operator to take back control.
+groundVehicleId The callsign of the vehicle that the operator is in-charge of.
+timeSteps Number of time steps for which operator is absent
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setGroundOperatorAbsence('BUS123', 4)"
+},
+{  
+"FunctionName":"setActionRepeat(String groundVehicleId, String repeatParameter)",
+"Description":"
+The ground operator repeats an action, based on the repeatParameter value.
+groundVehicleId The callsign of the aircraft
+repeatParameter Ground vehicle parameter for which action is to be repeated
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setActionRepeat('BUS123', 'SPEED')"
+},
+{  
+"FunctionName":"setVehicleContact(String groundVehicleId)",
+"Description":"
+Ground operators collides the ground vehicle into another object (Potentially building/aircraft/automobile/person)
+ groundVehicleId: The callsign of the vehicle that the operator is in-charge of.
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setVehicleContact('BUS123')"
+},
+{  
+"FunctionName":"setActionReversal(String groundVehicleId, String changeParameter)",
+"Description":"
+Ground operator executes reverse of the intended action, by reversing the value of the changeParameter.
+groundVehicleId The callsign of the ground vehicle
+changeParameter Ground vehicle parameter for which action is to be reversed
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setActionReversal('BUS123', 'COURSE')"
+},
+{  
+"FunctionName":"setPartialAction(String groundVehicleId, String changeParameter, float originalTarget, float percentage)",
+"Description":"
+Ground operator executes part of the originally intended action.
+groundVehicleId The callsign of the ground vehicle
+changeParameter Ground Vehicle parameter for which action is to be partially performed
+originalTarget Originial value for parameter
+percentage Percentage of action to be executed
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setPartialAction('BUS123', 'SPEED', 8, 50)"
+},
+{  
+"FunctionName":"setActionLag(String groundVehicleId, String lagParameter, float lagTimeConstant, float percentageError, float parameterTarget)",
+"Description":"
+Ground operator lags vehicle action, therreby a certain percent of the execution getting completed within a given time period.
+groundVehicleId The callsign of the ground vehicle
+lagParameter Flight parameter for which action is to be lagged
+lagTimeConstant To be specified in seconds. 10 seconds, as an example.
+percentageError Error percentage for the lag. For example, if 95% of the action is to be executed in the lag time constant, percentage error would be 0.05.
+parameterTarget Original parameter value to be reached.
+",
+"ReturnType":"int",
+"Interface":"GroundOperatorInterface",
+"Example":" 
+groundOperatorInterface = entityInterface.getGroundOperatorInterface() 
+groundOperatorInterface.setActionLag('BUS123', 'SPEED', 10, 0.5, 30)"
+},
+{  
+"FunctionName":"getGvid()",
+"Description":"Get ground vehicle ID.",
+"ReturnType":"String",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleId = groundVehicle.getGvid()"
+},
+{  
+"FunctionName":"getAirportId()",
+"Description":"Get airport ICAO code where the ground vehicle is operating.",
+"ReturnType":"String",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleAirportId = groundVehicle.getAirportId()"
+},
+{  
+"FunctionName":"getAircraftInService()",
+"Description":"Get callsign of aircraft being serviced by ground vehicle.",
+"ReturnType":"String",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+aircraftInService = groundVehicle.getAircraftInService()"
+},
+{  
+"FunctionName":"getFlag_external_groundvehicle()",
+"Description":"Get the flag to determine if the ground vehicle is external : TRUE if the ground vehicle is external",
+"ReturnType":"Boolean",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+isExternalGroundVehicle = groundVehicle.getFlag_external_groundvehicle()"
+},
+{  
+"FunctionName":"getAssigned_user()",
+"Description":"Get the assigned user.",
+"ReturnType":"String",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+user = groundVehicle.getAssigned_user()"
+},
+{  
+"FunctionName":"getLatitude()",
+"Description":"Get the current latitude in degrees.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+latitude = groundVehicle.getLatitude()"
+},
+{  
+"FunctionName":"setLatitude(float latitude)",
+"Description":"Set new value to current latitude, degrees.",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setLatitude(37.8959)"
+},
+{  
+"FunctionName":"getLongitude()",
+"Description":"Get the current longitude, degrees.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+longitude = groundVehicle.getLongitude()"
+},
+{  
+"FunctionName":"setLongitude(float longitude)",
+"Description":"Set the new value to current longitude, degrees.",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setLongitude(-112.8594)"
+},
+{  
+"FunctionName":"getAltitude()",
+"Description":"Get the current altitude in feet.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+altitude = groundVehicle.getAltitude()"
+},
+{  
+"FunctionName":"getSpeed()",
+"Description":"Get the current speed.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleSpeed = groundVehicle.getSpeed()"
+},
+{  
+"FunctionName":"setSpeed(float speed)",
+"Description":"Set the current speed",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setSpeed(25)"
+},
+{  
+"FunctionName":"getCourse()",
+"Description":"Get the current course.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleCourse = groundVehicle.getCourse()"
+},
+{  
+"FunctionName":"setCourse(float course)",
+"Description":"Set the new value to the current course.",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setCourse(1.5)"
+},
+{  
+"FunctionName":"getDeparture_time()",
+"Description":"Get the departure time.",
+"ReturnType":"float",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleDepartureTime = groundVehicle.getDeparture_time()"
+},
+{  
+"FunctionName":"getDrive_plan_latitude_array()",
+"Description":"Get the array of latitude of the drive plan.",
+"ReturnType":"float[]",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleDrivePlanLatitudeArray = groundVehicle.getDrive_plan_latitude_array()"
+},
+{  
+"FunctionName":"getDrive_plan_longitude_array()",
+"Description":"Get the array of longitude of the drive plan.",
+"ReturnType":"float[]",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleDrivePlanLongitudeArray = groundVehicle.getDrive_plan_longitude_array()"
+},
+{  
+"FunctionName":"getDrive_plan_length()",
+"Description":"Get ground vehicle drive plan length.",
+"ReturnType":"int",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleDrivePlanLength = groundVehicle.getDrive_plan_length()"
+},
+{  
+"FunctionName":"getDrive_plan_waypoint_name_array()",
+"Description":"Get the array of waypoint names in the drive plan.",
+"ReturnType":"String[]",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleDrivePlanWaypointNames = groundVehicle.getDrive_plan_waypoint_name_array()"
+},
+{  
+"FunctionName":"getTarget_waypoint_index()",
+"Description":"Get the array index of the drive plan data corresponding to the target waypoint.",
+"ReturnType":"int",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleTargetWaypointIndex = groundVehicle.getTarget_waypoint_index()"
+},
+{  
+"FunctionName":"getTarget_waypoint_name()",
+"Description":"Get the name of the drive plan data corresponding to the target waypoint.",
+"ReturnType":"String",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicleTargetWaypointName = groundVehicle.getTarget_waypoint_name()"
+},
+{  
+"FunctionName":"setDrive_plan_latitude(int index, float latitude)",
+"Description":"Set latitude of the n-th drive plan waypoint, degrees.",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setDrive_plan_latitude(2, 37.2518)"
+},
+{  
+"FunctionName":"setDrive_plan_longitude(int index, float longitude)",
+"Description":"Set longitude of the n-th drive plan waypoint, degrees.",
+"ReturnType":"void",
+"Interface":"GroundVehicleInstance",
+"Example":" 
+equipmentInterface = gnatsClient.getEquipmentInterface() 
+groundVehicleInterface = equipmentInterface.getGroundVehicleInterface() 
+groundVehicle = groundVehicleInterface.select_groundVehicle(‘BUS123’) 
+groundVehicle.setDrive_plan_longitude(2, -112.8155)"
+},
+{  
+"FunctionName":"getX_data()",
+"Description":"Get longitude values of vertices in the polygon.",
+"ReturnType":"double[]",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getX_data()"
+},
+{  
+"FunctionName":"getY_data()",
+"Description":"Get latitude values of vertices in the polygon.",
+"ReturnType":"double[]",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getY_data()"
+},
+{  
+"FunctionName":"getNum_vertices()",
+"Description":"Get number of vertices in the polygon.",
+"ReturnType":"int",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getNum_vertices()"
+},
+{  
+"FunctionName":"getCcw_flag()",
+"Description":"Get boolean value indicating whether the vertices are created counter-clockwise in the polygon.",
+"ReturnType":"boolean",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getCcw_flag()"
+},
+{  
+"FunctionName":"getXmin()",
+"Description":"Get minimum longitude value of all vertices in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getXmin()"
+},
+{  
+"FunctionName":"getXmax()",
+"Description":"Get maximum longitude value of all vertices in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getXmax()"
+},
+{  
+"FunctionName":"getYmin()",
+"Description":"Get minimum latitude value of all vertices in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getYmin()"
+},
+{  
+"FunctionName":"getYmax()",
+"Description":"Get maximum latitude value of all vertices in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getYmax()"
+},
+{  
+"FunctionName":"getX_centroid()",
+"Description":"Get longitude value of the centroid point in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getX_centroid()"
+},
+{  
+"FunctionName":"getY_centroid()",
+"Description":"Get latitude value of the centroid point in the polygon.",
+"ReturnType":"double",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getY_centroid()"
+},
+{  
+"FunctionName":"getPoly_type()",
+"Description":"Get polygon type.",
+"ReturnType":"String",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getY_centroid()"
+},
+{  
+"FunctionName":"getStart_hr()",
+"Description":"Get starting hour of the polygon.",
+"ReturnType":"int",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getStart_hr()"
+},
+{  
+"FunctionName":"getEnd_hr()",
+"Description":"Get ending hour of the polygon.",
+"ReturnType":"int",
+"Interface":"WeatherPolygonInstance",
+"Example":" 
+weatherInterface = environmentInterface.getWeatherInterface()
+weatherPolygons = weatherInterface.getWeatherPolygons('UA123', 48.0, -120.0, 33000.0, 100.0)
+weatherPolygons[0].getEnd_hr()"
+}
+]

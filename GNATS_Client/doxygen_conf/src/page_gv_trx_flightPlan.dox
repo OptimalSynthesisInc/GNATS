@@ -1,0 +1,46 @@
+/*! \page gv_trx_flightPlan Ground Vehicle TRX File and Driving Plan
+
+  \section sec_gv_trx_format Format
+  The format of this TRX file is illustrated below. It has the following three rows:
+  <ul>
+    <li>TRACK_TIME</li>
+    <li>TRACK: This row has the initial state.
+    <li>FP_ROUTE: This is the driving plan.</li>
+  </ul>
+  
+  Let's use an example for more detail.
+  
+  <div style="margin-left: 20px;">
+    <span style="color: #6666ff;">TRACK_TIME 1121238067</span><br/>
+    TRACK <span style="color: #FF0000;">FIRE123</span> <span style="color: #007826;">SWA1897</span> <span style="color: #ff99cc;">373716.896 1222324.18</span> <span style="color: #336699;">20 13 28</span><br/>
+    FP_ROUTE <span style="color: #ffd607;">KSFO</span>.<span style="color: #990008;"><{"id": "Gate_F_086"}, {"id": "Ramp_06_011"}, {"id": "Txy_A_B1"}, {"id": "Txy_A_016"}, {"id": "Txy_A_015"}, {"id": "Txy_A_012"}, {"id": "Txy_A_011"}, {"id": "Txy_A_D"}, {"id": "Txy_A_010"}, {"id": "Txy_A_E"}, {"id": "Txy_A_009"}, {"id": "Txy_A_F1"}, {"id": "Txy_A_008"}, {"id": "Txy_A_G"}, {"id": "Txy_A_007"}, {"id": "Txy_A_006"}, {"id": "Txy_A_005"}, {"id": "Txy_A_H"}, {"id": "Txy_A_004"}, {"id": "Txy_A_M"}, {"id": "Txy_A_003"}, {"id": "Txy_A_002"}, {"id": "Txy_A_A1"}, {"id": "Txy_A_001"}></span>
+  </div>
+  
+  <span style="color: #6666ff;">TRACK_TIME 1121238067</span><br/>
+  Departure time of the ground vehicle.
+  
+  <span style="color: #FF0000;">FIRE123</span><br/>
+  Ground Vehicle ID.
+  
+  <span style="color: #007826;">SWA1897</span><br/>
+  Aircraft being serviced by ground vehicle.
+  
+  <span style="color: #ff99cc;">373716.896 1222324.18</span><br/>
+  atitude and longitude of the vehicle’s initial position(Degree Minute Second format).The latitude and longitude format is in degree-minute-second. For high accuracy, using decimal digit for second value is acceptable, like 373638.1234.
+  
+  <span style="color: #336699;">20 13 28</span><br/>
+  The vehicle’s initial speed, altitude (Airport Elevation), and heading.
+  
+  <span style="color: #ffd607;">KSFO</span><br/>
+  Airport where the ground vehicle is operating.
+  
+  <span style="color: #990008;"><{"id": "Gate_F_086"}, {"id": "Ramp_06_011"}, {"id": "Txy_A_B1"}, {"id": "Txy_A_016"}, {"id": "Txy_A_015"}, {"id": "Txy_A_012"}, {"id": "Txy_A_011"}, {"id": "Txy_A_D"}, {"id": "Txy_A_010"}, {"id": "Txy_A_E"}, {"id": "Txy_A_009"}, {"id": "Txy_A_F1"}, {"id": "Txy_A_008"}, {"id": "Txy_A_G"}, {"id": "Txy_A_007"}, {"id": "Txy_A_006"}, {"id": "Txy_A_005"}, {"id": "Txy_A_H"}, {"id": "Txy_A_004"}, {"id": "Txy_A_M"}, {"id": "Txy_A_003"}, {"id": "Txy_A_002"}, {"id": "Txy_A_A1"}, {"id": "Txy_A_001"}></span><br/>
+  Drive plan.
+  
+  <br/>
+  
+  <span style="color: #336699;">
+  More examples of these can be found at<br/>
+  NATS_Server/share/tg/trx/TRX_DEMO_11GroundVehicles.trx
+  </span>
+*/

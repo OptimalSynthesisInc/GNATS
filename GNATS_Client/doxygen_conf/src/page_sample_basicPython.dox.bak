@@ -1,0 +1,25 @@
+/*! \page sample_basicPython Sample - Basic Python Example
+
+	<div>
+	  <div style="display: inline-block;">
+	    <span style="color: #002080;">Program purpose</span>:
+	  </div>
+	  <div style="display: inline-block;">
+	    This sample file illustrates how to realize basic simulation logic.
+	  </div>
+	</div>
+	
+	<div style="margin-top: 10px; background: #F3F3F3; padding: 5px;">
+	The main logic is to:
+	<ul>
+	  <li>Load aircraft TRX file</li>
+	  <li>Setup simulation</li>
+	  <li>Start simulation till it finishes</li>
+	  <li>Write output trajectory file</li>
+	</ul>
+	</div>
+	
+	Detail source code
+	
+	\include "../sample/basic_python_example_beta1.5.py"
+*/

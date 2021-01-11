@@ -1,0 +1,54 @@
+/*! \page ac_trx_fproute How to Produce Aircraft TRX FP_ROUTE Data?
+    To produce the FP_Route data, we can follow the suggested steps:
+    <ol>
+      <li>Determine the origin and destination airport.</li>
+      <li>Get aircraft SWIM flight plan.<br/>
+          Usually the SWIM data contains the SID procedure, the en-route waypoints and STAR procedure.</li>
+      <li>Determine if departing and/or landing runway are required info.
+          If landing runway is required, the APPROACH procedure is usually required.  Please get the corresponding APPROACH procedure.</li>
+      <li>Prepare departing/arriving surface taxi plan if they are required.<br/>
+          Two ways to obtain the taxi plan:
+          
+          <b>Method A</b>: Call GNATS API function
+          <div style="margin-left: 20px; width: 800px;">
+            GNATS provides a function to get the list of waypoints from the starting point to the ending one.
+          
+            For example,
+            \code
+            AirportInterface.get_taxi_route_from_A_To_B(aircraft_id, airport_code, starting_waypoint_id, ending_waypoint_id)
+            AirportInterface.get_taxi_route_from_A_To_B("SWA1897", "KSFO", "Gate_F_086", "Rwy_02_002")
+            \endcode
+          
+            Please see NATS_Client/sample/DEMO_Airport_Functions_x.py for more sample codes.
+          </div>
+          
+          <b>Method B</b>: Run Python program - DEMO_UI_TaxiRouteGenerator
+          <div style="margin-left: 20px;">
+            A Python sample program(NATS_Client/sample/DEMO_UI_TaxiRouteGenerator) provides the functionality to create a taxi plan.  Users can run the program and design the taxi plan by the mouse.
+          </div>
+          
+          Notice.<br/>
+            For departing taxi plan, the ending waypoint MUST be a runway entry point.<br/>
+            For landing taxi plan, the starting waypoint MUST be a runway end point.<br/>
+            
+            Detail waypoint definition can be seen in the directory in NATS_Server/share/libairport_layout/Airport_Rwy/*_Nodes_Def.csv
+          </li>
+      <li>Finally, produce the FP_ROUTE by combining the following(in the same order):<br/>
+          - Origin airport code<br/>
+          - Departing taxi plan(if required)<br/>
+          - Departing runway(if required)<br/>
+          - SWIM data<br/>
+          - APPROACH procedure(if required)<br/>
+          - Landing runway(if required)<br/>
+          - Arriving taxi plan(if required)<br/>
+          - Destination airport code
+          </li>
+    </ol>
+    
+    <div style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 80%; height: 1px; background: #C3C3C3;"></div>
+    
+    GNATS provides command-line samples to generate the FP_ROUTE data by asking questions and receive inputs from users.
+    Please see
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NATS_Client/sample/GateToGateFp_beta1.x.py<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NATS_Client/sample/GateToGateFpWithoutBaseTRX_beta1.x.py
+*/
