@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GNATS_Shared_Java_Lib" default="build-all" basedir=".">
+    <description>GNATS Shared Java Lib - Ant Build Script</description>
+    
+    <loadproperties srcFile="build_gnats.properties"/>
+	
+	<path id="classpath">
+	    <pathelement location="classes"/>
+
+		<fileset dir="lib">
+			<include name="commons-logging-1.2.jar" />
+			<include name="json.jar" />
+			<!--<include name="rmiio-2.1.2.jar" />-->
+			<include name="tools.jar" />
+		</fileset>
+	</path>
+
+    <target name="init-build-java">
+    	<delete dir="${dist.dir}" includeEmptyDirs="true"/>
+    	<delete dir="${classes.dir}" includeEmptyDirs="true"/>
+    	
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!-- =================== BUILD CARAT# JAVA CODE ======================== -->
+    <target name="build-java" depends="init-build-java">
+        <javac destdir="${classes.dir}"
+               deprecation="true"
+               debug="true"
+               includeantruntime="false"
+               target="1.7"
+               source="1.7">
+            <src path="${src.dir}"/>
+    	    <classpath refid="classpath"/>
+            <compilerarg value="-Xlint:-unchecked"/>
+        </javac>
+    </target>
+	
+    <!-- =================== BUILD CARAT# JARS ============================= -->
+    <target name="build-jars" depends="build-java">
+        <jar jarfile="${dist.dir}/gnats-shared.jar" compress="false">
+            <fileset dir="${classes.dir}">
+                <include name="*.class"/>
+				<include name="**/*/*.class"/>
+            </fileset>
+        </jar>
+        
+    	<copy file="lib/json.jar" todir="${gnats.client.dir}/dist"/>
+    	
+    	<copy file="lib/rmiio-2.1.2.jar" todir="${gnats.client.dir}/dist"/>
+    	<copy file="lib/rmiio-2.1.2.jar" todir="${gnats.server.dir}/dist"/>
+    	
+    	<copy file="lib/commons-logging-1.2.jar" todir="${gnats.client.dir}/dist"/>
+    	<copy file="lib/commons-logging-1.2.jar" todir="${gnats.server.dir}/dist"/>
+    	
+    	<copy file="${dist.dir}/gnats-shared.jar" todir="${gnats.server.dir}/dist"/>
+    	<copy file="${dist.dir}/gnats-shared.jar" todir="${gnats.client.dir}/dist"/>
+    	<copy file="${dist.dir}/gnats-shared.jar" todir="${gnats.standalone.dir}/dist"/>
+    	
+    	<copy file="lib/tools.jar" todir="${gnats.server.dir}/dist"/>
+    	<!--<copy file="lib/tools.jar" todir="${gnats.standalone.dir}/dist"/>-->
+    </target>
+	
+    <!-- =================== BUILD ALL ===================================== -->
+    <target name="build-all" depends="build-jars">
+    </target>
+	
+</project>
