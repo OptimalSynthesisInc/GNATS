@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GNATS_Dataset_Open_Zip_Release" default="zip-all" basedir=".">
+    <description>GNATS Dataset - Open Zip Release Script</description>
+    
+	<target name="pre_proc">
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+		
+        <mkdir dir="tmp_deploy" />
+		<mkdir dir="tmp_deploy/share" />
+		
+		<copy file="README_Dataset.txt" tofile="tmp_deploy/README_Dataset.txt" />
+
+		<copy todir="tmp_deploy/share" overwrite="true" preservelastmodified="true">
+            <fileset dir="share">
+            	<include name="*"/>
+                <include name="*.*"/>
+                <include name="**/*/*"/>
+				<include name="**/*/*.*"/>
+
+            	<!-- ================================================== -->
+
+            	<exclude name="libairport_layout/*/*.doc"/>
+            	<exclude name="libairport_layout/*/*.graphml"/>
+            	<exclude name="libairport_layout/*/*.orig"/>
+            	<exclude name="libairport_layout/*/*.kml"/>
+            	<exclude name="libairport_layout/*/*.xml"/>
+
+            	<exclude name="mcSimulation/*" />
+            	<exclude name="mcSimulation/*.*" />
+            	
+            	<exclude name="rg/polygons/*" />
+            	<exclude name="rg/polygons/*.*" />
+            	
+            	<exclude name="rg/nas/*CIFP*/**" /> <!-- exclude directory -->
+            	
+            	<exclude name="tg/bada/**" /> <!-- exclude directory -->
+            	<exclude name="elevationSample/**" /> <!-- exclude directory -->
+            	<exclude name="elevationULI/**" /> <!-- exclude directory -->
+            	<exclude name="libadbSample/**" /> <!-- exclude directory -->
+            	<exclude name="libadbULI/**" /> <!-- exclude directory -->
+            	<exclude name="tg/rapSample/**" /> <!-- exclude directory -->
+            	<exclude name="tg/rapULI/**" /> <!-- exclude directory -->
+            	<exclude name="tg/weatherSample/**" /> <!-- exclude directory -->
+            	<exclude name="tg/weatherULI/**" /> <!-- exclude directory -->
+
+            	<exclude name="tg/trx/*" />
+            	<exclude name="tg/trx/*.*" />
+            	
+            	<exclude name="**/*/bak_*.*"/>
+            	<exclude name="**/*/test_*.*"/>
+            	<exclude name="**/*/asu_*.*"/>
+            	<exclude name="**/*/hari_*.*"/>
+            	<exclude name="**/*/oliver_*.*"/>
+            	<exclude name="**/*/TRX_07132005_*.*"/>
+            </fileset>
+
+        	<fileset dir="share">
+            	<include name="tg/trx/TRX_DEMO_2Aircrafts_RiskMeasures_test_geo.trx"/>
+            	<include name="tg/trx/TRX_DEMO_2Aircrafts_RiskMeasures_test_mfl.trx"/>
+            	<include name="tg/trx/TRX_DEMO_KSFO_OMDB_geo.trx"/>
+            	<include name="tg/trx/TRX_DEMO_KSFO_OMDB_mfl.trx"/>
+            	<include name="tg/trx/TRX_DEMO_SFO_PHX_GateToGate_geo.trx"/>
+            	<include name="tg/trx/TRX_DEMO_SFO_PHX_mfl.trx"/>
+            	<include name="tg/trx/TRX_DEMO_WSSS_RJAA_geo.trx"/>
+            	<include name="tg/trx/TRX_DEMO_WSSS_RJAA_mfl.trx"/>
+            	<include name="tg/trx/TRX_DEMO_WSSS_RJAA_Hold_Pattern_geo.trx"/>
+        		<include name="tg/trx/TRX_DEMO_GLOBAL_FLIGHT_PLANS.trx"/>
+        		<include name="tg/trx/TRX_DEMO_GLOBAL_FLIGHT_PLANS_mfl.trx"/>
+            </fileset>
+		</copy>
+		
+		<!-- ================================================== -->
+		
+    	<delete dir="tmp_deploy/share/libadb" includeEmptyDirs="true" />
+    	<mkdir dir="tmp_deploy/share/libadb" />
+    	<copy todir="tmp_deploy/share/libadb" overwrite="false" preservelastmodified="true">
+		    <fileset dir="share/libadbSample">
+		        <include name="*"/>
+		    	<include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+    	</copy>
+    	
+    	<delete dir="tmp_deploy/share/elevation" includeEmptyDirs="true" />
+    	<mkdir dir="tmp_deploy/share/elevation" />
+    	<copy todir="tmp_deploy/share/elevation" overwrite="false" preservelastmodified="true">
+		    <fileset dir="share/elevationSample">
+		        <include name="*"/>
+		    	<include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+    	</copy>
+    	
+    	<delete dir="tmp_deploy/share/tg/rap" includeEmptyDirs="true" />
+    	<mkdir dir="tmp_deploy/share/tg/rap" />
+    	<copy todir="tmp_deploy/share/tg/rap" overwrite="false" preservelastmodified="true">
+		    <fileset dir="share/tg/rapSample">
+		        <include name="*"/>
+		    	<include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+    	</copy>
+    	
+    	<delete dir="tmp_deploy/share/tg/weather" includeEmptyDirs="true" />
+    	<mkdir dir="tmp_deploy/share/tg/weather" />
+    	<copy todir="tmp_deploy/share/tg/weather" overwrite="false" preservelastmodified="true">
+		    <fileset dir="share/tg/weatherSample">
+		        <include name="*"/>
+		    	<include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+    	</copy>
+		
+		<mkdir dir="tmp_deploy/share/risk_measures" />
+	</target>
+	
+    <target name="zip-all" depends="pre_proc">
+    	<delete file="GNATS_Dataset_Open.zip" />
+        <zip zipfile="GNATS_Dataset_Open.zip" compress="true">
+        	<fileset dir=".">
+        		<include name="README_Dataset.txt" />
+        	</fileset>
+        	
+        	<fileset dir="tmp_deploy">
+        		<include name="share/*"/>
+            	<include name="share/*.*"/>
+            	<include name="share/**/*/*"/>
+            	<include name="share/**/*/*.*"/>
+        	</fileset>
+        </zip>
+
+    	<delete dir="tmp_deploy" includeEmptyDirs="true" />
+    </target>
+</project>

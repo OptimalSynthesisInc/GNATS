@@ -1,0 +1,44 @@
+NATS Dependency Library
+
+NATS Server distribution can run without installing these dependency.
+
+Please run NATS Server first to see if it's running.
+
+Due to different Linux versions and other related libraries, NATS Server may not start.  If it fails, you need to install it individually.
+
+
+1. Jasper
+   We have tested the software with v1.900.1(Please see directory "dependency_library")
+   You can use the dependency_library/install_jasper.sh to install it.
+   
+   Copy dist/jasper/lib/libjasper.a to dist/
+   Copy dist/jasper/lib/libjasper.la to dist/
+
+2. Grib API
+   We have tested the software with v1.11.0(Please see directory "dependency_library")
+   You can use dependency_library/install_grib.sh to install it.
+   
+   Copy dist/grib_api/lib/libgrib_api.so.0.0.0 to dist/
+   Rename dist/libgrib_api.so.0.0.0 to be dist/libgrib_api.so
+   In dist folder, create a symbol link.
+   		cd dist
+   		ln -s libgrib_api.so libgrib_api.so.0
+
+3. HDF5
+   We have tested the software with v1.8.21
+
+   There are two ways to get HDF5 library.
+   A. Use pre-compiled library
+      Please refer to the "Using NATS Pre-compiled Dependency Libraries" below.
+   B. Build it fresh
+      Enter "dependency_library" directory.
+      Read README_Install_HDF5 file.  It's a working procedure based on our experience.  However, it is not guaranteed to suit all Linux platforms.
+      You can use dependency_library/install_hdf5.sh to install it from scratch.
+
+   After you finish method A or B, we need to move some files.
+   
+   Copy dist/hdf5/lib/libhdf5.so.10.3.2 to dist/
+   Rename dist/libhdf5.so.10.3.2 to dist/libhdf5.so
+   In dist folder, create a symbol link.
+   		cd dist
+   		ln -s libhdf5.so libhdf5.so.10
