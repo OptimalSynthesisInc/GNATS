@@ -1,0 +1,128 @@
+/*! \page getting_started Getting Started
+  \tableofcontents
+  
+  In this topic we will talk about how to get GNATS Standalone to work from scratch.
+  
+  Test run
+  After you unzip all files, open a terminal console, navigate to NATS_Standalone directory.<br/>
+  On Linux, type
+  \code
+  ./TestRun.sh
+  \endcode
+  
+  On Windows, type
+  \code
+  TestRun.bat
+  \endcode
+  
+  This script will test starting GNATS Standalone and stopping it.  You should be able to see the screen text like<br/>
+  <img src="screenshot_testrun.png" />
+  
+  <br/>
+  
+  \section sec_firstProgram First Program
+  From here, we can start to develop our first GNATS program.
+  
+  Use <b>NATS_Standalone/sample/DEMO_Gate_To_Gate_Simulation_SFO_PHX_x.x.py</b> as an example.
+  
+  The basic procedure to write a GNATS program is to:
+  <ol>
+    <li>Load GNATS library</li>
+    <li>Start NATSStandalone instance and get interfaces</li>
+    <li>Write your logic</li>
+    <li>Stop NATSStandalone</li>
+  </ol>
+  
+  <br/>
+  
+  The following steps illustrate the basic concept no matter you are using Python or MATLAB.
+  
+  \section sec_loadLibrary 1. Load GNATS library
+  <ul>
+    <li>If you are writing Python<br/>
+        \code{.py}
+		# Import header
+		from NATS_Python_Header import *
+        \endcode
+    </li>
+    <li>If you are writing MATLAB<br/>
+        \code{.m}
+		% Run header
+		run('NATS_MATLAB_Header.m');
+        \endcode
+    </li>
+  </ul>
+  
+  \section sec_getNATSClient 2. Start NATSStandalone and get interfaces
+  <div style="margin-left: 25px;">
+    \code{.py}
+	clsNATSStandalone = JClass('NATSStandalone')
+	# Start GNATS Standalone environment
+	gnatsStandalone = clsGNATSStandalone.start()
+	
+	# Get SimulationInterface
+	simulationInterface = gnatsStandalone.getSimulationInterface()
+    \endcode
+    
+    As you see, we call GNATSStandalone.start() function to get the GNATSStandalone instance.  After that, we obtain another interface(SimulationInterface) from it.
+    For the detail interfaces we can get, please refer to the <a href="classGNATSClient.html">API Document</a>.
+  </div>
+  
+  \section sec_writeLogic 3. Write your logic
+  <div style="margin-left: 25px;">
+    GNATS API provides diversity of purposes in aircraft trajectory simulation.  Users are able to accomplish various tasks using GNATS API.  For a demo purpose, we use this simple example to explain a typical logic about trajectory simulation.  The same example can be seen in NATS_Client/sample/basic_python_example.py
+    \code{.py}
+	# Clear trajectory data
+	simulationInterface.clear_trajectory()
+
+	# Load wind data
+	environmentInterface.load_rap("share/tg/rap")
+
+	# Load aircraft data
+	aircraftInterface.load_aircraft("share/tg/trx/TRX_DEMO_SFO_PHX_GateToGate.trx", "share/tg/trx/TRX_DEMO_SFO_PHX_mfl.trx")
+	
+	# Set up simulation
+	# Set total simulation time to 11000 seconds, time step is 10 seconds
+	simulationInterface.setupSimulation(11000, 10)
+
+	# Start simulation
+	simulationInterface.start()
+
+	# This while loop block is to check the simulation status.  Due to aircraft data size and different simulation time, there is no method to forsee how much time the simulation will take.  Therefore, we constantly check simulation status.  When the simulation status is ENDED, we can continue.
+	while True:
+		runtime_sim_status = sim.get_runtime_sim_status()
+		if (runtime_sim_status == NATS_SIMULATION_STATUS_ENDED) :
+        	break
+    	else:
+			time.sleep(1)
+
+	# Write trajectory result to a file
+	millis = int(round(time.time() * 1000))
+	print "Outputting trajectory data.  Please wait...."
+	# Output the trajectory result file
+	simulationInterface.write_trajectories("Sample_output_trajectory_" + str(millis) + ".csv")
+
+	# Release aircraft data
+	aircraftInterface.release_aircraft()
+
+	# Release wind data
+	environmentInterface.release_rap()
+    \endcode
+  </div>
+  
+  \section sec_disconnectFromNATSServer 4. Stop NATSStandalone
+  <div style="margin-left: 25px;">
+  In client program, simply call
+  \code
+  # Stop GNATS Standalone environment
+  gnatsStandalone.stop()
+  \endcode
+  <br/>
+  If you are writing Python, you still need to shut down the JVM environment.
+  \code
+  shutdownJVM()
+  \endcode
+  </div>
+  
+  <br/>
+*/

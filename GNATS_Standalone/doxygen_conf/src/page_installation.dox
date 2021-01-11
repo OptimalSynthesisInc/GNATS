@@ -1,0 +1,10 @@
+/*! \page installation Installation of GNATS Standalone
+  \tableofcontents
+
+  GNATS distribution is categorized into two main streams:<br/>
+	<ul>
+	  <li>\subpage installation_linux</li>
+	  <li>\subpage installation_win10</li>
+	</ul>
+
+*/

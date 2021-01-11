@@ -1,0 +1,36 @@
+/*! \mainpage
+	GNATS API is a library collection developed in Java and C/C++ technology to provide aircraft trajectory prediction functionality.  The design objective is to provide a simulation environment for multiple roles of users.
+	
+	<h3>Architecture</h3>
+	GNATS API offers variety of functionality to fulfill the requirement of trajectory propagation.  The functional interfaces developed in Java and are capable to serve multiple modern programming tools and languages like Python, MATLAB and so on.
+	The diagram here illustrates the basic concept of how GNATS Standalone and users' programs interact with each other.  As the diagram describes, the actual jobs happen on GNATS engine to realize all computation logic.
+	<div>
+	  <img src="architecture.png" width="50%" />
+	</div>
+	
+	<h3>Details of GNATS</h3>
+<!--
+	<ul>
+	  <li>\ref installation</li>
+	  <li>\ref configuration</li>
+	  <li>\ref getting_started</li>
+	  <li>\ref io</li>
+	  <li>\ref ac_trx_flightPlan</li>
+	  <li>\ref gv_trx_flightPlan</li>
+	  <li>\ref simulation_control</li>
+	  <li>\ref api</li>
+	  <li>\ref samples</li>
+	  <li>\ref qa</li>
+	</ul>
+-->
+	<ul>
+	  <li>\ref installation</li>
+	  <li>\ref configuration</li>
+	  <li>\ref getting_started</li>
+	  <li>\ref io</li>
+	  <li>\ref ac_trx_flightPlan</li>
+	  <li>\ref simulation_control</li>
+	  <li>\ref api</li>
+	  <!--<li>\ref qa</li>-->
+	</ul>
+*/

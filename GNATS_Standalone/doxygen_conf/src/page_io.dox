@@ -1,0 +1,47 @@
+/*! \page io Input & Output
+	Here we want to give clear discussion about the input and output of GNATS system.
+	
+	<UL>
+	  <LI>
+	    <DIV>
+	      <DIV style="display: inline-block; width: 50px; vertical-align: text-top;">Input:</DIV>
+			<DIV style="display: inline-block; width: 800px; vertical-align: text-top;">
+			  <b>Flight plan TRX file</b>.<br/>
+			  The <b>flight plan TRX file</b> is important in that it tells GNATS your detail plan from the starting point to the destination airport.  GNATS uses it as guideline to predict aircraft state in every time step.
+			  </DIV>
+	    </DIV></LI>
+	  <LI>
+	    <DIV>
+	      <DIV style="display: inline-block; width: 50px; vertical-align: text-top;">Output:</DIV>
+		  <DIV style="display: inline-block; width: 800px; vertical-align: text-top;">File of aircraft trajectory result.<br/>
+	  	      Currently GNATS can output it in the following formats:<br/>
+	  	      - CSV<br/>
+	  	      - KML<br/>
+	  	      - XML</DIV>
+	    </DIV></LI>
+	</UL>
+	
+	\section sec_io_input Input
+	There are two types of aircraft simulation in GNATS:
+	<ul>
+	  <li>Normal aircraft simulation: Simulate using input from TRX file.</li>
+	</ul>
+	
+	\subsection subsec_io_input_normalAircraft Input data of normal aircraft
+	The following statement loads the normal aircraft TRX file as input of GNATS.
+	\code
+	aircraftInterface.load_aircraft("share/tg/trx/TRX_DEMO_SFO_PHX_GateToGate_geo.trx", "share/tg/trx/TRX_DEMO_SFO_PHX_mfl.trx")
+	\endcode
+	This code statement load_aircraft() takes 2 arguments: TRX file and MFL file.<br/>
+	TRX file contains the aircraft profile data as well as their flight plans.  One TRX file may store records of multiple aircraft.  MFL file contains the maximum flight level data and also may have multiple aircraft data in single file.<br/>
+	Notice: <span style="color: #FF0000;">The path of the TRX and MFL files is, by default, under NATS_Standalone/share/tg/trx directory.</span>
+	
+	\section sec_io_output Output
+	Output of GNATS simulation is done by writing the result of trajectory data to a file.
+	\code
+	simulationInterface.write_trajectories("Output_trajectory.csv")
+	\endcode
+	This function tells GNATS Standalone to write trajectory result to NATS_Standalone/Output_trajectory.csv.
+	
+	<p/>
+*/

@@ -1,0 +1,27 @@
+/*! \page configuration Configuration
+	GNATS Client configuration includes 2 sections: required configuration and optional configuration.
+	
+	\section sec_req_config Required Configuration
+		\subsection subsec_envVariables Environment Variables
+		Set environment variables <b>JAVA_HOME</b> which GNATS Client needs.
+		For example,
+		\code
+		export JAVA_HOME=/opt/java/64/jdk1.7.0_80
+		\endcode
+	
+	<p/>
+	
+	\section sec_opt_config Optional Configuration
+		It is optional but recommended to set environment variable NATS_HOME to the installation directory.<br/>
+		For example<br/>
+		On Linux
+		\code
+		export GNATS_HOME=/xxx/yyy/GNATS_Standalone
+		\endcode
+		
+		On Windows
+		\code
+		set GNATS_HOME=C:\xxx\yyy\GNATS_Standalone
+		\endcode
+		This helps locate the path of NATS_Standalone so the program can access GNATS library files easily.  With NATS_HOME defined, you can run your client program in another directory.  Otherwise, you have to run the client program exactly in NATS_Standalone directory so the GNATS data files can be located.
+*/

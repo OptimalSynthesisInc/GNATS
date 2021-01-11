@@ -1,0 +1,9 @@
+/*! \page qa Q&A
+
+	\section sec_qa_natsClientHome How to fix gnats.config not found?
+		Client program will look for data/gnats.config file when it is in processing.  Please make sure you execute your program under NATS_Client directory.  If you have to execute the client program in different directory, please set the OS environment variable NATS_CLIENT_HOME to the path of NATS_Client folder.<br/>
+        Example. In Linux command-line terminal, type
+        \code
+        export NATS_CLIENT_HOME=/your_path/NATS_Client
+        \endcode
+*/
