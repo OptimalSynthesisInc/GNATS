@@ -1,0 +1,18 @@
+#ifndef GPU_SIMULATION_H_
+#define GPU_SIMULATION_H_
+
+typedef struct {
+//	float d_uWindTable[(int)((MAX_LAT-MIN_LAT+1)/LAT_STEP)][(int)((MAX_LON-MIN_LON+1)/LON_STEP)][(int)((MAX_ALT-MIN_ALT+1)/ALT_STEP)];
+//	float d_vWindTable[(int)((MAX_LAT-MIN_LAT+1)/LAT_STEP)][(int)((MAX_LON-MIN_LON+1)/LON_STEP)][(int)((MAX_ALT-MIN_ALT+1)/ALT_STEP)];
+//	float d_uWindPertTable[(int)((MAX_LAT-MIN_LAT+1)/LAT_STEP)][(int)((MAX_LON-MIN_LON+1)/LON_STEP)][(int)((MAX_ALT-MIN_ALT+1)/ALT_STEP)];
+//	float d_vWindPertTable[(int)((MAX_LAT-MIN_LAT+1)/LAT_STEP)][(int)((MAX_LON-MIN_LON+1)/LON_STEP)][(int)((MAX_ALT-MIN_ALT+1)/ALT_STEP)];
+} KernelParameters;
+
+
+int propagate_flights_gpu(const float& input_t_end,
+		const float& input_t_step,
+		const float& input_t_step_terminal,
+		const float& input_t_step_airborne);
+
+
+#endif

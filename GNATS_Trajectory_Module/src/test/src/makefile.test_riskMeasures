@@ -1,0 +1,73 @@
+CXX=g++
+
+EXECUTABLE=test_riskMeasures
+
+USE_GPU=0
+
+SOURCES=$(shell find . -name 'test_riskMeasures.cpp')
+HEADERS=$(shell find . -name '*.h')
+
+#NEWFUNC_OBJS=$(shell find . -name 'newFunc_*.o')
+
+OBJS=$(SOURCES:.cpp=.o)
+
+# If USE_GPU is set then append the C++ macro USE_GPU to
+# the preprocessor flags so that it gets defined in the source
+ifeq ($(USE_GPU),1)
+CPPFLAGS += -DUSE_GPU=1
+else
+CPPFLAGS += -UUSE_GPU
+endif
+
+CXXFLAGS=-g -O3 -fPIC -Wall -Wextra
+LDFLAGS=-L/usr/local/lib -L../lib -L../../../lib -L../../wind_tool/third-party/hdf5install/lib
+#LIBS= -ljson-c -lcommon -lxml++-2.6 -lgrib_api -lrg -lcontroller -lpilot -ltg -lcuda_compat -lnats_data -ltrx -ladb -lghthash -llektor -lfp -lgeomutils -lm -lhdf5 -lz -ldl -lgomp -lairport_layout -lastar -lwind
+LIBS=-lcurl -lxml2 -lxml++-2.6 -ljson-c -lcommon -lhuman_error -lcontroller -lcuda_compat -lpilot -lnats_data -lairport_layout -lfp -lgeomutils -llektor -lrg -ltrx -ladb -lastar -lwind -lgrib_api -ltg -lhdf5 -lghthash
+INCLUDE_DIRS= \
+	-I../include \
+	-I../../../include/json-c \
+	-I../../../include/libairport_layout \
+	-I../../../include/libastar \
+	-I../../../include/libcommon \
+	-I../../../include/libcontroller \
+	-I../../../include/libcuda_compat \
+	-I../../../include/libnats_data \
+	-I../../../include/libadb \
+	-I../../../include/libtrx \
+	-I../../../include/libgeomutils \
+	-I../../../include/librg \
+	-I../../../include/libtg \
+	-I../../../include/libfp \
+	-I../../../include/libpilot \
+	-I../../../include/libwind \
+	-I../../libairport_layout/src \
+	-I../../libastar/src \
+	-I../../libcommon/src \
+	-I../../libcontroller/src \
+	-I../../libcuda_compat/src \
+	-I../../libfacet_data/src \
+	-I../../libbada/src \
+	-I../../libtrx/src \
+	-I../../libgeomutils/src \
+	-I../../librg/src \
+	-I../../libtg/src \
+	-I../../libfp/src \
+	-I../../libpilot/src \
+	-I../../libwind/src \
+	-I../../wind_tool/third-party/hdf5install/include
+
+all:
+	@echo "Compiling source code...."
+#	$(CXX) $(CXXFLAGS) -x c++ $(CPPFLAGS) $(INCLUDE_DIRS) -c $(SOURCES) -o $(OBJS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDE_DIRS) -c $(SOURCES)
+#	@echo ""
+#	@echo "Generating shared library file...."
+#	@echo ""
+#	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(NEWFUNC_OBJS) -shared -o libNewFunc.so $(LIBS)
+	@echo ""
+	@echo "Generating executable file...."
+	@echo ""
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(EXECUTABLE).o -o $(EXECUTABLE) $(LIBS)
+
+clean:
+	rm -rf *.o $(EXECUTABLE)

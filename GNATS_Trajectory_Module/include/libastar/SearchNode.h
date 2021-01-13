@@ -1,0 +1,1 @@
+../../src/libastar/src/SearchNode.h

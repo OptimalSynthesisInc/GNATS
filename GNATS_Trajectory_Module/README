@@ -1,0 +1,97 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2020
+Optimal Synthesis Inc.
+All rights reserved.
+
+
+Directory Contents:
+    bin             top-level bin directory. the makefiles will copy each
+                    sub-project's compiled executable here.
+    include         top-level include directory. external library 
+                    headers go here. the makefiles will copy each sub-project's
+                    header files here as a part of the build process.
+    lib             top-level lib directory. external libraries go here.
+                    the makefiles will copy each sub-projects compiled
+                    libraries here as part of the build process.
+    share           application data and config files. the makefiles
+                    will copy each sub-project's share content here as
+                    as part of the build process.
+    src             top-level source dir containing sub-projects
+      libairport_layout
+                      Functionality regarding airport layout data access and operations.
+      libastar        A* search library for route generator.
+      libbada         bada library sources for parsing PTF and OPF files
+      libcommon       Commonly shared library
+      libcontroller   Controller module library
+      libcuda_compat  cuda compatability library sources for building host-only
+                      binaries
+      libnats_data   sources for reading NAS data obtained from NATS. NOTE:
+                      this library does NOT read original libsysdata.a encrypted
+                      NATS data files, the original NATS *.crypt files were
+                      decrypted using a modified version of NATS and then 
+                      re-encrypted using liblektor.
+      libfp           library for expanding flight plan strings
+      libgeomutils    great circle geometry functions
+      libhuman_error  Human Error module library
+      liblektor       256-bit AES encryption library for *.crypt files
+      libpilot        Pilot module library
+      librg
+      libtg           trajectory generator c++ API library
+      libtrx          library for parsing TRX files
+      libuser
+      libwind         library for loading h5 wind files created by wind_tool
+      tg              trajectory generator executable
+      wind_tool       utility for converting RUC/RAP grib files to HDF5 for tg
+    Makefile        top-level makefile for building all projects
+    README          this file
+
+
+System Requirements
+  OS: Linux 64-bit (Tested on Ubuntu 12.04)
+  CUDA GPU: Compute Capability >= 2.0 (Tested on GeForce GTX Titan compute 3.5)
+  Memory: 16GB RAM
+  Compiler: g++ (Tested with 4.8)
+  CUDA Toolkit: 5.5
+  Other: OpenMP
+
+
+External Dependencies
+  HDF5                    Used by wind_tool, libtg/tg, librg/rg (use system libraries)
+  zlib(1.2.4 or later)    Required by HDF5 (use system libraries)
+  Grib API                Used by wind_tool (sources included)
+  Jasper                  Required by Grib API (sources included)
+  Swig                    Used to create API wrappers for libtg (optional)
+  Python                  For creating Python Swig'ed wrappers for libtg (optional)
+  Octave                  For creating Octave Swig'ed wrappers for libtg (optional)
+  CUDA                    CUDA Runtime API is used by LPSS for device operation
+
+
+Build Notes:
+  The top-level Makefile can be used to build everything.  Use the
+  Make environment variable USE_GPU=1 to build a CUDA GPU version.
+  Use the variable USE_GPU=0 to build a multi-threaded CPU-only version.
+
+  For example:
+        > make USE_GPU=1
+
+    This builds a CUDA version of the software, where appropriate.
+        > make USE_GPU=0
+
+    This builds a CPU-only version of the software using OpenMP
+    where appropriate.
+
+  You can use the -j [N] option to enable parallel builds, where [N]
+  is the maximum number of jobs to launch.  If [N] is not specified
+  then an unlimited number of jobs will be used.  Using -j can greatly
+  speed up the build process.
+
+  For example:
+		> make -j 12 USE_GPU=1
+
+    This uses a maximum of 12 parallel jobs to build a CUDA version
+    of the software, where appropriate
+        > make -j USE_GPU=0
+
+    This uses as many jobs as possible to build a CPU-only version
+    of the software.

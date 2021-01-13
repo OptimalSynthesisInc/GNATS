@@ -1,0 +1,59 @@
+CXX=g++
+
+EXECUTABLE=test_exprtk
+
+SOURCES=$(shell find . -name 'test_exprtk.cpp')
+HEADERS=$(shell find . -name '*.h')
+
+#NEWFUNC_OBJS=$(shell find . -name 'newFunc_*.o')
+
+OBJS=$(SOURCES:.cpp=.o)
+
+CXXFLAGS=-g -O3 -fPIC -Wall -Wextra
+LDFLAGS=-L/usr/local/lib -L../lib -L../../../lib -L../../wind_tool/third-party/hdf5install/lib
+LIBS=-ljson-c -lcommon -lrg -lcontroller -lpilot -ltg -lcuda_compat -ltrx -lbada -lfacet_data -lghthash -llektor -lfp -lgeomutils -lm -lhdf5 -lz -ldl -lgomp -lairport_layout -lastar -lwind
+INCLUDE_DIRS= \
+	-I../include \
+	-I../../../include/json-c \
+	-I../../../include/libairport_layout \
+	-I../../../include/libastar \
+	-I../../../include/libcommon \
+	-I../../../include/libcontroller \
+	-I../../../include/libcuda_compat \
+	-I../../../include/libfacet_data \
+	-I../../../include/libbada \
+	-I../../../include/libtrx \
+	-I../../../include/libgeomutils \
+	-I../../../include/librg \
+	-I../../../include/libtg \
+	-I../../../include/libfp \
+	-I../../../include/libpilot \
+	-I../../../include/libwind \
+	-I../../libairport_layout/src \
+	-I../../libastar/src \
+	-I../../libcommon/src \
+	-I../../libcontroller/src \
+	-I../../libcuda_compat/src \
+	-I../../libfacet_data/src \
+	-I../../libbada/src \
+	-I../../libtrx/src \
+	-I../../libgeomutils/src \
+	-I../../librg/src \
+	-I../../libtg/src \
+	-I../../libfp/src \
+	-I../../libpilot/src \
+	-I../../libwind/src \
+	-I../../exprtk \
+	-I../../wind_tool/third-party/hdf5install/include
+
+all:
+	@echo "Compiling source code...."
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(INCLUDE_DIRS) -c $(SOURCES)
+
+	@echo ""
+	@echo "Generating executable file...."
+	@echo ""
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(EXECUTABLE).o -o $(EXECUTABLE) $(LIBS)
+
+clean:
+	rm -rf *.o $(EXECUTABLE)

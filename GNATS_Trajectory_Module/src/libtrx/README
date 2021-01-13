@@ -1,0 +1,18 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2018
+Optimal Synthesis Inc.
+All rights reserved.
+
+libtrx - TRX and MFL parsing library
+
+This library is used for parsing OLD NATS TRX files and MFL files.
+
+The TRX file contains flight plans.
+The MFL file contains the Maximum Flight Level for each flight in the TRX file.
+
+NATS has since been updated to use a TRX file which includes the MFL data.
+However, at the time of this development, OSI was still using old TRX files
+with separate MFL files. In the future, the TRX and MFL files should be
+combined and this library should be updated to read the combined file.
+

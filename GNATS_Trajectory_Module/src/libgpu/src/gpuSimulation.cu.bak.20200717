@@ -1,0 +1,586 @@
+#include "tg_aircraft.h"
+#include "tg_rap.h"
+#include "tg_simulation.h"
+
+#include "cuda_runtime_api.h"
+#include "device_functions.h"
+
+#include "CUDA_Aircraft_new.h"
+
+#include <cmath>
+#include "gpuSimulation.h.bak.20200717"
+
+using namespace std;
+
+#define NUM_STREAMS             4
+
+//long t_start = 0;
+//long t_end = 0;
+//long t_step = 0;
+//long t_data_collection_period_airborne = 1;
+
+
+int num_flights;
+int stream_len;
+int num_overflow;
+
+cuda_stream_t* streams;
+
+__device__ real_t* oliver_latitude_deg;
+
+CUDA_Aircraft_new cudaObj;
+
+static int set_device_ac_pointers() {
+//#if USE_GPU
+
+//	KernelParameters* params;
+//	cudaMalloc((void**)&params, sizeof(KernelParameters));
+//	//checkCUDAError("malloc kernel parameters");
+
+	cudaMemcpy(oliver_latitude_deg, d_aircraft_soa.latitude_deg, sizeof(real_t), cudaMemcpyHostToDevice);
+
+	cudaMemcpy(c_latitude_deg, d_aircraft_soa.latitude_deg, sizeof(real_t), cudaMemcpyHostToDevice);
+//	cudaMemcpy(c_longitude_deg, &d_aircraft_soa.longitude_deg, sizeof(real_t*), cudaMemcpyHostToDevice);
+
+// Not working yet
+//	cudaMemcpyToSymbol(c_latitude_deg, &d_aircraft_soa.latitude_deg, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+
+
+
+
+
+
+//	c_departure_time_sec = d_aircraft_soa.departure_time_sec;
+//	c_cruise_alt_ft = d_aircraft_soa.cruise_alt_ft;
+//	c_cruise_tas_knots = d_aircraft_soa.cruise_tas_knots;
+//
+//	c_origin_airport_elevation_ft = d_aircraft_soa.origin_airport_elevation_ft;
+//	c_destination_airport_elevation_ft = d_aircraft_soa.destination_airport_elevation_ft;
+//	c_sector_index = d_aircraft_soa.sector_index;
+//	c_latitude_deg = d_aircraft_soa.latitude_deg;
+//	c_longitude_deg = d_aircraft_soa.longitude_deg;
+//	c_altitude_ft = d_aircraft_soa.altitude_ft;
+//	c_rocd_fps = d_aircraft_soa.rocd_fps;
+//	c_tas_knots = d_aircraft_soa.tas_knots;
+//	c_course_rad = d_aircraft_soa.course_rad;
+//	c_fpa_rad = d_aircraft_soa.fpa_rad;
+//	c_flight_phase = d_aircraft_soa.flight_phase;
+//
+//	c_landed_flag = d_aircraft_soa.landed_flag;
+//	c_adb_aircraft_type_index = d_aircraft_soa.adb_aircraft_type_index;
+//	c_holding_started = d_aircraft_soa.holding_started;
+//	c_holding_stopped = d_aircraft_soa.holding_stopped;
+//	c_has_holding_pattern = d_aircraft_soa.has_holding_pattern;
+//	c_hold_start_index = d_aircraft_soa.hold_start_index;
+//	c_hold_end_index = d_aircraft_soa.hold_end_index;
+//	c_holding_tas_knots = d_aircraft_soa.holding_tas_knots;
+//	c_target_waypoint_index = d_aircraft_soa.target_waypoint_index;
+//	c_target_altitude_ft = d_aircraft_soa.target_altitude_ft;
+//	c_toc_index = d_aircraft_soa.toc_index;
+//	c_tod_index = d_aircraft_soa.tod_index;
+//
+//
+//
+//
+//
+//	c_target_waypoint_node_ptr = h_aircraft_soa.target_waypoint_node_ptr;
+//	c_flag_target_waypoint_change = h_aircraft_soa.flag_target_waypoint_change;
+//	c_last_WaypointNode_ptr = h_aircraft_soa.last_WaypointNode_ptr;
+//	c_flag_reached_meterfix_point = h_aircraft_soa.flag_reached_meterfix_point;
+//
+//	c_V_horizontal = h_aircraft_soa.V_horizontal;
+//	c_V_ground = h_aircraft_soa.tas_knots_ground;
+//	c_acceleration_aiming_waypoint_node_ptr = h_aircraft_soa.acceleration_aiming_waypoint_node_ptr;
+//	c_acceleration = h_aircraft_soa.acceleration;
+//	c_V2_point_latitude_deg = h_aircraft_soa.V2_point_latitude_deg;
+//	c_V2_point_longitude_deg = h_aircraft_soa.V2_point_longitude_deg;
+//	c_estimate_touchdown_point_latitude_deg = h_aircraft_soa.estimate_touchdown_point_latitude_deg;
+//	c_estimate_touchdown_point_longitude_deg = h_aircraft_soa.estimate_touchdown_point_longitude_deg;
+//	c_t_takeoff = h_aircraft_soa.t_takeoff;
+//	c_t_landing = h_aircraft_soa.t_landing;
+//	c_hold_flight_phase = h_aircraft_soa.hold_flight_phase;
+//	c_course_rad_runway = h_aircraft_soa.course_rad_runway;
+//	c_course_rad_taxi = h_aircraft_soa.course_rad_taxi;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Comment out.  Oliver Chen  2020.06.22
+/*
+	cudaMemcpyToSymbol(c_departure_time_sec, &d_aircraft_soa.departure_time_sec, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_cruise_alt_ft, &d_aircraft_soa.cruise_alt_ft, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_cruise_tas_knots, &d_aircraft_soa.cruise_tas_knots, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_flight_plan_latitude_deg, &d_aircraft_soa.flight_plan_latitude_deg, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_flight_plan_longitude_deg, &d_aircraft_soa.flight_plan_longitude_deg, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_flight_plan_length, &d_aircraft_soa.flight_plan_length, sizeof(int*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_flight_plan_waypoint_name, d_aircraft_soa.flight_plan_waypoint_name.data(), d_aircraft_soa.flight_plan_waypoint_name.size() * sizeof(std::string), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_destination_airport_elevation_ft, &d_aircraft_soa.destination_airport_elevation_ft, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_sector_index, &d_aircraft_soa.sector_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_latitude_deg, &d_aircraft_soa.latitude_deg, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_longitude_deg, &d_aircraft_soa.longitude_deg, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_altitude_ft, &d_aircraft_soa.altitude_ft, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_rocd_fps, &d_aircraft_soa.rocd_fps, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_tas_knots, &d_aircraft_soa.tas_knots, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_course_rad, &d_aircraft_soa.course_rad, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_fpa_rad, &d_aircraft_soa.fpa_rad, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_flight_phase, &d_aircraft_soa.flight_phase, sizeof(ENUM_Flight_Phase*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_landed_flag, &d_aircraft_soa.landed_flag, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_adb_aircraft_type_index, &d_aircraft_soa.adb_aircraft_type_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_holding_started, &d_aircraft_soa.holding_started, sizeof(bool*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_holding_stopped, &d_aircraft_soa.holding_stopped, sizeof(bool*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_has_holding_pattern, &d_aircraft_soa.has_holding_pattern, sizeof(bool*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_hold_start_index, &d_aircraft_soa.hold_start_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_hold_end_index, &d_aircraft_soa.hold_end_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_flight_mode_backup, &d_aircraft_soa.flight_mode_backup, sizeof(flight_mode_e*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_holding_tas_knots, &d_aircraft_soa.holding_tas_knots, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_target_waypoint_index, &d_aircraft_soa.target_waypoint_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_target_altitude_ft, &d_aircraft_soa.target_altitude_ft, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_toc_index, &d_aircraft_soa.toc_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	cudaMemcpyToSymbol(c_tod_index, &d_aircraft_soa.tod_index, sizeof(int*), 0, cuda_memcpy_HtoD);
+	//cudaMemcpyToSymbol(c_ignore_flag, &d_aircraft_soa.ignore_flag, sizeof(bool*), 0, cuda_memcpy_HtoD);
+*/
+
+
+//#else
+//	int num_flights = get_num_flights();
+//
+//	c_departure_time_sec = d_aircraft_soa.departure_time_sec;
+//	c_cruise_alt_ft = d_aircraft_soa.cruise_alt_ft;
+//	c_cruise_tas_knots = d_aircraft_soa.cruise_tas_knots;
+//
+//	c_origin_airport_elevation_ft = d_aircraft_soa.origin_airport_elevation_ft;
+//	c_destination_airport_elevation_ft = d_aircraft_soa.destination_airport_elevation_ft;
+//	c_sector_index = d_aircraft_soa.sector_index;
+//	c_latitude_deg = d_aircraft_soa.latitude_deg;
+//	c_longitude_deg = d_aircraft_soa.longitude_deg;
+//	c_altitude_ft = d_aircraft_soa.altitude_ft;
+//	c_rocd_fps = d_aircraft_soa.rocd_fps;
+//	c_tas_knots = d_aircraft_soa.tas_knots;
+//	c_course_rad = d_aircraft_soa.course_rad;
+//	c_fpa_rad = d_aircraft_soa.fpa_rad;
+//	c_flight_phase = d_aircraft_soa.flight_phase;
+//
+//	c_landed_flag = d_aircraft_soa.landed_flag;
+//	c_adb_aircraft_type_index = d_aircraft_soa.adb_aircraft_type_index;
+//	c_holding_started = d_aircraft_soa.holding_started;
+//	c_holding_stopped = d_aircraft_soa.holding_stopped;
+//	c_has_holding_pattern = d_aircraft_soa.has_holding_pattern;
+//	c_hold_start_index = d_aircraft_soa.hold_start_index;
+//	c_hold_end_index = d_aircraft_soa.hold_end_index;
+//	c_holding_tas_knots = d_aircraft_soa.holding_tas_knots;
+//	c_target_waypoint_index = d_aircraft_soa.target_waypoint_index;
+//	c_target_altitude_ft = d_aircraft_soa.target_altitude_ft;
+//	c_toc_index = d_aircraft_soa.toc_index;
+//	c_tod_index = d_aircraft_soa.tod_index;
+//	//c_ignore_flag = d_aircraft_soa.ignore_flag;
+//#endif
+
+
+
+
+
+
+//	c_target_waypoint_node_ptr =
+//			h_aircraft_soa.target_waypoint_node_ptr;
+//
+//	c_flag_target_waypoint_change = h_aircraft_soa.flag_target_waypoint_change;
+//	c_last_WaypointNode_ptr = h_aircraft_soa.last_WaypointNode_ptr;
+//	c_flag_reached_meterfix_point = h_aircraft_soa.flag_reached_meterfix_point;
+//
+//	c_V_horizontal = h_aircraft_soa.V_horizontal;
+//	c_V_ground = h_aircraft_soa.tas_knots_ground;
+//	c_acceleration_aiming_waypoint_node_ptr = h_aircraft_soa.acceleration_aiming_waypoint_node_ptr;
+//	c_acceleration = h_aircraft_soa.acceleration;
+//	c_V2_point_latitude_deg = h_aircraft_soa.V2_point_latitude_deg;
+//	c_V2_point_longitude_deg = h_aircraft_soa.V2_point_longitude_deg;
+//	c_estimate_touchdown_point_latitude_deg = h_aircraft_soa.estimate_touchdown_point_latitude_deg;
+//	c_estimate_touchdown_point_longitude_deg = h_aircraft_soa.estimate_touchdown_point_longitude_deg;
+//	c_t_takeoff = h_aircraft_soa.t_takeoff;
+//	c_t_landing = h_aircraft_soa.t_landing;
+//	c_hold_flight_phase = h_aircraft_soa.hold_flight_phase;
+//	c_course_rad_runway = h_aircraft_soa.course_rad_runway;
+//	c_course_rad_taxi = h_aircraft_soa.course_rad_taxi;
+
+	return 0;
+}
+
+static int set_device_adb_pointers() {
+
+// Comment out.  Oliver Chen  2020.06.22
+//	cudaMemcpyToSymbol(c_adb_num_rows, h_adb_num_rows,
+//			adb_ptf_type_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_table_start_index, h_adb_table_start_index,
+//			adb_ptf_type_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_lower_bound_row, h_adb_lower_bound_row,
+//			adb_ptf_lower_bound_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_fl, h_adb_fl,
+//			adb_ptf_total_row_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_vtas_climb_knots, h_adb_vtas_climb_knots,
+//			adb_ptf_total_row_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_vtas_descent_knots, h_adb_vtas_descent_knots,
+//			adb_ptf_total_row_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_roc_fpm, h_adb_roc_fpm,
+//			adb_ptf_total_row_num*sizeof(short), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_adb_rod_fpm, h_adb_rod_fpm,
+//			adb_ptf_total_row_num*sizeof(short), 0, cuda_memcpy_HtoD);
+
+	return 0;
+}
+
+int set_device_ruc_pointers() {
+	int nlat = 1+ceil((g_lat_max-g_lat_min)/g_lat_step);
+	int nlon = 1+ceil((g_lon_max-g_lon_min)/g_lon_step);
+	int nalt = 1+ceil((g_alt_max-g_alt_min)/g_alt_step);
+//#if USE_GPU
+
+
+
+
+// Comment out.  Oliver Chen  2020.06.22
+//	cudaMemcpyToSymbol(c_wind_north, &d_wind_north, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_wind_east, &d_wind_east, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_wind_north_unc, &d_wind_north_unc, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_wind_east_unc, &d_wind_east_unc, sizeof(real_t*), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lat_min, &g_lat_min, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lat_max, &g_lat_max, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lat_step, &g_lat_step, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lon_min, &g_lon_min, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lon_max, &g_lon_max, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_lon_step, &g_lon_step, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_alt_min, &g_alt_min, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_alt_max, &g_alt_max, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_alt_step, &g_alt_step, sizeof(real_t), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_num_lat_cells, &nlat, sizeof(int), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_num_lon_cells, &nlon, sizeof(int), 0, cuda_memcpy_HtoD);
+//	cudaMemcpyToSymbol(c_num_alt_cells, &nalt, sizeof(int), 0, cuda_memcpy_HtoD);
+
+
+
+
+//#else
+//	c_wind_north = d_wind_north;
+//	c_wind_east = d_wind_east;
+//	c_wind_north_unc = d_wind_north_unc;
+//	c_wind_east_unc = d_wind_east_unc;
+//	c_lat_min = g_lat_min;
+//	c_lat_max = g_lat_max;
+//	c_lat_step = g_lat_step;
+//	c_lon_min = g_lon_min;
+//	c_lon_max = g_lon_max;
+//	c_lon_step = g_lon_step;
+//	c_alt_min = g_alt_min;
+//	c_alt_max = g_alt_max;
+//	c_alt_step = g_alt_step;
+//	c_num_lat_cells = nlat;
+//	c_num_lon_cells = nlon;
+//	c_num_alt_cells = nalt;
+//#endif
+	return 0;
+}
+
+__device__ float oliver_a1 = 0.0;
+
+__device__ float* dev_hello_kitty;
+
+
+__global__ void cuda_propagate_flights() {
+printf("cuda_propagate_flights() starting\n");
+	c_latitude_deg[0] = 2.2222;
+	oliver_latitude_deg[0] = 2.2222;
+
+printf("cuda_propagate_flights() --> oliver_latitude_deg[0] = %f\n", oliver_latitude_deg[0]);
+}
+
+__global__ void mykernel() {
+printf("\nmykernel() starting\n");
+
+	oliver_a1 = 4.4;
+
+	printf("mykernel() --> (A) oliver_a1 = %f\n", oliver_a1);
+
+	*dev_hello_kitty = 55.55;
+	printf("mykernel() --> *dev_hello_kitty = %f\n", *dev_hello_kitty);
+}
+
+
+
+
+
+__global__ void myCuda(CUDA_Aircraft_new* cudaPtr) {
+printf("\nmyCuda() starting\n");
+	cudaPtr->latitude_deg[0] = 222.2;
+}
+
+
+
+
+int propagate_flights_gpu(const float& input_t_end,
+		const float& input_t_step,
+		const float& input_t_step_terminal,
+		const float& input_t_step_airborne) {
+printf("propagate_flights_gpu() starting\n");
+	t_start = 0; // Reset
+	t_end = input_t_end; // Update
+
+	t_step = input_t_step;
+	t_step_terminal = input_t_step_terminal;
+	t_data_collection_period_airborne = input_t_step_airborne;
+
+	if (flag_realTime_simulation) {
+		// Set time steps of real-time simulation in seconds
+		t_step = time_step_surface_realTime_simulation;
+		t_step_terminal = time_step_terminal_realTime_simulation;
+		t_data_collection_period_airborne = time_step_airborne_realTime_simulation;
+	}
+
+	tg_pathFilename_polygon.assign("NONE"); // Default
+	tg_pathFilename_sigmet.assign("NONE"); // Default
+
+	if (60 < t_step) {
+		t_step = 60;
+		printf("Simulation: Surface time step can't exceed 60 sec.  Resetting it to 60 sec");
+	} else if (t_step <= 0) {
+		t_step = 0.1;
+		printf("Simulation: Surface time step must be larger than zero.  Resetting it to 0.1 sec");
+	}
+
+	if (60 < t_step_terminal) {
+		t_step_terminal = 60;
+		printf("Simulation: Terminal time step can't exceed 60 sec.  Resetting it to 60 sec");
+	} else if (t_step_terminal <= 0) {
+		t_step_terminal = t_step;
+		printf("Simulation: Terminal time step must be larger than zero.  Resetting it to 0.1 sec");
+	}
+
+	if (60 < t_data_collection_period_airborne) {
+		t_data_collection_period_airborne = 60;
+		printf("Simulation: Time step(above TRACON) can't exceed 60 sec.  Resetting it to 60 sec");
+	} else if (t_data_collection_period_airborne <= 0) {
+		t_data_collection_period_airborne = t_step_terminal;
+		printf("Simulation: Time step(above TRACON) must be larger than zero.  Resetting it to 0.1 sec");
+	}
+
+	nats_simulation_status = NATS_SIMULATION_STATUS_READY; // Reset
+
+	num_flights = get_num_flights();
+
+
+
+
+
+
+
+
+
+
+
+
+printf("00000000000000000000000000000000000000000000000\n");
+
+	cudaError_t err;
+
+//	cudaObj = CUDA_Aircraft_new();
+//	cudaObj.latitude_deg[0] = 111.1;
+//	printf("(BEFORE) cudaObj.latitude_deg[0] = %f\n", cudaObj.latitude_deg[0]);
+//
+//	CUDA_Aircraft_new* tempPtr;
+//	*tempPtr = cudaObj;
+//
+//	myCuda<<<1, 1>>>(tempPtr);
+
+	CUDA_Aircraft_new cudaObj1 = CUDA_Aircraft_new();
+	cudaObj1.latitude_deg[0] = 111.1;
+	printf("(BEFORE) cudaObj1.latitude_deg[0] = %f\n", cudaObj1.latitude_deg[0]);
+	CUDA_Aircraft_new* tempPtr;
+	*tempPtr = cudaObj1;
+	myCuda<<<1, 1>>>(tempPtr);
+
+	printf("(AFTER) cudaObj1.latitude_deg[0] = %f\n", cudaObj1.latitude_deg[0]);
+
+printf("11111111111111111111111111111111111111111111111111\n");
+
+
+	float* host_hello_kitty;
+	host_hello_kitty = (float*)calloc(1, sizeof(float));
+	*host_hello_kitty = 11.11;
+printf("Stop point 1\n");
+	cudaMalloc((void**)&dev_hello_kitty, sizeof(real_t));
+printf("Stop point 2\n");
+	//cudaMemcpy(dev_hello_kitty, host_hello_kitty, sizeof(real_t), cudaMemcpyHostToDevice);
+
+cudaMemcpyToSymbol(dev_hello_kitty, host_hello_kitty, sizeof(float *), size_t(0), cudaMemcpyHostToDevice);
+printf("Stop point 3\n");
+	printf("\n(BEFORE) host_hello_kitty = %f\n", *host_hello_kitty);
+
+
+
+
+
+	oliver_a1 = 2.2;
+
+	printf("\n(BEFORE) oliver_a1 = %f\n", oliver_a1);
+
+
+
+	mykernel<<<1,1>>>();
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+		printf("mykernel Error : %s\n", cudaGetErrorString(err));
+	else
+		printf("mykernel Good Good Good\n");
+
+	printf("\n(AFTER) oliver_a1 = %f\n", oliver_a1);
+
+
+
+
+
+	//cudaMemcpyAsync(&host_hello_kitty, &dev_hello_kitty, sizeof(real_t*), cudaMemcpyDeviceToHost);
+
+	//cudaMemcpy(&host_hello_kitty, &dev_hello_kitty, sizeof(real_t*), cudaMemcpyDeviceToHost);
+
+	//cudaMemcpy(dev_hello_kitty, host_hello_kitty, sizeof(real_t), cudaMemcpyDeviceToHost);
+	cudaMemcpyToSymbol(&host_hello_kitty, &dev_hello_kitty, sizeof(float *), size_t(0), cudaMemcpyDeviceToHost);
+
+	printf("\n(AFTER) host_hello_kitty = %f\n", *host_hello_kitty);
+	printf("\n");
+
+
+
+
+	d_aircraft_soa.latitude_deg[0] = 1.1111;
+
+	cudaMalloc((void**)&c_latitude_deg, sizeof(real_t*));
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+	    printf("cudaMalloc c_latitude_deg Error : %s\n", cudaGetErrorString(err));
+	else
+		printf("cudaMalloc c_latitude_deg successfully\n");
+
+
+	cudaMalloc((void**)&oliver_latitude_deg, sizeof(real_t*));
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+	    printf("cudaMalloc oliver_latitude_deg Error : %s\n", cudaGetErrorString(err));
+	else
+		printf("cudaMalloc oliver_latitude_deg successfully\n");
+
+
+
+
+	// set device constant pointers
+	set_device_adb_pointers();
+	//set_device_ac_pointers();
+	cudaMemcpy(oliver_latitude_deg, d_aircraft_soa.latitude_deg, sizeof(real_t), cudaMemcpyHostToDevice);
+
+	cudaMemcpy(c_latitude_deg, d_aircraft_soa.latitude_deg, sizeof(real_t), cudaMemcpyHostToDevice);
+
+	set_device_ruc_pointers();
+
+/*
+ * DEBUG MODE STARTS
+ */
+ /*for (int i=0;i<adb_ptf_type_num;++i)
+		printf("c_adb_table_start_index[%d] = %d, c_adb_num_rows[%d] = %d\n",
+				i,(int)c_adb_table_start_index[i],i,(int)c_adb_num_rows[i]);
+	for (int i=0;i<adb_ptf_total_row_num;++i)
+		printf("c_adb_fl[%d] = %d, c_adb_vtas_climb_knots[%d] = %d\n",
+				i, (int)c_adb_fl[i], i, (int)c_adb_vtas_climb_knots[i]);*/
+	/*
+	 * DEBUG MODE TILL HERE
+	 */
+	// compute kernel launch parameters
+	//dim3 block_size(BLOCK_SIZE, 1, 1);
+	//dim3 grid_size( ceil((float)num_flights / (float)block_size.x), 1, 1);
+
+	//cuda_stream_t streams[NUM_STREAMS];
+	streams = (cuda_stream_t*)malloc(NUM_STREAMS*sizeof(cuda_stream_t*));
+	for (int i=0; i < NUM_STREAMS; ++i) {
+		cuda_stream_create(&streams[i]);
+	}
+
+	stream_len = ceil((real_t)num_flights / (real_t)NUM_STREAMS);
+
+	// compute the number of elements by which NUM_STREAMS*stream_len
+	// exceeds num_flights
+	num_overflow = NUM_STREAMS * stream_len - num_flights;
+	//printf("  num_flights=%d, stream_len=%d, num_overflow=%d\n", num_flights, stream_len, num_overflow);
+
+#if ENABLE_PROFILER
+	cudaProfilerStart();
+#endif
+
+	printf("\nFlight propagation is initialized.  Waiting for start.\n");
+
+
+
+
+
+
+
+
+//	cuda_propagate_flights ();
+
+	cuda_propagate_flights<<<1, 1>>>();
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+	    printf("Called cuda_propagate_flights() Error: %s\n", cudaGetErrorString(err));
+	else
+		printf("Called cuda_propagate_flights() done successfully\n");
+
+
+
+
+	//cuMemcpyDtoH(d_aircraft_soa.latitude_deg, c_latitude_deg, sizeof(real_t));
+
+	cudaMemcpyAsync(d_aircraft_soa.latitude_deg, c_latitude_deg, sizeof(real_t*), cudaMemcpyDeviceToHost);
+
+	//cudaMemcpy(d_aircraft_soa.latitude_deg, c_latitude_deg, sizeof(real_t), cudaMemcpyDeviceToHost);
+	//cudaMemcpy(&(d_aircraft_soa.latitude_deg), &c_latitude_deg, sizeof(real_t), cudaMemcpyDeviceToHost);
+	//cudaMemcpy(&c_latitude_deg, &d_aircraft_soa.latitude_deg, sizeof(real_t), cudaMemcpyDeviceToHost);
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+	    printf("\ncudaMemcpy c to d Error: %s\n", cudaGetErrorString(err));
+	else
+		printf("\ncudaMemcpy c to d Done\n");
+
+
+
+
+	//printf("(1) --> c_latitude_deg[0] = %f\n", c_latitude_deg[0]);
+	printf("\n(2) --> d_aircraft_soa.latitude_deg[0] = %f\n", d_aircraft_soa.latitude_deg[0]);
+
+
+
+
+
+	//cudaMemcpyAsync(d_aircraft_soa.latitude_deg, oliver_latitude_deg, sizeof(real_t), cudaMemcpyDeviceToHost);
+	cudaMemcpyToSymbol(&(d_aircraft_soa.latitude_deg), &oliver_latitude_deg, sizeof(float *), size_t(0), cudaMemcpyDeviceToHost);
+
+	err = cudaGetLastError();
+	if (err != cudaSuccess)
+		printf("\ncudaMemcpy oliver to d Error: %s\n", cudaGetErrorString(err));
+	else
+		printf("\ncudaMemcpy oliver to d Done successfully\n");
+	printf("\n(3) --> d_aircraft_soa.latitude_deg[0] = %f\n", d_aircraft_soa.latitude_deg[0]);
+
+
+
+
+
+//	std::thread thread_propagation_proc(propagate_flights_proc);
+//	thread_propagation_proc.detach();
+
+	return 0;
+}

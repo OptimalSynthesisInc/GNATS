@@ -1,0 +1,31 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2018
+Optimal Synthesis Inc.
+All rights reserved.
+
+README - liblektor, lektor
+
+liblektor
+
+c/c++ library for encrypting/decrypting files using the 256-bit AES algorithm.
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+The encryption key is hard-coded in the source of crypto.c.  We do
+this so that the library functions like the libsysdata.a library
+used by NATS to load its encrypted data files.  This means that
+any file encrypted with this library will be tied to the specific
+version of the library that it was encoded with.  If you change the
+encryption key in crypto.c it will not be able to open files that
+were incrypted with a different key.
+
+DO NOT DISTRIBUTE THE SOURCE FOR crypto.c!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+lektor
+
+Application to encrypt/decrypt a file using libcrypto.
+Named after the device James Bond steals from the the Russians in
+'From Russia With Love'.
+

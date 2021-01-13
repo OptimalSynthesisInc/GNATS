@@ -1,0 +1,12 @@
+prefix=/home/oliverchen/Projects/1703/Projects_NATS/NATS_Server/dependency_library/../dist/grib_api
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: grib_api
+Description: The grib_api library
+Version: 1.11.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lgrib_api
+Libs.private: -L${libdir} -lgrib_api -lm -ljasper 

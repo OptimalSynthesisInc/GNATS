@@ -1,0 +1,1 @@
+../../src/libnats_data/src/NatsStar.h

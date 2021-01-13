@@ -1,0 +1,57 @@
+#########################
+#
+# author: Sebastien Villaume <Sebastien.Villaume@smhi.se>
+# created: 6 Oct 2011
+# modified: 13 May 2013
+#
+#########################
+
+#constant conceptsMasterMarsDir="mars" : hidden;
+#constant conceptsLocalMarsDirAll="mars/[centre:s]" : hidden;
+
+
+#concept levTypePacking (unknown,"levTypePackingConcept.def",conceptsLocalMarsDirAll,conceptsMasterMarsDir);
+
+if( indicatorOfTypeOfLevel == 191 ||
+    indicatorOfTypeOfLevel == 192 ||
+    indicatorOfTypeOfLevel == 193 ||
+    indicatorOfTypeOfLevel == 194 ||
+    indicatorOfTypeOfLevel == 195 ||
+    indicatorOfTypeOfLevel == 196 ||
+    indicatorOfTypeOfLevel == 197 ||
+    indicatorOfTypeOfLevel == 198) 
+    {
+    alias mars.levelist = level;
+}
+
+
+alias mars.class    = marsClass;
+alias mars.type     = marsType;
+alias mars.stream   = marsStream;
+alias mars.expver   = experimentVersionNumber;
+alias mars.model    = marsModel;
+alias mars.domain   = globalDomain;
+
+#if ( ( class == 80 && ( indicatorOfTypeOfLevel == 1 ||
+#    			indicatorOfTypeOfLevel == 2 ||
+#    			indicatorOfTypeOfLevel == 3 ||
+#    			indicatorOfTypeOfLevel == 4 ||
+#    			indicatorOfTypeOfLevel == 8 ||
+#    			indicatorOfTypeOfLevel == 102 ||
+#    			indicatorOfTypeOfLevel == 103 ||
+#			indicatorOfTypeOfLevel == 200)) ||
+#    	indicatorOfTypeOfLevel == 191 ||
+#    	indicatorOfTypeOfLevel == 192 ||
+#    	indicatorOfTypeOfLevel == 193 ||
+#    	indicatorOfTypeOfLevel == 194 ||
+#    	indicatorOfTypeOfLevel == 195 ||
+#    	indicatorOfTypeOfLevel == 196 ||
+#    	indicatorOfTypeOfLevel == 197 ||
+#    	indicatorOfTypeOfLevel == 198 ) {
+#    concept trueLevType (unknown,"trueLevType.def",conceptsLocalMarsDirAll,conceptsMasterMarsDir);
+#    alias mars.truelevtype = trueLevType;
+#}
+
+alias ls.dataType   = marsType;
+
+
