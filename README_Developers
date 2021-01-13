@@ -1,0 +1,33 @@
+Complete GNATS Source Code Compilation
+=====================================
+Please go to the directory, respectively.
+The sequence of compiling different projects matters.  Please follow the sequence.
+1. Compile "GNATS_Trajectory_Module"
+   make clean
+   make
+   cp lib/*.so ../GNATS_Server/lib/
+2. Compile "GNATS_Shared_Java_lib"
+   ant
+3. Compile "GNATS_Server"
+   ant
+4. Compile "GNATS_Client"
+   ant
+5. Compile "GNATS_Standalone"
+   ant
+
+GNATS application consists of five projects:
+- GNATS_Client: Client program
+- GNATS_Server: Server program
+- GNATS_Shared_Java_lib: Commonly shared Java library used by both server and client programs
+- GNATS_Standalone: Standalone program
+- GNATS_Trajectory_Module: C++ libraries
+
+
+GNATS_Server depends on project "GNATS_Shared_Java_Lib"
+If shared library from "GNATS_Shared_Java_Lib" change, please rebuild GNATS_Server.
+
+
+Building Project(Java)
+======================
+ant
+
