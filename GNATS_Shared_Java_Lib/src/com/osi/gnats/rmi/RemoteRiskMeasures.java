@@ -24,7 +24,6 @@ The inspiration for the SBIR projects is derived from the FACET software develop
 
 package com.osi.gnats.rmi;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RemoteRiskMeasures extends BaseRemote {
@@ -32,7 +31,7 @@ public interface RemoteRiskMeasures extends BaseRemote {
 	public double getDistanceToRunwayThreshold(int sessionId, String aircraftId) throws RemoteException;
 	public double getDistanceToRunwayEnd(int sessionId, String aircraftId) throws RemoteException;
 	public double getVelocityAlignmentWithRunway(int sessionId, String aircraftId, String procedure) throws RemoteException;
-	public Integer getPassengerCount(String aircraftType) throws RemoteException;
+	public int getPassengerCount(String aircraftType) throws RemoteException;
 	public double getAircraftCost(String aircraftType) throws RemoteException;
 	public Object getFlightsInWakeVortexRange(int sessionId, String refAircraftId, float envelopeStartLength, float envelopeStartBreadth, float envelopeEndLength, float envelopeEndBreadth, float envelopeRangeLength, float envelopeDecline) throws RemoteException;
 	public int setAircraftBookValue(int sessionId, String aircraftId, double aircraftBookValue) throws RemoteException;
@@ -49,6 +48,4 @@ public interface RemoteRiskMeasures extends BaseRemote {
 	public double getDistanceToPavementEdge(int sessionId, String airportId, String aircraftId) throws RemoteException;
 	public int load_FlightPhaseSequence(String filename) throws RemoteException;
 	public void clear_FlightPhaseSequence() throws RemoteException;
-	
-	public int load_aviationOccurenceProfile(String dirPath) throws RemoteException;
 }
