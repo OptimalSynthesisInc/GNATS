@@ -137,14 +137,6 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_propagate_1flights__FFF
 
 /*
  * Class:     com_osi_gnats_engine_CEngine
- * Method:    propagate_flights_gpu
- * Signature: (FF)I
- */
-JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_propagate_1flights_1gpu
-  (JNIEnv *, jobject, jfloat, jfloat);
-
-/*
- * Class:     com_osi_gnats_engine_CEngine
  * Method:    enableConflictDetectionAndResolution
  * Signature: (Z)V
  */
@@ -897,6 +889,86 @@ JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getWeatherPolyg
 
 /*
  * Class:     com_osi_gnats_engine_CEngine
+ * Method:    calculateRelativeVelocity
+ * Signature: (DDDDDD)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateRelativeVelocity
+  (JNIEnv *, jobject, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    calculateBearing
+ * Signature: (DDDD)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateBearing
+  (JNIEnv *, jobject, jdouble, jdouble, jdouble, jdouble);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    calculateDistance
+ * Signature: (DDDDDD)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateDistance
+  (JNIEnv *, jobject, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    calculateWaypointDistance
+ * Signature: (FFFF)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateWaypointDistance
+  (JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getVelocityAlignmentWithRunway
+ * Signature: (ILjava/lang/String;Ljava/lang/String;)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getVelocityAlignmentWithRunway
+  (JNIEnv *, jobject, jint, jstring, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getDistanceToRunwayEnd
+ * Signature: (ILjava/lang/String;)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getDistanceToRunwayEnd
+  (JNIEnv *, jobject, jint, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getDistanceToRunwayThreshold
+ * Signature: (ILjava/lang/String;)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getDistanceToRunwayThreshold
+  (JNIEnv *, jobject, jint, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getRunwayEndpoints
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)[[D
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getRunwayEndpoints
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getPassengerCount
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_getPassengerCount
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getAircraftCost
+ * Signature: (Ljava/lang/String;)D
+ */
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getAircraftCost
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
  * Method:    setAircraftBookValue
  * Signature: (Ljava/lang/String;D)I
  */
@@ -993,14 +1065,6 @@ JNIEXPORT void JNICALL Java_com_osi_gnats_engine_CEngine_clear_1FlightPhaseSeque
 
 /*
  * Class:     com_osi_gnats_engine_CEngine
- * Method:    load_aviationOccurenceProfile
- * Signature: (Ljava/lang/String;)I
- */
-JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_load_1aviationOccurenceProfile
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     com_osi_gnats_engine_CEngine
  * Method:    load_groundVehicle
  * Signature: (Ljava/lang/String;)I
  */
@@ -1062,6 +1126,30 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_externalGroundVehicle_1
  */
 JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_externalGroundVehicle_1inject_1trajectory_1state_1data
   (JNIEnv *, jobject, jstring, jstring, jfloat, jfloat, jfloat, jfloat);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getCenterCodes
+ * Signature: ()[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getCenterCodes
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getCurrentCenter
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_osi_gnats_engine_CEngine_getCurrentCenter
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getFixesInCenter
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getFixesInCenter
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     com_osi_gnats_engine_CEngine
@@ -1150,6 +1238,22 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_clearTerrainData
  */
 JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_setRadarError
   (JNIEnv *, jobject, jstring, jstring, jdouble, jdouble, jdouble, jint);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    getLineOfSight
+ * Signature: (DDDDDDZ)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_com_osi_gnats_engine_CEngine_getLineOfSight
+  (JNIEnv *, jobject, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble, jboolean);
+
+/*
+ * Class:     com_osi_gnats_engine_CEngine
+ * Method:    setNavigationLocationError
+ * Signature: (ILjava/lang/String;Ljava/lang/String;DDDDI)I
+ */
+JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_setNavigationLocationError
+  (JNIEnv *, jobject, jint, jstring, jstring, jdouble, jdouble, jdouble, jdouble, jint);
 
 #ifdef __cplusplus
 }

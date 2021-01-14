@@ -61,89 +61,7 @@ public class ServerCNS extends ServerClass implements RemoteCNS {
 	 * Computes line of sight between source and target, returns range, azimuth, and elevation along with potential terrain or earth curvature masking.
 	 */
 	public double[] getLineOfSight(double observerLat, double observerLon, double observerAlt, double targetLat, double targetLon, double targetAlt) {
-		
-		// Returns an array of (Range, Azimuth, Elevation, Masking)
-		double retVal[] = {0, 0, 0, 0};
-		
-		// Radius of Earth in ft
-		double R = 20902230.97;
-		
-		// Convert latitude/longitude to radian
-		observerLat = Math.toRadians(observerLat);
-		observerLon = Math.toRadians(observerLon);
-		targetLat = Math.toRadians(targetLat);
-		targetLon = Math.toRadians(targetLon);
-		
-		// Transform Lat, Lon, Alt positinos of observer and target to geoinertial frame
-		double xt = (R + targetAlt) * Math.cos(targetLat) * Math.cos(targetLon);
-		double yt = (R + targetAlt) * Math.cos(targetLat) * Math.sin(targetLon);
-		double zt = (R + targetAlt) * Math.sin(targetLat);
-		double xo = (R + observerAlt) * Math.cos(observerLat) * Math.cos(observerLon);
-		double yo = (R + observerAlt) * Math.cos(observerLat) * Math.sin(observerLon);
-		double zo = (R + observerAlt) * Math.sin(observerLat);
-
-		// Get relative position vectors
-		double dxo = xo - xt;
-		double dyo = yo - yt;
-		double dzo = zo - zt;
-		
-		// Get transformed relative vector to observer's topocentric frame
-		double xl = dxo * Math.sin(observerLat) * Math.cos(observerLon) + dyo * Math.sin(observerLat) * Math.sin(observerLon) - dzo * Math.cos(observerLat);
-		double yl = -dxo * Math.sin(observerLat) + dyo * Math.cos(observerLat);
-		double zl = dxo * Math.cos(observerLat) * Math.cos(observerLon) + dyo * Math.cos(observerLat) * Math.sin(observerLon) + dzo * Math.sin(observerLat);
-		
-		
-		// Calculate Range
-		retVal[0] = Math.sqrt(xl * xl + yl * yl + zl * zl);
-		
-		// Calculate Azimuth
-		retVal[1] = Math.atan2((Math.sin(targetLon - observerLon) * Math.cos(targetLat)), (Math.cos(observerLat) * Math.sin(targetLat) - Math.sin(observerLat) * Math.cos(targetLat) * Math.cos(targetLon - observerLon))) * 180.0 / Math.PI;
-		
-		// Calculate Elevation
-		retVal[2] = zl / Math.sqrt(xl * xl + yl * yl) * 180.0 / Math.PI;
-		
-		double startLat = observerLat;
-		double endLat = targetLat;
-		double startLon = observerLon;
-		double endLon = targetLon;
-
-		if(startLat > targetLat) {
-			startLat = targetLat;
-			endLat = observerLat;
-			startLon = targetLon;
-			endLon = observerLon;
-		}
-		
-		startLat *= 180.0 / Math.PI;
-		endLat *= 180.0 / Math.PI;
-		startLon *= 180.0 / Math.PI;
-		endLon *= 180.0 / Math.PI;
-		int altCount = (int)((endLat - startLat) / 0.01);
-		
-		double buffAlt = observerAlt;
-		if(buffAlt > targetAlt)
-			buffAlt = targetAlt;
-				
-		double slope = (endLon - startLon) / (endLat - startLat);
-		while(startLat < endLat) {
-			double newLon = slope * startLat - slope * observerLat * 180.0 / Math.PI+ observerLon * 180.0 / Math.PI;
-			try {
-				if(serverTerrain.getElevation(startLat, newLon) > buffAlt)
-					retVal[3] = 1;
-				buffAlt += Math.abs(observerAlt - targetAlt) / altCount;
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			startLat += 0.01;
-		}
-
-		if (retVal[3] == 0) {
-			if(retVal[2] < Math.asin(R / ((R + observerAlt)) * 180.0 / Math.PI))
-				retVal[3] = 2;
-		}
-		
-		return retVal;
+		return cEngine.getLineOfSight(observerLat, observerLon, observerAlt, targetLat, targetLon, targetAlt, ServerNATS.cifpExists);
 	}
 	
 	/**
@@ -164,17 +82,12 @@ public class ServerCNS extends ServerClass implements RemoteCNS {
 		
 		Aircraft aircraft;
 		aircraft = cEngine.select_aircraft(sessionId, aircraftId);
-		
-		if (parameter.equals("LATITUDE")) {
+		if (parameter.equals("LATITUDE"))
 			aircraft.setLatitude_deg((float)bias + (float)drift * cEngine.get_curr_sim_time() + (float)scaleFactor * aircraft.getLatitude_deg() + (float)Math.sqrt(noiseVariance));
-		}
-		else if (parameter.equals("LONGITUDE")) {
+		else if (parameter.equals("LONGITUDE"))
 			aircraft.setLongitude_deg((float)bias + (float)drift * cEngine.get_curr_sim_time() + (float)scaleFactor * aircraft.getLongitude_deg() + (float)Math.sqrt(noiseVariance));
-		}
-		else {
+		else
 			retVal = 1;
-		}
-		
 		return retVal;
 	}
 

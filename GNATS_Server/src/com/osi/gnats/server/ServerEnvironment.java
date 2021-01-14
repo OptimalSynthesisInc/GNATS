@@ -56,8 +56,7 @@ public class ServerEnvironment extends ServerClass implements RemoteEnvironment 
 	}
 
 	public String[] getCenterCodes(int sessionId) {
-		return new String[] { "KZAU", "KZBW", "KZDC", "KZDV", "KZFW", "KZHU",
-				"KZID", "KZJX", "KZKC", "KZLA", "KZLC", "KZMA", "KZME", "KZMP", "KZNY", "KZOA", "KZOB", "KZSE", "KZTL", "PZAN", "PZHN", "KZAB" };
+		return cEngine.getCenterCodes();
 	}
 
 	public String getCurrentCenter(int sessionId, String aircraftId) {
@@ -112,24 +111,7 @@ public class ServerEnvironment extends ServerClass implements RemoteEnvironment 
 	}
 
 	public String[] getFixesInCenter(int sessionId, String centerId) {
-		ArrayList<String> waypoints = new ArrayList<String>();
-
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader(ServerNATS.getSharePath() + "/artcc/ArtccWaypoints.csv"));
-			String line = reader.readLine();
-
-			while (line != null) {
-				if ((line.split(",")[0]).equals(centerId))
-					waypoints.add(line.split(",")[1]);
-				line = reader.readLine();
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return Arrays.copyOf(waypoints.toArray(), waypoints.size(), String[].class);
+			return cEngine.getFixesInCenter(centerId);
 	}
 
 }

@@ -77,95 +77,28 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 		- The magnitude difference between these velocity vectors is returned to the user.
 	 */
 	public double calculateRelativeVelocity(double refSpeed, double refCourse, double refFpa, double tempSpeed, double tempCourse, double tempFpa) {
-		double refVelocityVertical, refVelocityHorizontal;
-		double tempVelocityVertical,tempVelocityHorizontal;
-		
-		refVelocityVertical = refSpeed * Math.cos(refFpa);
-		tempVelocityVertical = tempSpeed * Math.cos(tempFpa);
-		refVelocityHorizontal = refVelocityVertical * Math.cos(refCourse);
-		tempVelocityHorizontal = tempVelocityVertical * Math.cos(tempCourse);
-		
-		return (tempVelocityHorizontal - refVelocityHorizontal);
+		return cEngine.calculateRelativeVelocity(refSpeed, refCourse, refFpa, tempSpeed, tempCourse, tempFpa);
 	}
 	
 	/*
 	 * Function to calculate bearing angle (in degrees) between to (lat,lon) points.
 	 */
 	public double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
-		double longitude1, longitude2, latitude1, latitude2, longitudeDifference, x, y, bearingAngle;
-		
-		longitude1 = lon1;
-		longitude2 = lon2;
-		latitude1 = Math.toRadians(lat1);
-		latitude2 = Math.toRadians(lat2);
-		longitudeDifference = Math.toRadians(longitude2-longitude1);
-		y = Math.sin(longitudeDifference)*Math.cos(latitude2);
-		x = Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longitudeDifference);  
-		bearingAngle = (Math.toDegrees(Math.atan2(y, x))+360)%360;
-		
-		return bearingAngle;
+		return cEngine.calculateBearing(lat1, lon1, lat2, lon2);
 	}
 	
 	/*
 	 * This function returns the curved distance (in miles) between points (lat1, lon1, alt1) and (lat2, lon2, alt2).
 	 */
 	public double calculateDistance(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2) {
-		final int R = 6371;
-		double latDistance, lonDistance, a, c, distance, altDiff;
-		
-	    latDistance = Math.toRadians(lat2 - lat1);
-	    lonDistance = Math.toRadians(lon2 - lon1);
-	    a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-	            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-	            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-	    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	    distance = R * c * 1000; //Kilometer to meters
-
-	    altDiff = (alt1 - alt2) * 0.3048; // Feet to meters
-	    distance = Math.pow(distance, 2) + Math.pow(altDiff, 2);
-	    distance = Math.sqrt(distance) * 0.00062137;
-	    
-	    return distance;
+		return cEngine.calculateDistance(lat1, lon1, alt1, lat2, lon2, alt2);
 	}
 	
 	/*
 	 * This function returns the runway points (Threshold and end) in the form ((latitudeThreshold, longitudeThreshold),(latitudeEnd, longitudeEnd))
 	 */
 	public double[][] getRunwayEnds(String airportId, String runway) {
-		double[][] runwayEnds;
-		double runwayThresholdLat = 0.0, runwayThresholdLon = 0.0, runwayEndLat = 0.0, runwayEndLon = 0.0;
-		String[] runwayExits;
-		String runwayThreshold, runwayEnd;
-		Object[] airportNodeMap, airportNodeData;
-		int thresholdNodeID= 0, endNodeID = 0;
-		
-		runwayExits = cEngine.getRunwayExits(airportId, runway);
-		runwayThreshold = runwayExits[0];
-		runwayEnd = runwayExits[runwayExits.length - 1];
-		airportNodeMap = cEngine.getLayout_node_map(airportId);
-		airportNodeData = cEngine.getLayout_node_data(airportId);
-		for (int i = 0; i < airportNodeMap.length; i++) {
-			if (((Object[]) airportNodeMap[i])[0].toString().equals(runwayThreshold)) {
-				thresholdNodeID = (int) ((Object[]) airportNodeMap[i])[1];
-			}
-			else if (((Object[]) airportNodeMap[i])[0].toString().equals(runwayEnd)) {
-				endNodeID = (int) ((Object[]) airportNodeMap[i])[1];
-			}
-		}
-
-		for (int i = 0; i < airportNodeData.length; i++) {
-			if ((int) ((Object[]) airportNodeData[i])[0] == thresholdNodeID) {
-				runwayThresholdLat = (double) ((Object[]) airportNodeData[i])[1];
-				runwayThresholdLon = (double) ((Object[]) airportNodeData[i])[2];
-			}
-			else if ((int) ((Object[]) airportNodeData[i])[0] == endNodeID) {
-				runwayEndLat = (double) ((Object[]) airportNodeData[i])[1];
-				runwayEndLon = (double) ((Object[]) airportNodeData[i])[2];
-			}
-		}
-		runwayEnds = new double[][] { { runwayThresholdLat, runwayThresholdLon }, { runwayEndLat, runwayEndLon } };
-	
-		return runwayEnds;
+		return cEngine.getRunwayEndpoints(airportId, runway);
 		
 	}
 	
@@ -271,20 +204,7 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 			return Double.NaN;
 		}
 		
-		double[][] ends;
-		double currentLat, currentLon;
-		String arrivalRunway, arrivalAirport;
-		Aircraft aircraft = null;
-		aircraft = cEngine.select_aircraft(sessionId, aircraftId);
-
-		currentLat = aircraft.getLatitude_deg();
-		currentLon = aircraft.getLongitude_deg();
-		
-		arrivalAirport = cEngine.getArrivalAirport(aircraftId);
-		arrivalRunway = cEngine.getArrivalRunway(aircraftId);
-		
-		ends = getRunwayEnds(arrivalAirport, arrivalRunway);
-		return calculateDistance(currentLat, currentLon, 0.0, ends[0][0], ends[0][1], 0.0);
+		return cEngine.getDistanceToRunwayThreshold(sessionId, aircraftId);
 	}
 
 	/*
@@ -300,20 +220,8 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 			System.out.println(aircraftId + " is an Invalid Flight.");
 			return Double.NaN;
 		}
-		double[][] ends;
-		double currentLat, currentLon;
-		String departureRunway, departureAirport;
-		Aircraft aircraft = null;
-		aircraft = cEngine.select_aircraft(sessionId, aircraftId);
-
-		currentLat = aircraft.getLatitude_deg();
-		currentLon = aircraft.getLongitude_deg();
 		
-		departureAirport = cEngine.getDepartureAirport(aircraftId);
-		departureRunway = cEngine.getDepartureRunway(aircraftId);
-		
-		ends = getRunwayEnds(departureAirport, departureRunway);
-		return calculateDistance(currentLat, currentLon, 0.0, ends[1][0], ends[1][1], 0.0);
+		return cEngine.getDistanceToRunwayEnd(sessionId, aircraftId);
 	}
 	
 	/*
@@ -335,27 +243,8 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 			System.out.println(procedure + " is invalid. Use \"DEPARTURE\" or \"ARRIVAL\".");
 			return Double.NaN;
 		}
-		double alignmentAngle, aircraftCourse, runwayHeading;
-		double[][] runwayEnds;
-
-		String airport = null, runway= null;
-		Aircraft aircraft;
-		aircraft = cEngine.select_aircraft(sessionId, aircraftId);
-		if(procedure.equals("DEPARTURE")) {
-			airport = cEngine.getDepartureAirport(aircraftId);
-			runway = cEngine.getDepartureRunway(aircraftId);
-		}
-		else if(procedure.equals("ARRIVAL")) {
-			airport = cEngine.getArrivalAirport(aircraftId);
-			runway = cEngine.getArrivalRunway(aircraftId);
-		}
-
-		aircraftCourse = aircraft.getCourse_rad() * 180/Math.PI;
-		runwayEnds = getRunwayEnds(airport, runway);
-		runwayHeading = calculateBearing(runwayEnds[0][0], runwayEnds[0][1], runwayEnds[1][0], runwayEnds[1][1]);
-		alignmentAngle = aircraftCourse - runwayHeading;
-
-		return alignmentAngle;
+		
+		return cEngine.getVelocityAlignmentWithRunway(sessionId, aircraftId, procedure);
 		
 	}
 	
@@ -363,28 +252,8 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 	 * This function returns the number of passengers occupying a particular aircraft, assuming 
 	 * 100% load factor. Data for all aircraft types in the ADB database are provided.
 	 */
-	public Integer getPassengerCount(String aircraftType) {
-		String aircraftDataFile = "share/AircraftData/AircraftData.csv";
-		Integer passengerCount = null;
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new File(aircraftDataFile));
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		scanner.useDelimiter("\\n");
-		while(scanner.hasNext()){
-			String[] aircraftEntry = scanner.next().split(",");
-			if(aircraftEntry[0].equals(aircraftType)) {
-				passengerCount = Integer.parseInt(aircraftEntry[1]);
-			}
-        }
-		scanner.close();
-        if (passengerCount == null) {
-        	System.out.println(aircraftType + " is an invalid aircraft type.");
-        }
-		return passengerCount;
+	public int getPassengerCount(String aircraftType) {
+		return cEngine.getPassengerCount(aircraftType);
 	}
 	
 	/*
@@ -392,27 +261,7 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 	 * aircraft. Data for all aircraft types in the ADB database are provided. 
 	 */
 	public double getAircraftCost(String aircraftType) {
-		String aircraftDataFile = "share/AircraftData/AircraftData.csv";
-		double aircraftCost = Double.NaN;
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new File(aircraftDataFile));
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		scanner.useDelimiter("\\n");
-		while(scanner.hasNext()){
-			String[] aircraftEntry = scanner.next().split(",");
-			if(aircraftEntry[0].equals(aircraftType)) {
-				aircraftCost = Double.parseDouble(aircraftEntry[2]);
-			}
-        }
-		scanner.close();
-		if (Double.isNaN(aircraftCost)) {
-        	System.out.println(aircraftType + " is an invalid aircraft type.");
-        }
-        return aircraftCost;
+		return cEngine.getAircraftCost(aircraftType);
 	}
 	
 	
@@ -674,20 +523,7 @@ public class ServerRiskMeasures extends ServerClass implements RemoteRiskMeasure
 	}
 	
 	public double calculateWaypointDistance(float lat1, float lng1, float lat2, float lng2) {
-		double earthRadius = 6371000; //meters
-	    lat1 *= Math.PI / 180.0;
-	    lat2 *= Math.PI / 180.0;
-	    lng1 *= Math.PI / 180.0;
-	    lng2 *= Math.PI / 180.0;
-	    double dLat = lat2-lat1;
-	    double dLng = lng2-lng1;
-	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-	               Math.cos(lat1) * Math.cos(lat2) *
-	               Math.sin(dLng/2) * Math.sin(dLng/2);
-	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	    float dist = (float) (earthRadius * c);
-
-	    return dist * 3.2808;
+		return cEngine.calculateWaypointDistance(lat1, lng1, lat2, lng2);
 	}
 	
 	

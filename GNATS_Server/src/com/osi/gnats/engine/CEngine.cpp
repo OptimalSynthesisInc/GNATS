@@ -96,6 +96,19 @@ ENUM_Flight_Phase getFlightPhase(int flight_phase) {
 	return retPhase;
 }
 
+void tokenize(std::string const &str, const char delim,
+            std::vector<std::string> &out)
+{
+    size_t start;
+    size_t end = 0;
+ 
+    while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
+    {
+        end = str.find(delim, start);
+        out.push_back(str.substr(start, end - start));
+    }
+}
+
 vector<string> intersection(vector<string> &v1,vector<string> &v2){
     std::vector<std::string> v3;
 
@@ -3577,6 +3590,272 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_setTacticalWeatherAvoid
 }
 
 
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateRelativeVelocity
+  (JNIEnv *jniEnv, jobject jobj, jdouble refSpeed, jdouble refCourse, jdouble refFpa, jdouble tempSpeed, jdouble tempCourse, jdouble tempFpa) {
+  	double refVelocityVertical, refVelocityHorizontal;
+	double tempVelocityVertical,tempVelocityHorizontal;
+	
+	refVelocityVertical = refSpeed * cos(refFpa);
+	tempVelocityVertical = tempSpeed * cos(tempFpa);
+	refVelocityHorizontal = refVelocityVertical * cos(refCourse);
+	tempVelocityHorizontal = tempVelocityVertical * cos(tempCourse);
+	
+	return (tempVelocityHorizontal - refVelocityHorizontal);
+  }
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateBearing
+  (JNIEnv *jniEnv, jobject jobj, jdouble lat1, jdouble lon1, jdouble lat2, jdouble lon2) {
+  	double longitude1, longitude2, latitude1, latitude2, longitudeDifference, x, y, bearingAngle;
+  	longitude1 = lon1;
+	longitude2 = lon2;
+	latitude1 = lat1 * PI / 180.;
+	latitude2 = lat2 * PI / 180.;
+	longitudeDifference = (longitude2-longitude1) * PI / 180.;
+	y = sin(longitudeDifference)*cos(latitude2);
+	x = cos(latitude1)*sin(latitude2)-sin(latitude1)*cos(latitude2)*cos(longitudeDifference);  
+	bearingAngle = fmod(atan2(y, x) * 180./PI +360, 360);
+	
+	return bearingAngle;
+  }
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateDistance
+  (JNIEnv *jniEnv, jobject jobj, jdouble lat1, jdouble lon1, jdouble alt1, jdouble lat2, jdouble lon2, jdouble alt2) {
+  	int R = 6371;
+	double latDistance, lonDistance, a, c, distance, altDiff;
+	
+    latDistance = (lat2 - lat1) * PI / 180.;
+    lonDistance = (lon2 - lon1) * PI / 180.;
+    a = sin(latDistance / 2) * sin(latDistance / 2)
+            + cos(lat1 * PI / 180.) * cos(lat2 * PI / 180.)
+            * sin(lonDistance / 2) * sin(lonDistance / 2);
+    c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    distance = R * c * 1000; //Kilometer to meters
+
+    altDiff = (alt1 - alt2) * 0.3048; // Feet to meters
+    distance = pow(distance, 2) + pow(altDiff, 2);
+    distance = sqrt(distance) * 0.00062137;
+    
+    return distance;
+  }
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_calculateWaypointDistance
+  (JNIEnv *jniEnv, jobject jobj, float lat1, float lng1, float lat2, float lng2) {
+	double earthRadius = 6371000; //meters
+    lat1 *= PI / 180.0;
+    lat2 *= PI / 180.0;
+    lng1 *= PI / 180.0;
+    lng2 *= PI / 180.0;
+    double dLat = lat2-lat1;
+    double dLng = lng2-lng1;
+    double a = sin(dLat/2) * sin(dLat/2) +
+               cos(lat1) * cos(lat2) *
+               sin(dLng/2) * sin(dLng/2);
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    float dist = (float) (earthRadius * c);
+
+    return dist * 3.2808;
+ }
+
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getRunwayEndpoints
+  (JNIEnv *jniEnv, jobject jobj, jstring airportId, jstring runway) {
+
+	jclass jcls_string = jniEnv->FindClass("Ljava/lang/String;");
+	jmethodID methodID_toString = jniEnv->GetMethodID(jcls_string, "toString", "()Ljava/lang/String;");
+	string airportString = (string)(char*) jniEnv->GetStringUTFChars(airportId, NULL);
+
+  	
+	double runwayThresholdLat = 0.0, runwayThresholdLon = 0.0, runwayEndLat = 0.0, runwayEndLon = 0.0;
+	string runwayThreshold, runwayEnd;
+	vector<jobject> airportNodeMap, airportNodeData;
+	vector<string> runwayExitVector;
+	int thresholdNodeID= 0, endNodeID = 0;
+	jobject tmpJobject;
+	jstring tmpJstring;
+	
+	jobjectArray runwayExits = Java_com_osi_gnats_engine_CEngine_getRunwayExits(jniEnv, jobj, airportId, runway);
+	int cnt_runwayExits = jniEnv->GetArrayLength(runwayExits);
+	for (int i = 0; i < cnt_runwayExits; i++) {
+		tmpJobject = jniEnv->GetObjectArrayElement(runwayExits, i);
+		tmpJstring = (jstring)jniEnv->CallObjectMethod(tmpJobject, methodID_toString);
+
+		const char *runwayExit = (char*)jniEnv->GetStringUTFChars(tmpJstring, NULL );
+
+		runwayExitVector.push_back(runwayExit);
+	}
+	runwayThreshold = runwayExitVector.at(0);
+	runwayEnd = runwayExitVector.back();
+
+	AirportNodeLink cur_airport_node_link = map_ground_waypoint_connectivity.at(airportString).airport_node_link;
+
+	
+	runwayThresholdLat = getGroundWaypointLatLon(&cur_airport_node_link, runwayThreshold.c_str(), 0);
+	runwayThresholdLon = getGroundWaypointLatLon(&cur_airport_node_link, runwayThreshold.c_str(), 1);
+
+	runwayEndLat = getGroundWaypointLatLon(&cur_airport_node_link, runwayEnd.c_str(), 0);
+	runwayEndLon = getGroundWaypointLatLon(&cur_airport_node_link, runwayEnd.c_str(), 1);
+
+	double runwayEnds[2][2] = {{runwayThresholdLat, runwayThresholdLon}, {runwayEndLat, runwayEndLon}};
+
+	jclass doubleArrayClass = jniEnv->FindClass("[D");
+	jobjectArray retObj = jniEnv->NewObjectArray((jsize) 2, doubleArrayClass, NULL);
+	
+    // Go through the firs dimension and add the second dimension arrays
+    for (int i = 0; i < 2; i++)
+    {
+        jdoubleArray doubleArray = jniEnv->NewDoubleArray(2);
+        jniEnv->SetDoubleArrayRegion(doubleArray, (jsize) 0, (jsize) 2, (jdouble*) runwayEnds[i]);
+        jniEnv->SetObjectArrayElement(retObj, (jsize) i, doubleArray);
+        jniEnv->DeleteLocalRef(doubleArray);
+    }
+
+
+	return retObj;
+
+  }
+
+
+JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_getPassengerCount
+  (JNIEnv *jniEnv, jobject jobj, jstring aircraftType) {
+ 	const char *c_aircraftType = (char*)jniEnv->GetStringUTFChars( aircraftType, NULL );
+	string aircraftTypeStr = c_aircraftType;
+
+	int maxPax = -1;
+	ifstream aircraftDataFile(g_share_dir + "/AircraftData/AircraftData.csv");
+
+  	string line;
+	const char delim = ',';
+	
+	while (getline(aircraftDataFile, line)) {
+			vector<std::string> out;
+    		tokenize(line, delim, out);
+			if (out.at(0) == aircraftTypeStr)
+				maxPax = stoi(out.at(1));
+	}
+
+    return maxPax;
+  }
+
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getAircraftCost
+  (JNIEnv *jniEnv, jobject jobj, jstring aircraftType) {
+
+  	const char *c_aircraftType = (char*)jniEnv->GetStringUTFChars( aircraftType, NULL );
+	string aircraftTypeStr = c_aircraftType;
+
+	double aircraftCost = -1;
+	ifstream aircraftDataFile(g_share_dir + "/AircraftData/AircraftData.csv");
+
+  	string line;
+	const char delim = ',';
+	
+	while (getline(aircraftDataFile, line)) {
+			vector<std::string> out;
+    		tokenize(line, delim, out);
+			if (out.at(0) == aircraftTypeStr)
+				aircraftCost = stod(out.at(2));
+	}
+
+    return aircraftCost;
+  }
+
+
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getVelocityAlignmentWithRunway
+  (JNIEnv *jniEnv, jobject jobj, jint sessionId, jstring aircraftId, jstring procedure) {
+
+  	const char *c_procedure = (char*)jniEnv->GetStringUTFChars( procedure, NULL );
+	string procedureStr = c_procedure;
+
+	double alignmentAngle, aircraftCourse, runwayHeading;
+
+	jstring airport = NULL, runway= NULL;
+
+	if(procedureStr == "DEPARTURE") {
+		airport = Java_com_osi_gnats_engine_CEngine_getDepartureAirport(jniEnv, jobj, aircraftId);
+		runway = Java_com_osi_gnats_engine_CEngine_getDepartureRunway(jniEnv, jobj, aircraftId);
+	}
+	else if(procedureStr == "ARRIVAL") {
+		airport = Java_com_osi_gnats_engine_CEngine_getArrivalAirport(jniEnv, jobj, aircraftId);
+		runway = Java_com_osi_gnats_engine_CEngine_getArrivalRunway(jniEnv, jobj, aircraftId);
+	}
+
+	const char *c_acid = (char*)jniEnv->GetStringUTFChars( aircraftId, NULL );
+	string c_string_acid = c_acid;
+
+	int c_flightSeq = select_flightSeq_by_aircraftId(c_string_acid);
+
+	aircraftCourse = d_aircraft_soa.course_rad[c_flightSeq] * 180 / PI;
+
+	jobjectArray ends = Java_com_osi_gnats_engine_CEngine_getRunwayEndpoints(jniEnv, jobj, airport, runway);
+	jdoubleArray thresholdObj = (jdoubleArray)jniEnv->GetObjectArrayElement(ends, 0);
+	jdouble* thresholdPoint = jniEnv->GetDoubleArrayElements(thresholdObj, NULL);
+	jdoubleArray endObj = (jdoubleArray)jniEnv->GetObjectArrayElement(ends, 1);
+	jdouble* endPoint = jniEnv->GetDoubleArrayElements(endObj, NULL);
+
+
+	runwayHeading = Java_com_osi_gnats_engine_CEngine_calculateBearing(jniEnv, jobj, thresholdPoint[0], thresholdPoint[1], endPoint[0], endPoint[1]);
+	alignmentAngle = aircraftCourse - runwayHeading;
+
+	return alignmentAngle;
+
+  }
+
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getDistanceToRunwayEnd
+  (JNIEnv *jniEnv, jobject jobj, jint sessionId, jstring aircraftId) {
+  	double currentLat, currentLon;
+	jstring arrivalRunway, arrivalAirport;
+
+	const char *c_acid = (char*)jniEnv->GetStringUTFChars( aircraftId, NULL );
+	string c_string_acid = c_acid;
+
+	int c_flightSeq = select_flightSeq_by_aircraftId(c_string_acid);
+
+	currentLat = d_aircraft_soa.latitude_deg[c_flightSeq];
+	currentLon = d_aircraft_soa.longitude_deg[c_flightSeq];
+
+	
+	arrivalAirport = Java_com_osi_gnats_engine_CEngine_getArrivalAirport(jniEnv, jobj, aircraftId);
+	arrivalRunway = Java_com_osi_gnats_engine_CEngine_getArrivalRunway(jniEnv, jobj, aircraftId);
+	
+	jobjectArray ends = Java_com_osi_gnats_engine_CEngine_getRunwayEndpoints(jniEnv, jobj, arrivalAirport, arrivalRunway);
+
+	int cnt_waypoint = jniEnv->GetArrayLength(ends);
+	jdoubleArray endObj = (jdoubleArray)jniEnv->GetObjectArrayElement(ends, 1);
+	jdouble* endPoint = jniEnv->GetDoubleArrayElements(endObj, NULL);
+
+	return Java_com_osi_gnats_engine_CEngine_calculateDistance(jniEnv, jobj, currentLat, currentLon, 0.0, endPoint[0], endPoint[1], 0.0);
+  }
+
+
+JNIEXPORT jdouble JNICALL Java_com_osi_gnats_engine_CEngine_getDistanceToRunwayThreshold
+  (JNIEnv *jniEnv, jobject jobj, jint sessionId, jstring aircraftId) {
+	double currentLat, currentLon;
+	jstring arrivalRunway, arrivalAirport;
+
+	const char *c_acid = (char*)jniEnv->GetStringUTFChars( aircraftId, NULL );
+	string c_string_acid = c_acid;
+
+	int c_flightSeq = select_flightSeq_by_aircraftId(c_string_acid);
+
+	currentLat = d_aircraft_soa.latitude_deg[c_flightSeq];
+	currentLon = d_aircraft_soa.longitude_deg[c_flightSeq];
+
+	
+	arrivalAirport = Java_com_osi_gnats_engine_CEngine_getArrivalAirport(jniEnv, jobj, aircraftId);
+	arrivalRunway = Java_com_osi_gnats_engine_CEngine_getArrivalRunway(jniEnv, jobj, aircraftId);
+	
+	jobjectArray ends = Java_com_osi_gnats_engine_CEngine_getRunwayEndpoints(jniEnv, jobj, arrivalAirport, arrivalRunway);
+
+	int cnt_waypoint = jniEnv->GetArrayLength(ends);
+	jdoubleArray thresholdObj = (jdoubleArray)jniEnv->GetObjectArrayElement(ends, 0);
+	jdouble* thresholdPoint = jniEnv->GetDoubleArrayElements(thresholdObj, NULL);
+
+	return Java_com_osi_gnats_engine_CEngine_calculateDistance(jniEnv, jobj, currentLat, currentLon, 0.0, thresholdPoint[0], thresholdPoint[1], 0.0);
+
+}
+
+
 JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_setAircraftBookValue
   (JNIEnv *jniEnv, jobject jobj, jstring aircraftId, jdouble aircraftBookValue) {
     string c_string_acid = (string)(char*) jniEnv->GetStringUTFChars(aircraftId, NULL);
@@ -4003,6 +4282,75 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_externalGroundVehicle_1
 
 	return retVal;
 }
+
+
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getCenterCodes
+  (JNIEnv *jniEnv, jobject jobj) {
+  	vector<string> centerList{"KZAU", "KZBW", "KZDC", "KZDV", "KZFW", "KZHU",
+				"KZID", "KZJX", "KZKC", "KZLA", "KZLC", "KZMA", "KZME", "KZMP", "KZNY", "KZOA", "KZOB", "KZSE", "KZTL", "PZAN", "PZHN", "KZAB" };
+  
+	jobjectArray retArray = NULL;
+
+	jclass jcls = jniEnv->FindClass("Ljava/lang/String;");
+
+	retArray = (jobjectArray)jniEnv->NewObjectArray(centerList.size(), jcls, jniEnv->NewStringUTF(""));
+
+	int i = 0;
+
+	for(auto element = centerList.begin(); element!=centerList.end(); ++element) {
+
+		string center = *element;
+		jniEnv->SetObjectArrayElement(retArray, i, jniEnv->NewStringUTF(center.c_str()));
+		i++;
+	}
+
+	return retArray;
+
+  }
+
+
+JNIEXPORT jstring JNICALL Java_com_osi_gnats_engine_CEngine_getCurrentCenter
+  (JNIEnv *, jobject, jstring);
+
+
+JNIEXPORT jobjectArray JNICALL Java_com_osi_gnats_engine_CEngine_getFixesInCenter
+  (JNIEnv *jniEnv, jobject jobj, jstring centerId) {
+
+  	const char *c_centerId = (char*)jniEnv->GetStringUTFChars( centerId, NULL );
+	string string_centerId(c_centerId); // Convert char* to string
+
+  	ifstream centerFile(g_share_dir + "/artcc/ArtccWaypoints.csv");
+  	vector<string> fixes;
+  	string line;
+	const char delim = ',';
+	
+	while (getline(centerFile, line)) {
+			vector<std::string> out;
+    		tokenize(line, delim, out);
+
+			if (out.at(0) == string_centerId)
+				fixes.push_back(out.at(1));
+	}
+
+    jobjectArray retArray = NULL;
+
+	jclass jcls = jniEnv->FindClass("Ljava/lang/String;");
+
+	retArray = (jobjectArray)jniEnv->NewObjectArray(fixes.size(), jcls, jniEnv->NewStringUTF(""));
+
+	int i = 0;
+
+	for(auto element = fixes.begin(); element!=fixes.end(); ++element) {
+
+		string fix = *element;
+		jniEnv->SetObjectArrayElement(retArray, i, jniEnv->NewStringUTF(fix.c_str()));
+		i++;
+	}
+
+	return retArray;
+  }
+
+
 
 JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_setGroundOperatorAbsence
   (JNIEnv *jniEnv, jobject jobj, jstring groundVehicleId, jint timeSteps) {
@@ -4470,3 +4818,94 @@ JNIEXPORT jint JNICALL Java_com_osi_gnats_engine_CEngine_clearTerrainData
   	return 0;
   	
   }
+
+
+JNIEXPORT jdoubleArray JNICALL Java_com_osi_gnats_engine_CEngine_getLineOfSight
+  (JNIEnv *jniEnv, jobject jobj, jdouble observerLat, jdouble observerLon, jdouble observerAlt, jdouble targetLat, jdouble targetLon, jdouble targetAlt, jboolean cifpExists) {
+
+
+	// Returns an array of (Range, Azimuth, Elevation, Masking)
+	double retVal[] = {0, 0, 0, 0};
+	
+	// Radius of Earth in ft
+	double R = 20902230.97;
+	
+	// Convert latitude/longitude to radian
+	observerLat = observerLat * (PI / 180);
+	observerLon = observerLon * (PI / 180);
+	targetLat = targetLat * (PI / 180);
+	targetLon = targetLon * (PI / 180);
+	
+	// Transform Lat, Lon, Alt positinos of observer and target to geoinertial frame
+	double xt = (R + targetAlt) * cos(targetLat) * cos(targetLon);
+	double yt = (R + targetAlt) * cos(targetLat) * sin(targetLon);
+	double zt = (R + targetAlt) * sin(targetLat);
+	double xo = (R + observerAlt) * cos(observerLat) * cos(observerLon);
+	double yo = (R + observerAlt) * cos(observerLat) * sin(observerLon);
+	double zo = (R + observerAlt) * sin(observerLat);
+
+	// Get relative position vectors
+	double dxo = xo - xt;
+	double dyo = yo - yt;
+	double dzo = zo - zt;
+	
+	// Get transformed relative vector to observer's topocentric frame
+	double xl = dxo * sin(observerLat) * cos(observerLon) + dyo * sin(observerLat) * sin(observerLon) - dzo * cos(observerLat);
+	double yl = -dxo * sin(observerLat) + dyo * cos(observerLat);
+	double zl = dxo * cos(observerLat) * cos(observerLon) + dyo * cos(observerLat) * sin(observerLon) + dzo * sin(observerLat);
+	
+	
+	// Calculate Range
+	retVal[0] = sqrt(xl * xl + yl * yl + zl * zl);
+	
+	// Calculate Azimuth
+	retVal[1] = atan2((sin(targetLon - observerLon) * cos(targetLat)), (cos(observerLat) * sin(targetLat) - sin(observerLat) * cos(targetLat) * cos(targetLon - observerLon))) * 180.0 / PI;
+	
+	// Calculate Elevation
+	retVal[2] = zl / sqrt(xl * xl + yl * yl) * 180.0 / PI;
+	
+	double startLat = observerLat;
+	double endLat = targetLat;
+	double startLon = observerLon;
+	double endLon = targetLon;
+
+	if(startLat > targetLat) {
+		startLat = targetLat;
+		endLat = observerLat;
+		startLon = targetLon;
+		endLon = observerLon;
+	}
+	
+	startLat *= 180.0 / PI;
+	endLat *= 180.0 / PI;
+	startLon *= 180.0 / PI;
+	endLon *= 180.0 / PI;
+	int altCount = (int)((endLat - startLat) / 0.01);
+	
+	double buffAlt = observerAlt;
+	if(buffAlt > targetAlt)
+		buffAlt = targetAlt;
+			
+	double slope = (endLon - startLon) / (endLat - startLat);
+	while(startLat < endLat) {
+		double newLon = slope * startLat - slope * observerLat * 180.0 / PI+ observerLon * 180.0 / PI;
+		if(Java_com_osi_gnats_engine_CEngine_getElevation(jniEnv, jobj, startLat, newLon, cifpExists) > buffAlt)
+				retVal[3] = 1;
+			buffAlt += abs(observerAlt - targetAlt) / altCount;
+
+		startLat += 0.01;
+	}
+
+	if (retVal[3] == 0) {
+		if(retVal[2] < asin(R / ((R + observerAlt)) * 180.0 / PI))
+			retVal[3] = 2;
+	}
+	
+	jclass doubleArrayClass = jniEnv->FindClass("[D");
+    jdoubleArray retObj = jniEnv->NewDoubleArray(4);
+    jniEnv->SetDoubleArrayRegion(retObj, (jsize) 0, (jsize) 4, (jdouble*) retVal);
+    
+    return retObj;
+
+  }
+

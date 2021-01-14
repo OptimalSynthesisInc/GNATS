@@ -107,7 +107,7 @@ public class CEngine {
 		}
 	}
 
-	// ========== NATS core functions ==========
+	// ========== GNATS core functions ==========
 	
 	public native void set_flag_gdb(boolean flag_gdb);
 	
@@ -130,15 +130,13 @@ public class CEngine {
 	public native int release_aircraft();
 
 	
-	// ========== NATS Simulation-related Functions ==========
+	// ========== GNATS Simulation-related Functions ==========
 	
 	public native long get_sim_id();
 	
 	public native int propagate_flights(float t_end, float t_step);
 	
 	public native int propagate_flights(float t_end, float t_step_surface, float t_step_terminal, float t_step_airborne);
-	
-	public native int propagate_flights_gpu(float t_end, float t_step);
 	
 	public native void enableConflictDetectionAndResolution(boolean flag);
 	
@@ -219,7 +217,7 @@ public class CEngine {
 			String flight_phase,
 			long timestamp_utc_millisec);
 	
-	// ========== NATS Aircraft Functions ==========
+	// ========== GNATS Aircraft Functions ==========
 	
 	public native String getAircraftAssignee(String acid);
 	
@@ -237,7 +235,7 @@ public class CEngine {
 	
 	public native int delay_departure(String acid, int seconds);
 	
-	// ========== NATS ADB Data Functions ==========
+	// ========== GNATS ADB Data Functions ==========
 	
 	public native double getADB_cruiseTas(String ac_type, double altitude_ft);
 	
@@ -245,7 +243,7 @@ public class CEngine {
 	
 	public native double getADB_climb_descent_Tas(boolean flagClimbing, String ac_type, double altitude_ft);
 	
-	// ========== NATS TerminalArea Functions ==========
+	// ========== GNATS TerminalArea Functions ==========
 	
 	public native String getCurrentSidStarApproach(String acid, String proc_type);
 	
@@ -269,7 +267,7 @@ public class CEngine {
 	
 	public native float[] getGroundWaypointLocation(String airportId, String groundWaypointId);
 	
-	// ========== NATS Airport Functions ==========
+	// ========== GNATS Airport Functions ==========
 	
 	public native Airport select_airport(String airport_code);
 	
@@ -319,7 +317,7 @@ public class CEngine {
 	
 	public native String[] getRunwayEnds(String airportId, String runwayId);
 	
-	// ========== NATS Controller Functions ==========
+	// ========== GNATS Controller Functions ==========
 	
 	public native int controller_setDelayPeriod(String acid, String aircraft_clearance, float seconds);
 	
@@ -357,7 +355,7 @@ public class CEngine {
 	
 	public native int setTacticalWeatherAvoidance(String waypoint_name, float duration_sec);
 	
-	// ========== NATS Pilot Functions ==========
+	// ========== GNATS Pilot Functions ==========
 
 	public native int pilot_setActionLag(String aircraftID, String lagParameter, float lagTimeConstant, float percentageError, float parameterCurrentValue, float parameterTarget);
 					
@@ -365,7 +363,7 @@ public class CEngine {
 			
 	public native int pilot_skipFlightPhase(String aircraftID, String flightPhase);
 	
-	// ========== NATS Weather Functions ==========
+	// ========== GNATS Weather Functions ==========
 	
 	public native int downloadWeatherFiles();
 	
@@ -376,7 +374,27 @@ public class CEngine {
 	
 	public native WeatherPolygon[] getWeatherPolygons(String ac_id, double lat_deg, double lon_deg, double alt_ft, double nauticalMile_radius);
 	
-	// ========== NATS SafetyMetrics Functions =========
+	// ========== GNATS RiskMeasure Functions =========
+	
+	public native double calculateRelativeVelocity(double refSpeed, double refCourse, double refFpa, double tempSpeed, double tempCourse, double tempFpa);
+	
+	public native double calculateBearing(double lat1, double lon1, double lat2, double lon2);
+	
+	public native double calculateDistance(double lat1, double lon1, double alt1, double lat2, double lon2, double alt2);
+	
+	public native double calculateWaypointDistance(float lat1, float lng1, float lat2, float lng2);
+	
+	public native double getVelocityAlignmentWithRunway(int sessionId, String aircraftId, String procedure);
+	
+	public native double getDistanceToRunwayEnd(int sessionId, String aircraftId);
+	
+	public native double getDistanceToRunwayThreshold(int sessionId, String aircraftId);
+	
+	public native double[][] getRunwayEndpoints(String airportId, String runway);
+	
+	public native int getPassengerCount(String aircraftType);
+	
+	public native double getAircraftCost(String aircraftType);
 	
 	public native int setAircraftBookValue(String aircraftId, double aircraftBookValue);
 	
@@ -404,7 +422,7 @@ public class CEngine {
 	
 	public native int load_aviationOccurenceProfile(String dirPath);
 	
-	// ==================== NATS GroundVehicle Functions ===================
+	// ==================== GNATS GroundVehicle Functions ===================
 	
 	public native int load_groundVehicle(String trx_file);
 	
@@ -422,7 +440,15 @@ public class CEngine {
 
 	public native int externalGroundVehicle_inject_trajectory_state_data(String groundVehicleId, String aircraftInService, float latitude, float longitude, float speed, float course);
 
-	// ==================== NATS GroundOperator Functions ===================
+	// ==================== GNATS Environment Functions ===================
+	
+	public native String[] getCenterCodes();
+	
+	public native String getCurrentCenter(String aircraftId);
+	
+	public native String[] getFixesInCenter(String centerId);
+		
+	// ==================== GNATS GroundOperator Functions ===================
 	
 	public native int setGroundOperatorAbsence(String groundVehicleId, int timeSteps);
 	
@@ -432,7 +458,7 @@ public class CEngine {
 	
 	public native float groundVehicle_setActionRepeat(String groundVehicleId, String repeatParameter);
 	
-	// =================== NATS TerrainInterface functions ==================
+	// =================== GNATS TerrainInterface functions ==================
 	
 	public native int loadTerrainData(double minLatDeg, double maxLatDeg, double minLonDeg, double maxLonDeg, boolean cifpExists);
 	
@@ -446,9 +472,11 @@ public class CEngine {
 	
 	public native int clearTerrainData();
 	
-	// ==================== NATS GroundCommunication Functions ==============
+	// ==================== GNATS GroundCommunication Functions ==============
 	
 	public native int setRadarError(String airportId, String parameter, double originalValue, double bias, double noiseVariance, int scope);
 
+	public native double[] getLineOfSight(double observerLat, double observerLon, double observerAlt, double targetLat, double targetLon, double targetAlt, boolean cifpExists);
 
+	public native int setNavigationLocationError(int sessionId, String aircraftId, String parameter, double bias, double drift, double scaleFactor, double noiseVariance, int scope);
 }
