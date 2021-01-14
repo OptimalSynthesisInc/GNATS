@@ -62,7 +62,7 @@ public interface RiskMeasuresInterface extends BaseInterface {
 	* @param aircraftType Aircraft Type for which the passengerCount is required.
 	* @return
 	*/
-	public Integer getPassengerCount(String aircraftType);
+	public int getPassengerCount(String aircraftType);
 
 	/**
 	* This function returns the cost (in millions of US Dollars) for a new aircraft of the aircraft type. Data for all aircraft types in the ADB database are available in NATS.
@@ -174,6 +174,4 @@ public interface RiskMeasuresInterface extends BaseInterface {
 	 * @return
 	 */
 	public double getDistanceToPavementEdge(String airportId, String aircraftId);
-	
-	public int load_aviationOccurenceProfile(String dirPath) throws RemoteException;
 }

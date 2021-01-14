@@ -92,8 +92,8 @@ public class ClientRiskMeasures extends BaseClass implements RiskMeasuresInterfa
 		return retValue;
 	}
 	
-	public Integer getPassengerCount(String aircraftType) {
-		Integer retValue = 0;
+	public int getPassengerCount(String aircraftType) {
+		int retValue = 0;
 
 		try {
 			retValue = remoteRiskMeasures.getPassengerCount(aircraftType);
@@ -294,9 +294,5 @@ public class ClientRiskMeasures extends BaseClass implements RiskMeasuresInterfa
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-	
-	public int load_aviationOccurenceProfile(String dirPath) throws RemoteException {
-		return remoteRiskMeasures.load_aviationOccurenceProfile(dirPath);
 	}
 }
