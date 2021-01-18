@@ -500,7 +500,8 @@
 #define H5_PACKAGE_VERSION "1.10.5"
 
 /* Determine the maximum decimal precision in C */
-#define H5_PAC_C_MAX_REAL_PRECISION 33
+#define H5_PAC_C_MAX_REAL_PRECISION 33
+
 
 /* Define Fortran Maximum Real Decimal Precision */
 #define H5_PAC_FC_MAX_REAL_PRECISION 33
