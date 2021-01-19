@@ -1,1 +1,0 @@
-make -f makefile.test_propagation_ground_service
