@@ -112,11 +112,11 @@ Determine if departing and/or landing runway are required info. If landing runwa
 <li>
 <p class="startli">Prepare departing/arriving surface taxi plan if they are required.<br />
  Two ways to obtain the taxi plan:</p>
-<p class="interli"><b>Method A</b>: Call NATS API function </p><div style="margin-left: 20px; width: 800px;"> NATS provides a function to get the list of waypoints from the starting point to the ending one.</div><div style="margin-left: 20px; width: 800px;"> For example, <div class="fragment"><div class="line">AirportInterface.get_taxi_route_from_A_To_B(aircraft_id, airport_code, starting_waypoint_id, ending_waypoint_id)</div><div class="line">AirportInterface.get_taxi_route_from_A_To_B(<span class="stringliteral">&quot;SWA1897&quot;</span>, <span class="stringliteral">&quot;KSFO&quot;</span>, <span class="stringliteral">&quot;Gate_F_086&quot;</span>, <span class="stringliteral">&quot;Rwy_02_002&quot;</span>)</div></div><!-- fragment --></div><div style="margin-left: 20px; width: 800px;"> Please see NATS_Client/sample/DEMO_Airport_Functions_x.py for more sample codes. </div><p class="interli"><b>Method B</b>: Run Python program - DEMO_UI_TaxiRouteGenerator </p><div style="margin-left: 20px;"> A Python sample program(NATS_Client/sample/DEMO_UI_TaxiRouteGenerator) provides the functionality to create a taxi plan. Users can run the program and design the taxi plan by the mouse. </div><p class="interli">Notice.<br />
+<p class="interli"><b>Method A</b>: Call GNATS API function </p><div style="margin-left: 20px; width: 800px;"> GNATS provides a function to get the list of waypoints from the starting point to the ending one.</div><div style="margin-left: 20px; width: 800px;"> For example, <div class="fragment"><div class="line">AirportInterface.get_taxi_route_from_A_To_B(aircraft_id, airport_code, starting_waypoint_id, ending_waypoint_id)</div><div class="line">AirportInterface.get_taxi_route_from_A_To_B(<span class="stringliteral">&quot;SWA1897&quot;</span>, <span class="stringliteral">&quot;KSFO&quot;</span>, <span class="stringliteral">&quot;Gate_F_086&quot;</span>, <span class="stringliteral">&quot;Rwy_02_002&quot;</span>)</div></div><!-- fragment --></div><div style="margin-left: 20px; width: 800px;"> Please see GNATS_Client/sample/DEMO_Airport_Functions_x.py for more sample codes. </div><p class="interli"><b>Method B</b>: Run Python program - DEMO_UI_TaxiRouteGenerator </p><div style="margin-left: 20px;"> A Python sample program(GNATS_Client/sample/DEMO_UI_TaxiRouteGenerator) provides the functionality to create a taxi plan. Users can run the program and design the taxi plan by the mouse. </div><p class="interli">Notice.<br />
  For departing taxi plan, the ending waypoint MUST be a runway entry point.<br />
  For landing taxi plan, the starting waypoint MUST be a runway end point.<br />
 </p>
-<p class="endli">Detail waypoint definition can be seen in the directory in NATS_Standalone/share/libairport_layout/Airport_Rwy/*_Nodes_Def.csv  </p>
+<p class="endli">Detail waypoint definition can be seen in the directory in GNATS_Standalone/share/libairport_layout/Airport_Rwy/*_Nodes_Def.csv  </p>
 </li>
 <li>
 Finally, produce the FP_ROUTE by combining the following(in the same order):<br />
@@ -139,8 +139,8 @@ Finally, produce the FP_ROUTE by combining the following(in the same order):<br 
 </ul>
 </li>
 </ol>
-<div style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 80%; height: 1px; background: #C3C3C3;"></div><p>NATS provides command-line samples to generate the FP_ROUTE data by asking questions and receive inputs from users. Please see &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NATS_Client/sample/GateToGateFp_beta1.x.py<br />
- &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NATS_Client/sample/GateToGateFpWithoutBaseTRX_beta1.x.py </p>
+<div style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 80%; height: 1px; background: #C3C3C3;"></div><p>GNATS provides command-line samples to generate the FP_ROUTE data by asking questions and receive inputs from users. Please see &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;GNATS_Client/sample/GateToGateFp_beta1.x.py<br />
+ &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;GNATS_Client/sample/GateToGateFpWithoutBaseTRX_beta1.x.py </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -34,9 +34,9 @@ var NAVTREE =
     [ "Getting Started", "getting_started.html", [
       [ "First Program", "getting_started.html#sec_firstProgram", null ],
       [ "1. Load GNATS library", "getting_started.html#sec_loadLibrary", null ],
-      [ "2. Start NATSStandalone and get interfaces", "getting_started.html#sec_getNATSClient", null ],
+      [ "2. Start GNATSStandalone and get interfaces", "getting_started.html#sec_getNATSClient", null ],
       [ "3. Write your logic", "getting_started.html#sec_writeLogic", null ],
-      [ "4. Stop NATSStandalone", "getting_started.html#sec_disconnectFromNATSServer", null ]
+      [ "4. Stop GNATSStandalone", "getting_started.html#sec_disconnectFromNATSServer", null ]
     ] ],
     [ "Input & Output", "io.html", [
       [ "Input", "io.html#sec_io_input", [
