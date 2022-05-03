@@ -1,0 +1,36 @@
+/*! \page configuration Configuration
+	GNATS Client configuration includes 2 sections: required configuration and optional configuration.
+	
+	\section sec_req_config Required Configuration
+		\subsection subsec_config_file Config File
+		GNATS Client uses a config file which can be found at NATS_Client/data/gnats.config<br/>
+		Here is an example.
+		\code
+		// GNATS Server hostname/ip (usually localhost)
+		localhost
+		//192.168.1.115
+
+		// port to connect to
+		2017
+		\endcode
+		1. GNATS Server hostname or IP address must be specified.
+		2. GNATS Server port number to connect.<br/>
+		   <span style="color: #FF0000;">On GNATS Server, please configure firewall and allow the port to be accessible from outside.</span>
+	
+		\subsection subsec_envVariables Environment Variables
+		Set environment variables <b>JAVA_HOME</b> which GNATS Client needs.
+		For example,
+		\code
+		export JAVA_HOME=/opt/java/64/jdk1.8.0_181
+		\endcode
+	
+	<p/>
+	
+	\section sec_opt_config Optional Configuration
+		It is optional but recommended to set environment variable NATS_CLIENT_HOME to the installation directory.<br/>
+		For example
+		\code
+		export GNATS_CLIENT_HOME=/xxx/yyy/GNATS_Client
+		\endcode
+		This helps locate the path of NATS_Client so the program can access GNATS library files easily.  With NATS_CLIENT_HOME defined, you can run your client program in another directory.  Otherwise, you have to run the client program exactly in NATS_Client directory so the GNATS data files can be located.
+*/

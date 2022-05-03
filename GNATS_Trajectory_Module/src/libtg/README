@@ -1,0 +1,9 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2018
+Optimal Synthesis Inc.
+All rights reserved.
+
+libtg - Trajectory Generator implementation and API
+
+This project includes SWIG wrappers for python, octave, and Java

@@ -1,0 +1,1 @@
+../../src/libadb/src/AdbSynonyms.h

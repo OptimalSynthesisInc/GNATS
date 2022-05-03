@@ -1,0 +1,14 @@
+/*! \page api GNATS API Modules
+	Based on different service-oriented purpose, GNATS API library is classified into 5 categories.
+	<ul>
+	  <li>Entity</li>
+	  <li>Environment</li>
+	  <li>Equipment</li>
+	  <li>SafetyMetrics</li>
+	  <li>Simulation</li>
+	</ul>
+	
+	In each category, there may be more sub-categories of fine-grain extension.
+	
+	For the detail function definition and explanation, please refer to <!--<a href="annotated.html"><b>API Document</b></a>--> GNATS_Client/GNATS Documentation.pdf.
+*/

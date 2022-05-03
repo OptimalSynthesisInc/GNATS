@@ -1,0 +1,9 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2018
+Optimal Synthesis Inc.
+All rights reserved.
+
+libgeomutils - Basic functions for great-circle geometry
+
+This library implements great-circle geometry formulae.

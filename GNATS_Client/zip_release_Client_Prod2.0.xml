@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="GNATS_Client_Zip_Release" default="zip-all" basedir=".">
+    <description>GNATS Client - Zip Release Script</description>
+    
+    <target name="zip-all">
+    	<delete file="GNATS_Client.zip" />
+
+    	<copy file="README_Prod_v1.0.txt" tofile="README.txt" />
+    	<copy file="What_is_New_Prod_v1.0.txt" tofile="What_is_New.txt" />
+    	<copy file="Scilab and Octave Documentation Beta 1.9.pdf" tofile="Scilab and Octave Documentation Beta.pdf" />
+    	
+        <zip zipfile="GNATS_Client.zip" compress="true">
+            <fileset dir=".">
+            	<include name="README.txt"/>
+            	<include name="What_is_New.txt"/>
+
+            	<!--<include name="GNATS Algorithm Documentation.pdf"/>-->
+				<include name="GNATS_Production 1.0_Linux_Windows 10_Documentation.pdf"/>
+            	<include name="Scilab and Octave Documentation Beta.pdf"/>
+
+            	<include name="gnatshelp"/>
+            		
+                <include name="data/*"/>
+                
+                <include name="dist/*"/>
+                <include name="dist/*.*"/>
+                <include name="dist/**/*/*"/>
+				<include name="dist/**/*/*.*"/>
+            	
+            	<exclude name="dist/Sample_Java.class"/>
+            	<exclude name="dist/Sample_Java.java"/>
+            	<exclude name="sample/*.pyc"/>
+            	<exclude name="sample/**/*/*.pyc"/>
+            </fileset>
+        </zip>
+
+    	<delete file="README.txt" />
+    	<delete file="What_is_New.txt" />
+    	<delete file="Scilab and Octave Documentation Beta.pdf" />
+    	<delete file="TRX Documentation.pdf" />
+    </target>
+</project>

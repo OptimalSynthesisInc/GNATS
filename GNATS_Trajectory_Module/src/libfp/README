@@ -1,0 +1,10 @@
+National Airspace Trajectory-Prediction System(NATS)
+
+Copyright 2017-2018
+Optimal Synthesis Inc.
+All rights reserved.
+
+libfp - Flight plan parsing library
+
+This library is used to parse flight plan strings as found in TRX files.
+This library makes use of the NAS data loaded using libnats_data.

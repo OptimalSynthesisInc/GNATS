@@ -1,0 +1,131 @@
+/*! \page getting_started Getting Started
+  \tableofcontents
+  
+  In this topic we will talk about how to get GNATS Client to work from scratch.  The overall work of GNATS is done by the interaction of GNATS Server and Client.  Please refer to the document of NATS Server for the information about how to start the server.
+  
+  Open a terminal console, navigate to NATS_Server directory.  Type
+  \code
+  ./run
+  \endcode
+  
+  Now, we have a running GNATS Server, you should be able to see the screen text like
+  <img src="screenshot_starting_server.png" />
+  
+  <br/>
+  
+  \section sec_firstProgram First Program
+  From here, we can start to develop our first GNATS client program.
+  
+  Use <b>NATS_Client/sample/basic_python_example.py</b> as an example.
+  
+  The basic procedure to write a GNATS client program is to:
+  <ol>
+    <li>Load GNATS library</li>
+    <li>Get GNATSClient and interfaces</li>
+    <li>Write your logic</li>
+    <li>Disconnect from GNATS Server</li>
+  </ol>
+  
+  <br/>
+  
+  The following steps illustrate the basic concept no matter you are using Python or MATLAB.
+  
+  \section sec_loadLibrary 1. Load GNATS library
+  <ul>
+    <li>If you are writing Python<br/>
+        \code{.py}
+		# Use Jpype as a bridge to communicate with Java
+		from jpype import *
+        
+		# Put all required Java library here
+		classpath = "dist/gnats-client.jar:dist/gnats-shared.jar:dist/json.jar:dist/rmiio-2.1.2.jar:dist/commons-logging-1.2.jar"
+
+		# Start Java environment
+		startJVM(getDefaultJVMPath(), "-ea", "-Djava.class.path=%s" % classpath)
+        \endcode
+    </li>
+    <li>If you are writing MATLAB<br/>
+        \code{.m}
+		% Clear java variables in MATLAB
+		clear java;
+
+		javaaddpath('dist/gnats-client.jar','-end');
+		javaaddpath('dist/gnats-shared.jar','-end');
+		javaaddpath('dist/json.jar','-end');
+		javaaddpath('dist/rmiio-2.1.2.jar','-end');
+		javaaddpath('dist/commons-logging-1.2.jar','-end');
+        \endcode
+    </li>
+  </ul>
+  
+  \section sec_getNATSClient 2. Get NATSClient and interfaces
+  <div style="margin-left: 25px;">
+    \code{.py}
+	NATSClientFactory = JClass('NATSClientFactory')
+	gnatsClient = GNATSClientFactory.getNATSClient()
+	
+	# Get SimulationInterface
+	simulationInterface = gnatsClient.getSimulationInterface()
+    \endcode
+    
+    As you see, we call GNATSClientFactory.getGNATSClient() function to get the GNATSClient instance.  After that, we obtain another interface(SimulationInterface) from it.
+    For the detail interfaces we can get, please refer to the <a href="classGNATSClient.html">API Document</a>.
+  </div>
+  
+  \section sec_writeLogic 3. Write your logic
+  <div style="margin-left: 25px;">
+    GNATS API provides diversity of purposes in aircraft trajectory simulation.  Users are able to accomplish various tasks using GNATS API.  For a demo purpose, we use this simple example to explain a typical logic about trajectory simulation.  The same example can be seen in NATS_Client/sample/basic_python_example.py
+    \code{.py}
+	# Clear trajectory data
+	sim.clear_trajectory()
+
+	# Load wind data
+	environmentInterface.load_rap("share/tg/rap") # Here the parameters specify the file and path on server.  Please don't change it.
+
+	# Load aircraft data
+	aircraftInterface.load_aircraft("share/tg/trx/TRX_DEMO_SFO_PHX_GateToGate.trx", "share/tg/trx/TRX_DEMO_SFO_PHX_mfl.trx") # Here the parameters specify the file and path on server.  Please don't change it.
+	
+	# Set up simulation
+	# Set total simulation time to 11000 seconds, time step is 10 seconds
+	sim.setupSimulation(11000, 10)
+
+	# Start simulation
+	sim.start()
+
+	# This while loop block is to check the simulation status.  Due to aircraft data size and different simulation time, there is no method to forsee how much time the simulation will take.  Therefore, we constantly check simulation status.  When the simulation status is ENDED, we can continue.
+	while True:
+		server_runtime_sim_status = sim.get_runtime_sim_status()
+		if (server_runtime_sim_status == NATS_SIMULATION_STATUS_ENDED) :
+        	break
+    	else:
+			time.sleep(1)
+
+	# Write trajectory result to a file
+	millis = int(round(time.time() * 1000))
+	print "Outputting trajectory data.  Please wait...."
+	# The trajectory output file will be saved on NATS_Server side
+	sim.write_trajectories("Sample_output_trajectory_" + str(millis) + ".csv")
+
+	# Release aircraft data
+	aircraftInterface.release_aircraft()
+
+	# Release wind data
+	environmentInterface.release_rap()
+    \endcode
+  </div>
+  
+  \section sec_disconnectFromNATSServer 4. Disconnect from GNATS Server
+  <div style="margin-left: 25px;">
+  In client program, simply call
+  \code
+  gnatsClient.disConnect()
+  \endcode
+  <br/>
+  If you are writing Python, you still need to shut down the JVM environment.
+  \code
+  shutdownJVM()
+  \endcode
+  </div>
+  
+  <br/>
+*/

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+export GNATS_SERVER_HOME=${PWD}
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GNATS_SERVER_HOME/dist
+
+sh $GNATS_SERVER_HOME/utility/run_nodejs.sh &
+
+sleep 1
+
+java -cp $GNATS_SERVER_HOME/dist/gnats-server.jar:$GNATS_SERVER_HOME/dist/gnats-shared.jar:$GNATS_SERVER_HOME/dist/rmiio-2.1.2.jar:$GNATS_SERVER_HOME/dist/commons-logging-1.2.jar:$GNATS_SERVER_HOME/dist/commons-compress-1.20.jar -Djava.library.path=$GNATS_SERVER_HOME/dist -Xmx768m GNATSServer 2017 $1

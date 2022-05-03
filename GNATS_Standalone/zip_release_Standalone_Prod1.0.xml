@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="GNATS_Standalone_Zip_Release" default="zip-all" basedir=".">
+    <description>GNATS Standalone Program - Zip Release Script</description>
+    
+	<loadproperties srcFile="build_gnats_linux.properties"/>
+	
+	<target name="pre_proc">
+
+	</target>
+
+    <target name="zip_centos_6.9" depends="pre_proc">
+    	<delete file="GNATS_Standalone_CentOS_6.9.zip" />
+    	
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+		
+        <mkdir dir="tmp_deploy" />
+
+		<copy file="${gnats.server.dir}/GNATS_Server_CentOS_6.9.zip" tofile="tmp_deploy/GNATS_Server.zip" />
+
+        <zip zipfile="GNATS_Standalone_CentOS_6.9.zip" compress="true">
+            <fileset dir=".">
+            	<include name="README_Standalone_Installation.txt"/>
+            	
+            	<include name="GNATS_Standalone.zip"/>
+            </fileset>
+        	
+            <fileset dir="${gnats.client.dir}">
+            	<include name="GNATS_Client.zip"/>
+            </fileset>
+        	
+			<fileset dir="tmp_deploy">
+            	<include name="GNATS_Server.zip"/>
+            </fileset>
+        </zip>
+		
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+    </target>
+	
+	
+	
+	
+	
+	
+    <target name="zip_centos_7" depends="pre_proc">
+    	<delete file="GNATS_Standalone_CentOS_7.zip" />
+    	
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+		
+        <mkdir dir="tmp_deploy" />
+
+		<copy file="${gnats.server.dir}/GNATS_Server_CentOS_7.zip" tofile="tmp_deploy/GNATS_Server.zip" />
+
+        <zip zipfile="GNATS_Standalone_CentOS_7.zip" compress="true">
+            <fileset dir=".">
+            	<include name="README_Standalone_Installation.txt"/>
+            	
+            	<include name="GNATS_Standalone.zip"/>
+            </fileset>
+        	
+            <fileset dir="${gnats.client.dir}">
+            	<include name="GNATS_Client.zip"/>
+            </fileset>
+        	
+			<fileset dir="tmp_deploy">
+            	<include name="GNATS_Server.zip"/>
+            </fileset>
+        </zip>
+
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+    </target>
+	
+	
+	
+	
+	
+	
+	
+    <target name="zip_ubuntu_16.04" depends="pre_proc">
+    	<delete file="GNATS_Standalone_Ubuntu_16.04.zip" />
+
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+		
+        <mkdir dir="tmp_deploy" />
+
+		<copy file="${gnats.server.dir}/GNATS_Server_Ubuntu_16.04.zip" tofile="tmp_deploy/GNATS_Server.zip" />
+
+        <zip zipfile="GNATS_Standalone_Ubuntu_16.04.zip" compress="true">
+            <fileset dir=".">
+            	<include name="README_Standalone_Installation.txt"/>
+            	
+            	<include name="GNATS_Standalone.zip"/>
+            </fileset>
+        	
+            <fileset dir="${gnats.client.dir}">
+            	<include name="GNATS_Client.zip"/>
+            </fileset>
+
+			<fileset dir="tmp_deploy">
+            	<include name="GNATS_Server.zip"/>
+            </fileset>
+        </zip>
+
+		<delete dir="tmp_deploy" includeEmptyDirs="true" />
+    </target>
+	
+	<target name="zip-all" depends="zip_centos_6.9, zip_centos_7, zip_ubuntu_16.04">
+	
+	</target>
+</project>

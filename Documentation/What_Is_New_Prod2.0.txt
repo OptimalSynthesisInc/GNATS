@@ -1,0 +1,17 @@
+Generalized National Airspace Trajectory-Prediction System (GNATS)
+Version: Production 2.0 Linux Distribution
+
+Changes in this release:
+1. Simulation capabilities to support the In-Time Risk Assessment (IRA) concept have been added.
+
+2. Models for 13 Aviation Occurrence Categories (AOC) have been added, details are given at Documentation/IRA AOC Manual.pdf.
+
+3. RiskMeasureInterface has been augmented with new functions to permit the calculations of rate of change of aircraft parameters used in risk assessment.
+
+4. Region-of-Regard and the Region-of-Interest computations have been incorporated to limit the computational effort in computations involving the motion of multiple aircraft.
+
+5. An interface function to the aircraft database "ADBInterface function" has been added.
+
+6. A test airtraffic data set consisting of 2-hour traffic in the San Francisco, San Jose, and Oakland area has been provided to enable the evaluation of the new In-Time Risk Assessment concept.
+
+7. Support for Python 3.7 has been added.

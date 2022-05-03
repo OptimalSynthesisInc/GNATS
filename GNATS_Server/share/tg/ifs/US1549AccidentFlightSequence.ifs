@@ -1,0 +1,6 @@
+US1549
+80,A1,N7,Bird Strike,Unrecoverable Engine Failures,208,0,-10
+100,A2,A1,Prompt Control Actions,Managed Energy Glide,200,-5,-25
+150,A3,A2,Agile ATC Response,Turn to Alternate Landing Site,175,-10,-120
+210,A4,A3,Controlled Descent and Alignment with River,Final Approach at near-normal landing speed,150,-15,-154
+270,A5,A4,Nose-up Touchdown,Water Landing,120,0,-154

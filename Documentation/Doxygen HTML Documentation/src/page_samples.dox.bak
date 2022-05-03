@@ -1,0 +1,8 @@
+/*! \page samples Samples
+
+	NATS Client distribution provides serveral sample files.  Users are able to find examples about how to use NATS function calls and to achieve certain task goals.  You can find full sample information in the directory NATS_Client/sample.
+	<ul>
+	  <li>\subpage sample_basicPython "Basic Python Example"</li>
+	</ul>
+	
+*/

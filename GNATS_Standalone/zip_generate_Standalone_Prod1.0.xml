@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GNATS_Standalone_MainProgram_Zip_Release" default="zip-all" basedir=".">
+    <description>GNATS Standalone Main Program - Zip Release Script</description>    
+	<target name="pre_proc">
+		<delete dir="dependency_library" includeEmptyDirs="true" />
+		<delete dir="lib_precomp_src" includeEmptyDirs="true" />
+		
+<!--
+        <mkdir dir="dependency_library" />
+		<mkdir dir="lib_precomp_src" />
+		
+		<copy todir="dependency_library" overwrite="true" preservelastmodified="true">
+		    <fileset dir="../NATS_Server/dependency_library">
+		        <include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+		</copy>
+		
+		<copy todir="lib_precomp_src" overwrite="true" preservelastmodified="true">
+		    <fileset dir="../NATS_Server/lib_precomp_src">
+		        <include name="*.*"/>
+		    	<include name="**/*/*"/>
+		    	<include name="**/*/*.*"/>
+		    </fileset>
+		</copy>
+-->
+	</target>
+	
+	
+    <target name="zip_files" depends="pre_proc">
+    	<delete file="GNATS_Standalone.zip" />
+    	
+    	<delete dir="lib_precomp" includeEmptyDirs="true" />
+<!--
+    	<mkdir dir="lib_precomp" />
+		<copy todir="lib_precomp" overwrite="false" preservelastmodified="true">
+		    <fileset dir="lib_precomp_src">
+		        <include name="Ubuntu_16.04"/>
+		    	<include name="Ubuntu_16.04/*"/>
+		    </fileset>
+		</copy>
+-->
+    	<copy file="README_Prod_v1.0.txt" tofile="README.txt" />
+    	<copy file="README_Utility_Prod_v1.0.txt" tofile="README_Utility.txt" />
+    	<copy file="What_is_New_Prod_v1.0.txt" tofile="What_is_New.txt" />
+    	
+        <zip zipfile="GNATS_Standalone.zip" compress="true">
+            <fileset dir=".">
+            	<include name="README.txt"/>
+            	<include name="README_Utility.txt"/>
+            	<include name="run"/>
+            	<include name="TestRun.sh"/>
+            	<include name="What_is_New.txt"/>
+            	
+            	<!--<include name="GNATS Algorithm Documentation.pdf"/>-->
+            	<include name="GNATS_Production 1.0_Linux_Windows 10_Documentation.pdf"/>
+            	<include name="Scilab and Octave Documentation Beta 1.9.pdf"/>
+
+            	<include name="gnatshelp"/>
+            	
+<!--
+            	<include name="dependency_library/README"/>
+            	<include name="dependency_library/README_Install_HDF5"/>
+            	<include name="dependency_library/*.sh"/>
+                <include name="dependency_library/*.tar.gz"/>
+            	<include name="dependency_library/*.zip"/>
+            	
+            	<include name="lib_precomp/*"/>
+            	<include name="lib_precomp/**/*/*"/>
+-->
+            	
+            	<include name="data/*"/>
+            	<include name="data/*.*"/>
+            	<include name="data/**/*/*"/>
+            	<include name="data/**/*/*.*"/>
+            	
+            	<include name="log"/>
+            	
+                <include name="dist/*"/>
+                <include name="dist/*.*"/>
+                <include name="dist/**/*/*"/>
+				<include name="dist/**/*/*.*"/>
+            	<exclude name="dist/grib_api"/>
+            	<exclude name="dist/grib_api/*"/>
+            	<exclude name="dist/grib_api/**/*/*"/>
+            	<exclude name="dist/grib_api/**/*/*.*"/>
+            	<exclude name="dist/hdf5"/>
+            	<exclude name="dist/hdf5/*"/>
+            	<exclude name="dist/hdf5/**/*/*"/>
+            	<exclude name="dist/hdf5/**/*/*.*"/>
+            	<exclude name="dist/jasper"/>
+            	<exclude name="dist/jasper/*"/>
+            	<exclude name="dist/jasper/**/*/*"/>
+            	<exclude name="dist/jasper/**/*/*.*"/>
+            	
+            	<include name="utility"/>
+            	<include name="utility/*.*"/>
+            	<include name="utility/**/*/*"/>
+            	<include name="utility/**/*/*.*"/>
+            </fileset>
+        </zip>
+    	
+    	<delete file="README.txt" />
+    	<delete file="What_is_New.txt" />
+    </target>
+	
+	<target name="zip-all" depends="zip_files">
+	
+	</target>
+</project>
