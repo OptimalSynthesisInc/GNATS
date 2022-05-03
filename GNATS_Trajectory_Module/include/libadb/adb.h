@@ -1,1 +1,0 @@
-../../src/libadb/src/adb.h

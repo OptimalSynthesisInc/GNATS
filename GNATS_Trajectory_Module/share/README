@@ -1,6 +1,0 @@
-Directory: share
-
-Notice.
-Sub-directories and files in this directory are for reference only.  They are not maintained and are not the latest files to work with NATS_Server or NATS_Standalone.
-
-Directories and files under NATS_Server and NATS_Standalone are the latest working data for the release distribution.

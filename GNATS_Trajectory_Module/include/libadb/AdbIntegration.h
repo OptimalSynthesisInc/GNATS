@@ -1,1 +1,0 @@
-../../src/libadb/src/AdbIntegration.h
